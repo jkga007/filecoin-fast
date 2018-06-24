@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>邮箱验证成功!</title>
+    </head>
+    <body>
+        <script th:src="@{/libs/jquery.min.js}"></script>
+        <script th:src="@{/plugins/layer/layer.js}"></script>
+        <script th:src="@{/plugins/public.js}"></script>
+        <script type="text/javascript" th:inline="javascript">
+            var ctx= [[${#httpServletRequest.getContextPath()}]];
+            var jsonResult = [[${jsonResult}]];
+            //document.ready 方法
+            $(function () {
+                Core.alert("注册成功!,准备跳转首页！", 1,false, function () {
+                    localStorage.removeItem("token");
+                    localStorage.setItem("token",jsonResult.token);
+                    window.location.href = ctx+"/sys/gomasterindex";
+                });
+            });
+        </script>
+    </body>
+</html>

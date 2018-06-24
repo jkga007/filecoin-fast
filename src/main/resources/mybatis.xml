@@ -4,5 +4,13 @@
 <configuration>
     <settings>
         <setting name="mapUnderscoreToCamelCase" value="true" />
+        <!-- 启用懒加载 -->
+        <setting name="lazyLoadingEnabled" value="false" />
+        <!-- 按需加载 -->
+        <setting name="aggressiveLazyLoading" value="false" />
+        <!-- 设置返回字段为null -->
+        <setting name="callSettersOnNulls" value="true"/>
+        <!-- 打印查询语句-->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
     </settings>
 </configuration>

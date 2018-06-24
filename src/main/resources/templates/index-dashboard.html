@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- 
+        * @Package: ipfsun.com
+        * @Version: 1.0.0
+    -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- HTTP 1.1 -->
+    <meta http-equiv="pragma" content="no-cache">
+    <!-- HTTP 1.0 -->
+    <meta http-equiv="cache-control" content="no-cache">
+    <!-- Prevent caching at the proxy server -->
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>IPFS星际云矿池</title>
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/filecoin/assets/images/favicon.png}" type="image/x-icon" />
+    <!-- For iPhone -->
+    <link rel="apple-touch-icon-precomposed" th:href="@{/filecoin/assets/images/apple-touch-icon-57-precomposed.png}">
+    <!-- For iPhone 4 Retina display -->
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" th:href="@{/filecoin/assets/images/apple-touch-icon-114-precomposed.png}">
+    <!-- For iPad -->
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" th:href="@{/filecoin/assets/images/apple-touch-icon-72-precomposed.png}">
+    <!-- For iPad Retina display -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" th:href="@{/filecoin/assets/images/apple-touch-icon-144-precomposed.png}">
+
+    <!-- CORE CSS FRAMEWORK - START -->
+    <link th:href="@{/filecoin/assets/plugins/pace/pace-theme-flash.css}" rel="stylesheet" type="text/css" media="screen" />
+    <link th:href="@{/filecoin/assets/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/plugins/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/fonts/font-awesome/css/font-awesome.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/fonts/webfont/cryptocoins.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/fonts/icomoon/ipfsun.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/css/animate.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/plugins/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" type="text/css" />
+    <!-- CORE CSS FRAMEWORK - END -->
+
+    <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - START -->
+
+    <link th:href="@{/filecoin/assets/plugins/jvectormap/jquery-jvectormap-2.0.1.css}" rel="stylesheet" type="text/css" media="screen" />
+    <link th:href="@{/filecoin/assets/plugins/morris-chart/css/morris.css}" rel="stylesheet" type="text/css" media="screen" />
+
+    <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - END -->
+
+    <!-- CORE CSS TEMPLATE - START -->
+    <link th:href="@{/filecoin/assets/css/style.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/css/responsive.css}" rel="stylesheet" type="text/css" />
+    <!-- CORE CSS TEMPLATE - END -->
+
+</head>
+<!-- END HEAD -->
+
+<!-- BEGIN BODY -->
+
+<body class=" ">
+    <!-- START TOPBAR -->
+    <div class='page-topbar '>
+        <div class='logo-area'>
+
+        </div>
+        <div class='quick-area'>
+            <div class='pull-left'>
+                <ul class="info-menu left-links list-inline list-unstyled">
+                    
+                    
+                    <li class="notify-toggle-wrapper">
+                        <a href="#" data-toggle="dropdown" class="toggle">
+                            <i class="fa fa-bell"></i>
+                            <span class="badge badge-accent">3</span>
+                        </a>
+                        <ul class="dropdown-menu notifications animated fadeIn">
+                            <li class="total">
+                                <span class="small">
+                                您有 <strong>3</strong> 条新消息.
+                                <a href="javascript:;" class="pull-right">全部标记为已读消息</a>
+                            </span>
+                            </li>
+                            <li class="list">
+
+                                <ul class="dropdown-menu-list list-unstyled ps-scrollbar">
+                                    <li class="unread available">
+                                        <!-- available: success, warning, info, error -->
+                                        <a href="javascript:;">
+                                            <div class="notice-icon">
+                                                <i class="fa fa-check"></i>
+                                            </div>
+                                            <div>
+                                                <span class="name">
+                                                    <strong>您已成功邀请一位好友注册。</strong>
+                                                    <span class="time small">15分钟前</span>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="unread away">
+                                        <!-- available: success, warning, info, error -->
+                                        <a href="javascript:;">
+                                            <div class="notice-icon">
+                                                <i class="fa fa-clock-o"></i>
+                                            </div>
+                                            <div>
+                                                <span class="name">
+                                                    <strong>您有一台矿机连接近期不稳定!</strong>
+                                                    <span class="time small">45分钟前</span>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class=" busy">
+                                        <!-- available: success, warning, info, error -->
+                                        <a href="javascript:;">
+                                            <div class="notice-icon">
+                                                <i class="fa fa-times"></i>
+                                            </div>
+                                            <div>
+                                                <span class="name">
+                                                    <strong>您有一台矿机离线，请注意！</strong>
+                                                    <span class="time small">1小时前</span>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                   
+                                    <li class=" available">
+                                        <!-- available: success, warning, info, error -->
+                                        <a href="javascript:;">
+                                            <div class="notice-icon">
+                                                <i class="fa fa-check"></i>
+                                            </div>
+                                            <div>
+                                                <span class="name">
+                                                    <strong>2018-9-16 收益已支付，请注意查收。</strong>
+                                                    <span class="time small">2018-09-16</span>
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+
+                            <li class="external">
+                                <a href="javascript:;">
+                                    <span>阅读所有消息。</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+            </div>
+            <div class='pull-right'>
+                <ul class="info-menu right-links list-inline list-unstyled">
+                    <li class="profile">
+                        <a href="#" data-toggle="dropdown" class="toggle">
+                           <span id="userNameo">richie963 <i class="fa fa-angle-down"></i></span>
+                        </a>
+                        <ul class="dropdown-menu profile animated fadeIn">
+                            <li>
+                                <a href="account-confirmation.html">
+                                    <i class="fa fa-wrench"></i> 账户设置
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <a href="ui-support.html">
+                                    <i class="fa fa-info"></i> 用户帮助
+                                </a>
+                            </li>
+                            <li class="last">
+                                <a href="ui-login.html">
+                                    <i class="fa fa-lock"></i> 退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <!-- END TOPBAR -->
+    <!-- START CONTAINER -->
+    <div class="page-container row-fluid container-fluid">
+
+        <!-- SIDEBAR - START -->
+
+        <div class="page-sidebar fixedscroll">
+
+            <!-- MAIN MENU - START -->
+            <div class="page-sidebar-wrapper" id="main-menu-wrapper">
+
+
+                <ul class='wraplist'>
+                    <li class='menusection'>菜 单</li>
+                    <li class="open">
+                        <a href="index-dashboard.html">
+                            <i class="fa fa-th-large"></i>
+                            <span class="title">用户面板</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="index-trading-view.html">
+                            <i class="fa fa-bullseye"></i>
+                            <span class="title">矿工管理</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="index-marketcap.html">
+                            <i class="fa fa-flash"></i>
+                            <span class="title">付款记录</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="my-wallet.html">
+                            <i class="img"><img th:src="@{/filecoin/data/icons/wallet-o.png}" style="width:16px" alt=""></i>
+                            <span class="title">付款设置</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="security.html">
+                            <i class="fa fa-lock"></i>
+                            <span class="title">安全设置</span>
+                        </a>
+                    </li>
+
+                    <li class="">
+                        <a href="javascript:;">
+                            <i class="fa fa-gear"></i>
+                            <span class="title">个人中心</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a class="" href="settings.html">General Settings</a>
+                            </li>
+                            <li>
+                                <a class="" href="account-confirmation.html">Account Confirmation</a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li class="">
+                        <a href="javascript:;">
+                            <i class="fa fa-question-circle"></i>
+                            <span class="title">帮助中心</span>
+                            <span class="arrow "></span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a class="" href="ui-faq.html">FAQ</a>
+                            </li>
+                            <li>
+                                <a class="" href="ui-support.html">Help center</a>
+                            </li>
+
+                        </ul>
+                        
+                        <li class="">
+                        <a href="highway.html">
+                            <i class="fa fa-comments"></i>
+                            <span class="title">推广有礼</span>
+                        </a>
+                        
+                    </li>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- MAIN MENU - END -->
+
+        </div>
+        <!--  SIDEBAR - END -->
+
+        <!-- START CONTENT -->
+        <section id="main-content" class=" ">
+            <div class="wrapper main-wrapper row" style=''>
+
+                <div class='col-xs-12'>
+                    <div class="page-title">
+
+                        <div class="pull-left">
+                            <!-- PAGE HEADING TAG - START -->
+                            <h1 class="title">用户面板</h1>
+                            <!-- PAGE HEADING TAG - END -->
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <section class="box nobox marginBottom0">
+                        <div class="content-body">
+                            <div class="row">
+                            	<div class="col-lg-4 col-sm-6 col-xs-12">
+                                    <div class="r4_counter db_box has-gradient-to-right-bottom">
+                                        <div class="icon-after icon-computer"></div>
+                                        <i class='pull-left icon-computer icon-md icon-white mt-10'></i>
+                                        <div class="stats">
+                                            <h3 class="color-white mb-5">矿机状态：0/0 </h3>
+                                            <span>实时在线率: 0 %</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6 col-xs-12">
+                                    <div class="r4_counter db_box has-gradient-to-right-bottom">
+                                        <div class="icon-after icon-offline"></div>
+                                        <i class='pull-left icon-offline icon-md icon-white mt-10'></i>
+                                        <div class="stats">
+                                            <h3 class="color-white mb-5">24小时矿机离线率：100 %</h3>
+                                            <span>评级CCC</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-4 col-sm-6 col-xs-12">
+                                    <div class="r4_counter db_box has-gradient-to-right-bottom">
+                                        <div class="icon-after icon-hardisk"></div>
+                                        <i class='pull-left icon-hardisk icon-md icon-white mt-10'></i>
+                                        <div class="stats">
+                                            <h3 class="color-white mb-5">存储容量：0 T</h3>
+                                            <span>上行带宽 : 0M  下行带宽 : 0M</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6 col-xs-12">
+                                    <div class="r4_counter db_box">
+                                        <div class="icon-after icon-fil"></div>
+                                        <i class='pull-left icon-fil icon-md icon-primary mt-10'></i>
+                                        <div class="stats">
+                                            <h3 class="mb-5">0 FIL</h3>
+                                            <span>未支付 FIL</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6 col-xs-12">
+                                    <div class="r4_counter db_box">
+                                        <div class="icon-after icon-filalt"></div>
+                                        <i class='pull-left icon-filalt icon-md icon-primary mt-10'></i>
+                                        <div class="stats">
+                                            <h3 class="mb-5">0 FIL</h3>
+                                            <span>冻结/质押中 FIL</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-4 col-sm-6 col-xs-12">
+                                    <div class="r4_counter db_box">
+                                        <div class="icon-after icon-filalt"></div>
+                                        <i class='pull-left icon-filalt icon-md icon-primary mt-10'></i>
+                                        <div class="stats">
+                                            <h3 class="mb-5">0 FIL</h3>
+                                            <span>历史总收益FIL</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- End .row -->
+                        </div>
+                    </section>
+                </div>
+
+                <div class="clearfix"></div>
+                <!-- MAIN CONTENT AREA STARTS -->
+
+                <div class="col-lg-8">
+                    <section class="box" style="overflow:hidden">
+                        <header class="panel_header">
+                            <h2 class="title pull-left">存储及带宽算力曲线</h2>
+                            <div class="actions panel_actions pull-right">
+                                <a class="box_toggle fa fa-chevron-down"></a>
+                                <a class="box_close fa fa-times"></a>
+                            </div>
+                        </header>
+                        <div class="content-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div id="demoarea-chart">
+                                        <div id="demoarea-container" style="width: 100%;height:310px; text-align: center; margin:0 auto;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="col-lg-4">
+                    <section class="box ">
+                        <header class="panel_header">
+                            <h2 class="title pull-left">交易所实时价格</h2>
+                            <div class="actions panel_actions pull-right">
+                                <a class="box_toggle fa fa-chevron-down"></a>
+                                <a class="box_close fa fa-times"></a>
+                            </div>
+                        </header>
+                        <div class="content-body">
+                            <div class="row">
+                                <div class="col-xs-12 mt-5">
+                                    <script>
+                                        baseUrl = "https://widgets.cryptocompare.com/";
+                                        var scripts = document.getElementsByTagName("script");
+                                        var embedder = scripts[scripts.length - 1];
+                                        (function() {
+                                            var appName = encodeURIComponent(window.location.hostname);
+                                            if (appName == "") {
+                                                appName = "local";
+                                            }
+                                            var s = document.createElement("script");
+                                            s.type = "text/javascript";
+                                            s.async = true;
+                                            var theUrl = baseUrl + 'serve/v1/coin/multi?fsyms=BTC,ETH,XMR,LTC,XRP,NEO,DASH&tsyms=USD,EUR,CNY,GBP';
+                                            s.src = theUrl + (theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
+                                            embedder.parentNode.appendChild(s);
+                                        })();
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="col-lg-4">
+                    <section class="box has-border-left-3">
+                        <header class="panel_header">
+                            <h2 class="title pull-left">矿池公告</h2>
+                            <div class="actions panel_actions pull-right">
+                                <a class="box_toggle fa fa-chevron-down"></a>                                <a class="box_close fa fa-times"></a>
+                            </div>
+                        </header>
+                        <div class="content-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="transfer-wraper">
+                                        <div class="form-group no-mb">
+                                                <div class="input-group mb-10">
+                                                <span class="input-group-addon">1</span>
+                                                <span class="form-control">矿池开放注册</span>
+                                                </div>
+   											    <div class="input-group mb-10">
+                                                <span class="input-group-addon">2</span>
+                                                <span class="form-control">矿池开放注册</span>
+                                                </div>
+                                                   											    <div class="input-group mb-10">
+                                                <span class="input-group-addon">3</span>
+                                                <span class="form-control">矿池开放注册</span>
+                                                </div>
+                                                   											    <div class="input-group mb-10">
+                                                <span class="input-group-addon">4</span>
+                                                <span class="form-control">矿池开放注册</span>
+                                                </div>
+                                                
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="col-lg-4">
+                    <section class="box has-border-left-3">
+                        <header class="panel_header">
+                            <h2 class="title pull-left">在线客服</h2>
+                            <div class="actions panel_actions pull-right">
+                                <a class="box_toggle fa fa-chevron-down"></a>
+                                <a class="box_close fa fa-times"></a>
+                            </div>
+                        </header>
+                        <div class="content-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="transaction-wraper">
+
+                                         <img th:src="@{/filecoin/data/profile/qr.jpg}" width="366px" height="176">
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="col-lg-4">
+                    <section class="box has-border-left-3">
+                        <header class="panel_header">
+                            <h2 class="title pull-left">挖矿软件</h2>
+                            <div class="actions panel_actions pull-right">
+                                <a class="box_toggle fa fa-chevron-down"></a><a class="box_close fa fa-times"></a>
+                            </div>
+                        </header>
+                        <div class="content-body">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="transfer-wraper">
+                                        <div class="form-group no-mb">
+
+                                            
+                                            <div class="input-group mb-10">
+                                                <span class="input-group-addon has-gradient-to-right-bottom">
+                                                       <i class='icon-windows icon-white'></i>
+                                                    </span>
+                                                <p class="form-control-static with-border">Windows版本：ipfsun_windows  Ver1.0</p>
+                                                <a href="#" class="input-group-addon" data-color-class="primary" data-animate=" animated fadeIn" data-toggle="tooltip" data-original-title="copy" data-placement="top"><i class="sysdownload">开发中</i></a>
+                                            </div>
+                                            <div class="input-group mb-10">
+                                                <span class="input-group-addon has-gradient-to-right-bottom">
+                                                       <i class='icon-os_linux icon-white'></i>
+                                                    </span>
+                                                <p class="form-control-static with-border">Linux版本：ipfsun_linux  Ver1.0</p>
+                                                <a href="#" class="input-group-addon" data-color-class="primary" data-animate=" animated fadeIn" data-toggle="tooltip" data-original-title="copy" data-placement="top"><i class="sysdownload">开发中</i></a>
+                                            </div>
+
+                                            
+                                            <div class="input-group">
+                                                <span class="input-group-addon has-gradient-to-right-bottom">
+                                                        <i class='icon-windows icon-white'></i>   
+                                                    </span>
+                                                <p class="form-control-static with-border"></p>
+                                                <a href="#" class="input-group-addon" data-color-class="primary" data-animate=" animated fadeIn" data-toggle="tooltip" data-original-title="copy" data-placement="top"><i class="sysdownload">开发中</i></a>
+                                            </div>
+                                            
+                                            
+
+                                            <div class="col-sm-6">
+                                                <button type="button" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom" style="width:100%">系统镜像下载</button>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button type="button" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom" style="width:100%">挖矿教程</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="clearfix"></div>
+
+                
+
+                
+
+                <div class="clearfix"></div>
+
+                <!-- MAIN CONTENT AREA ENDS -->
+            </div>
+        </section>
+        <!-- END CONTENT -->
+        
+
+        <div class="chatapi-windows ">
+
+        </div>
+    </div>
+    <!-- END CONTAINER -->
+    <!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
+
+    <!-- CORE JS FRAMEWORK - START -->
+    <script th:src="@{/filecoin/assets/js/jquery-1.11.2.min.js}"></script>
+    <script th:src="@{/filecoin/assets/js/jquery.easing.min.js}"></script>
+    <script th:src="@{/filecoin/assets/plugins/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/filecoin/assets/plugins/pace/pace.min.js}"></script>
+    <script th:src="@{/filecoin/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js}"></script>
+    <script th:src="@{/filecoin/assets/plugins/viewport/viewportchecker.js}"></script>
+
+    <script th:src="@{/plugins/layer/layer.js}"></script>
+    <script th:src="@{/plugins/jsMap.js}"></script>
+    <script th:src="@{/plugins/common.js}"></script>
+    <script th:src="@{/plugins/public.js}"></script>
+
+    <script th:src="@{/js/modules/sys/login.js}"></script>
+    <!-- jQuery Validation plugin javascript-->
+    <script th:src="@{/plugins/jquery-validation/js/jquery.validate.js}"></script>
+    <!-- 自定义validation方法 -->
+    <script th:src="@{/plugins/jquery-validation/js/additional-methods.js}"></script>
+    <!-- jquery validation 默认中文返回信息js  -->
+    <script th:src="@{/plugins/jquery-validation/js/localization/messages_zh.min.js}"></script>
+    <script th:src="@{/plugins/jquery-validation/form-validate-demo.js}"></script>
+
+
+    <script th:inline="javascript">
+        var ctx= [[${#httpServletRequest.getContextPath()}]];
+        window.jQuery || document.write('<script src="'+ctx+'/filecoin/assets/js/jquery-1.11.2.min.js}"><\/script>');
+    </script>
+    <!-- CORE JS FRAMEWORK - END -->
+
+    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
+
+    <script th:src="@{/filecoin/assets/plugins/echarts/echarts-custom-for-dashboard.js}"></script>
+
+    <script th:src="@{/filecoin/assets/plugins/flot-chart/jquery.flot.js}"></script>
+    <script th:src="@{/filecoin/assets/plugins/flot-chart/jquery.flot.time.js}"></script>
+    <script th:src="@{/filecoin/assets/js/chart-flot.js}"></script>
+
+    <script th:src="@{/filecoin/assets/plugins/morris-chart/js/raphael-min.js}"></script>
+    <script th:src="@{/filecoin/assets/plugins/morris-chart/js/morris.min.js}"></script>
+    <script th:src="@{/filecoin/assets/js/chart-morris.js}"></script>
+    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
+
+    <!-- CORE TEMPLATE JS - START -->
+    <script th:src="@{/filecoin/assets/js/scripts.js}"></script>
+    <!-- END CORE TEMPLATE JS - END -->
+    <script th:inline="javascript">
+        $(function(){
+            var path = ctx + "/sys/user/info";
+            var ajax = new AJAXPacket(path, "正在执行...请稍后");
+            Core.sendPacket(ajax, function (packet) {
+                var resultCode = packet.code;
+                var message = packet.msg;
+                var data = packet.data;
+                if (resultCode == "0") {
+                    var userObj = packet.user;
+//                var user = $.parseJSON(userObj);
+                    alert("当前登录用户是：------"+userObj.username);
+                    $("#userNameo").html(userObj.username);
+                }
+            }, true,false);
+        });
+
+    </script>
+</body>
+
+</html>
