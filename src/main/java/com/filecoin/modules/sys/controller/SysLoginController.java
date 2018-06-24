@@ -234,6 +234,15 @@ public class SysLoginController extends AbstractController {
 	}
 
 	/**
+	 * 去付款记录页
+	 */
+	@RequestMapping(value = "/sys/gopay", method = RequestMethod.GET)
+	public ModelAndView gopay(Model model) {
+		model.addAttribute("msg","bbb");
+		return new ModelAndView("sys/pay");
+	}
+
+	/**
 	 * 测试发送简单邮件
 	 */
 	@RequestMapping(value = "testsimplemail", method = RequestMethod.GET)
