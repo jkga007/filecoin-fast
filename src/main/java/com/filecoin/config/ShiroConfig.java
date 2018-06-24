@@ -60,12 +60,19 @@ public class ShiroConfig {
         filterMap.put("/druid/**", "anon");
         filterMap.put("/app/**", "anon");
 
+        //登录
         filterMap.put("/sys/login", "anon");
+        //注册
         filterMap.put("/sys/regist", "anon");
+        //跳转登录页
         filterMap.put("/sys/gologin", "anon");
+        //注册邮箱激活
         filterMap.put("/sys/activation/**", "anon");
+        //跳转首页
         filterMap.put("/sys/goindex", "anon");
+        //跳转注册页
         filterMap.put("/sys/goregist", "anon");
+        //跳转用户主页
         filterMap.put("/sys/gomasterindex", "anon");
 
         filterMap.put("/**/*.css", "anon");

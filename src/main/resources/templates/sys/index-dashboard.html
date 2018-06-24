@@ -1,60 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <!-- 
-        * @Package: ipfsun.com
-        * @Version: 1.0.0
-    -->
-    <meta charset="UTF-8" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <!-- HTTP 1.1 -->
-    <meta http-equiv="pragma" content="no-cache">
-    <!-- HTTP 1.0 -->
-    <meta http-equiv="cache-control" content="no-cache">
-    <!-- Prevent caching at the proxy server -->
-    <meta http-equiv="expires" content="0">
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <title>IPFS星际云矿池</title>
-    <meta content="" name="description" />
-    <meta content="" name="author" />
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" th:href="@{/filecoin/assets/images/favicon.png}" type="image/x-icon" />
-    <!-- For iPhone -->
-    <link rel="apple-touch-icon-precomposed" th:href="@{/filecoin/assets/images/apple-touch-icon-57-precomposed.png}">
-    <!-- For iPhone 4 Retina display -->
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" th:href="@{/filecoin/assets/images/apple-touch-icon-114-precomposed.png}">
-    <!-- For iPad -->
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" th:href="@{/filecoin/assets/images/apple-touch-icon-72-precomposed.png}">
-    <!-- For iPad Retina display -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" th:href="@{/filecoin/assets/images/apple-touch-icon-144-precomposed.png}">
-
-    <!-- CORE CSS FRAMEWORK - START -->
-    <link th:href="@{/filecoin/assets/plugins/pace/pace-theme-flash.css}" rel="stylesheet" type="text/css" media="screen" />
-    <link th:href="@{/filecoin/assets/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/filecoin/assets/plugins/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/filecoin/assets/fonts/font-awesome/css/font-awesome.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/filecoin/assets/fonts/webfont/cryptocoins.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/filecoin/assets/fonts/icomoon/ipfsun.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/filecoin/assets/css/animate.min.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/filecoin/assets/plugins/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" type="text/css" />
-    <!-- CORE CSS FRAMEWORK - END -->
-
-    <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - START -->
-
-    <link th:href="@{/filecoin/assets/plugins/jvectormap/jquery-jvectormap-2.0.1.css}" rel="stylesheet" type="text/css" media="screen" />
-    <link th:href="@{/filecoin/assets/plugins/morris-chart/css/morris.css}" rel="stylesheet" type="text/css" media="screen" />
-
-    <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - END -->
-
-    <!-- CORE CSS TEMPLATE - START -->
-    <link th:href="@{/filecoin/assets/css/style.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{/filecoin/assets/css/responsive.css}" rel="stylesheet" type="text/css" />
-    <!-- CORE CSS TEMPLATE - END -->
-
-</head>
+<head th:include="/common/header :: commonHead('IPFS星际云矿池')"></head>
 <!-- END HEAD -->
 
 <!-- BEGIN BODY -->
@@ -570,53 +517,13 @@
     </div>
     <!-- END CONTAINER -->
     <!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
-
-    <!-- CORE JS FRAMEWORK - START -->
-    <script th:src="@{/filecoin/assets/js/jquery-1.11.2.min.js}"></script>
-    <script th:src="@{/filecoin/assets/js/jquery.easing.min.js}"></script>
-    <script th:src="@{/filecoin/assets/plugins/bootstrap/js/bootstrap.min.js}"></script>
-    <script th:src="@{/filecoin/assets/plugins/pace/pace.min.js}"></script>
-    <script th:src="@{/filecoin/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js}"></script>
-    <script th:src="@{/filecoin/assets/plugins/viewport/viewportchecker.js}"></script>
-
-    <script th:src="@{/plugins/layer/layer.js}"></script>
-    <script th:src="@{/plugins/jsMap.js}"></script>
-    <script th:src="@{/plugins/common.js}"></script>
-    <script th:src="@{/plugins/public.js}"></script>
-
+    <!-- 引入公共js -->
+    <span th:include="/common/footer :: commonOnLoadJs"></span>
+    <!-- 登录js -->
     <script th:src="@{/js/modules/sys/login.js}"></script>
-    <!-- jQuery Validation plugin javascript-->
-    <script th:src="@{/plugins/jquery-validation/js/jquery.validate.js}"></script>
-    <!-- 自定义validation方法 -->
-    <script th:src="@{/plugins/jquery-validation/js/additional-methods.js}"></script>
-    <!-- jquery validation 默认中文返回信息js  -->
-    <script th:src="@{/plugins/jquery-validation/js/localization/messages_zh.min.js}"></script>
-    <script th:src="@{/plugins/jquery-validation/form-validate-demo.js}"></script>
-
-
-    <script th:inline="javascript">
-        var ctx= [[${#httpServletRequest.getContextPath()}]];
-        window.jQuery || document.write('<script src="'+ctx+'/filecoin/assets/js/jquery-1.11.2.min.js}"><\/script>');
-    </script>
-    <!-- CORE JS FRAMEWORK - END -->
-
-    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
-
-    <script th:src="@{/filecoin/assets/plugins/echarts/echarts-custom-for-dashboard.js}"></script>
-
-    <script th:src="@{/filecoin/assets/plugins/flot-chart/jquery.flot.js}"></script>
-    <script th:src="@{/filecoin/assets/plugins/flot-chart/jquery.flot.time.js}"></script>
-    <script th:src="@{/filecoin/assets/js/chart-flot.js}"></script>
-
-    <script th:src="@{/filecoin/assets/plugins/morris-chart/js/raphael-min.js}"></script>
-    <script th:src="@{/filecoin/assets/plugins/morris-chart/js/morris.min.js}"></script>
-    <script th:src="@{/filecoin/assets/js/chart-morris.js}"></script>
-    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
-
-    <!-- CORE TEMPLATE JS - START -->
-    <script th:src="@{/filecoin/assets/js/scripts.js}"></script>
     <!-- END CORE TEMPLATE JS - END -->
     <script th:inline="javascript">
+
         $(function(){
             var path = ctx + "/sys/user/info";
             var ajax = new AJAXPacket(path, "正在执行...请稍后");
