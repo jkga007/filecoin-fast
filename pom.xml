@@ -35,7 +35,7 @@
 		<qcloud.cos.version>4.4</qcloud.cos.version>
 
 		<!--wagon plugin 配置-->
-		<service-path>/work/renren</service-path>
+		<service-path>/work/filecoin</service-path>
 		<pack-name>${artifactId}-${version}.jar</pack-name>
 		<remote-addr>192.168.1.10:22</remote-addr>
 		<remote-username>root</remote-username>
