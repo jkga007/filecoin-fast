@@ -46,6 +46,8 @@ var LoginFunc = (function () {
 //                var user = $.parseJSON(userObj);
 //                 alert("当前登录用户是：------"+userObj.username);
                 $("#userNameo").html(userObj.username);
+            }else{
+                window.location.href = ctx + "/sys/gologin";
             }
         }, true,false);
     };
