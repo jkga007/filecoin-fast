@@ -8,8 +8,8 @@ import java.util.Map;
 /**
  * 基础Dao(还需在XML文件里，有对应的SQL语句)
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2016年9月18日 上午9:31:36
  */
 public interface BaseDao<T> {

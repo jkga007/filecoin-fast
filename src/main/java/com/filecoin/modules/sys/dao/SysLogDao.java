@@ -6,8 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * 系统日志
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2017-03-08 10:40:56
  */
 @Mapper

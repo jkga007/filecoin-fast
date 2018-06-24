@@ -17,8 +17,8 @@ import java.util.Map;
 /**
  * 定时任务
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2016年11月28日 下午2:16:40
  */
 @RestController

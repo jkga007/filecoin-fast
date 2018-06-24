@@ -7,8 +7,8 @@ import com.filecoin.modules.sys.service.SysConfigService;
 
 /**
  * 文件上传Factory
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2017-03-26 10:18
  */
 public final class OSSFactory {

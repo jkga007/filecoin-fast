@@ -28,8 +28,8 @@ import java.util.Map;
 /**
  * 文件上传
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2017-03-25 12:13:26
  */
 @RestController

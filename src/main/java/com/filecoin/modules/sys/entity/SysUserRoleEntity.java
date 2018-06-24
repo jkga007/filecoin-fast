@@ -6,8 +6,8 @@ import java.io.Serializable;
 /**
  * 用户与角色对应关系
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2016年9月18日 上午9:28:39
  */
 public class SysUserRoleEntity implements Serializable {

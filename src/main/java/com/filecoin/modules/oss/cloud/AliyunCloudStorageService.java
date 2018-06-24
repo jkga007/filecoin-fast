@@ -8,8 +8,8 @@ import java.io.InputStream;
 
 /**
  * 阿里云存储
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2017-03-26 16:22
  */
 public class AliyunCloudStorageService extends CloudStorageService {

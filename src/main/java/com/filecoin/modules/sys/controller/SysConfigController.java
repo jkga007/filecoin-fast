@@ -17,8 +17,8 @@ import java.util.Map;
 /**
  * 系统参数信息
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2016年12月4日 下午6:55:53
  */
 @RestController
