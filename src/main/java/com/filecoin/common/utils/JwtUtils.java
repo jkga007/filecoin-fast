@@ -16,7 +16,7 @@ import java.util.Date;
  * @email support@filecoinon.com
  * @date 2017/9/21 22:21
  */
-@ConfigurationProperties(prefix = "renren.jwt")
+@ConfigurationProperties(prefix = "filecoin.jwt")
 @Component
 public class JwtUtils {
     private Logger logger = LoggerFactory.getLogger(getClass());
