@@ -78,6 +78,16 @@ public class ShiroConfig {
         filterMap.put("/sys/gominer", "anon");
         //跳转付款记录
         filterMap.put("/sys/gopay", "anon");
+        //跳转付款设置
+        filterMap.put("/sys/gomywallet", "anon");
+        //跳转安全中心
+        filterMap.put("/sys/gosecurity", "anon");
+        //跳转个人中心
+        filterMap.put("/sys/gosettings", "anon");
+        //跳转帮助中心
+        filterMap.put("/sys/gofaq", "anon");
+        //跳转推广有礼
+        filterMap.put("/sys/gohighway", "anon");
 
 
         filterMap.put("/**/*.css", "anon");

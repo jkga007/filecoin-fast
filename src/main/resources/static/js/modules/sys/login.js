@@ -44,7 +44,7 @@ var LoginFunc = (function () {
             if (resultCode == "0") {
                 var userObj = packet.user;
 //                var user = $.parseJSON(userObj);
-                alert("当前登录用户是：------"+userObj.username);
+//                 alert("当前登录用户是：------"+userObj.username);
                 $("#userNameo").html(userObj.username);
             }
         }, true,false);
