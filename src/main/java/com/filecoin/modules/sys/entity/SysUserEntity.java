@@ -74,6 +74,12 @@ public class SysUserEntity implements Serializable {
 	private Date createTime;
 
 	/**
+	 * 邀请码
+	 */
+	@NotBlank(message="邀请码不能为空", groups = {AddGroup.class, UpdateGroup.class})
+	private String invitationCode;
+
+	/**
 	 * 设置：
 	 * @param userId 
 	 */
@@ -207,5 +213,13 @@ public class SysUserEntity implements Serializable {
 
 	public void setSalt(String salt) {
 		this.salt = salt;
+	}
+
+	public String getInvitationCode() {
+		return invitationCode;
+	}
+
+	public void setInvitationCode(String invitationCode) {
+		this.invitationCode = invitationCode;
 	}
 }

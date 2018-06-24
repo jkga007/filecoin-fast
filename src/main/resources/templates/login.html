@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!--
+        * @Package: Cryptonia - Bitcoin & Cryptocurrency trading Dashboard
+        * @Version: 1.0.0
+    -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!-- HTTP 1.1 -->
+    <meta http-equiv="pragma" content="no-cache">
+    <!-- HTTP 1.0 -->
+    <meta http-equiv="cache-control" content="no-cache">
+    <!-- Prevent caching at the proxy server -->
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>Cryptonia : Bitcoin & Cryptocurrency trading Dashboard</title>
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" th:href="@{/filecoin/assets/images/favicon.png}" type="image/x-icon" />
+    <!-- For iPhone -->
+    <link rel="apple-touch-icon-precomposed" th:href="@{/filecoin/assets/images/apple-touch-icon-57-precomposed.png}">
+    <!-- For iPhone 4 Retina display -->
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" th:href="@{/filecoin/assets/images/apple-touch-icon-114-precomposed.png}">
+    <!-- For iPad -->
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" th:href="@{/filecoin/assets/images/apple-touch-icon-72-precomposed.png}">
+    <!-- For iPad Retina display -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" th:href="@{/filecoin/assets/images/apple-touch-icon-144-precomposed.png}">
+
+    <!-- CORE CSS FRAMEWORK - START -->
+    <link th:href="@{/filecoin/assets/plugins/pace/pace-theme-flash.css}" rel="stylesheet" type="text/css" media="screen" />
+    <link th:href="@{/filecoin/assets/plugins/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/plugins/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/fonts/font-awesome/css/font-awesome.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/css/animate.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/plugins/perfect-scrollbar/perfect-scrollbar.css}" rel="stylesheet" type="text/css" />
+    <!-- CORE CSS FRAMEWORK - END -->
+
+    <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - START -->
+
+    <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - END -->
+
+    <!-- CORE CSS TEMPLATE - START -->
+    <link th:href="@{/filecoin/assets/css/style.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/filecoin/assets/css/responsive.css}" rel="stylesheet" type="text/css" />
+    <!-- CORE CSS TEMPLATE - END -->
+
+</head>
+<!-- END HEAD -->
+
+<!-- BEGIN BODY -->
+
+<body class=" login_page">
+<form name="mainForm" id="mainForm">
+<div class="container-fluid">
+    <div class="login-wrapper row">
+        <div id="login" class="login loginpage col-lg-offset-4 col-md-offset-3 col-sm-offset-3 col-xs-offset-0 col-xs-12 col-sm-6 col-lg-4">
+            <div class="login-form-header">
+                <img th:src="@{/filecoin/data/icons/padlock.png}" alt="login-icon" style="max-width:64px">
+                <div class="login-header">
+                    <h3 class="bold color-white">登录矿池</h3>
+                    <h4><small>IPFS星际云矿池</small></h4>
+                </div>
+            </div>
+
+            <div class="box login">
+
+                <div class="content-body" style="padding-top:30px">
+
+                    <form id='msg_validate' action='#' novalidate='novalidate' class='no-mb no-mt' method='post'><input type='hidden' name='form-name' value='msg_validate' />
+                        <div class="row">
+                            <div class="col-xs-12">
+
+                                <div class="form-group">
+                                    <label class="form-label">邮箱地址：</label>
+                                    <div class="controls">
+                                        <input type="text" class="form-control" id="username" name="username" value="" placeholder="email">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">密码：</label>
+                                    <div class="controls">
+                                        <input type="text" class="form-control" id="password" name="password" value="" placeholder="password">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">验证码：</label>
+                                    <div class="controls">
+                                        <input type="text" name="captcha" class="frm_input verifyCode" maxlength="5"/>
+                                        <img id="captchaImgId" th:src="@{/captcha.jpg}" alt="" />
+                                        <a class="changeVerifyCode" href="javascript:void(0);" onclick = "getCaptcha();">换一张</a>
+                                    </div>
+                                </div>
+
+                                <div class="pull-left">
+                                    <a href="javascript:void(0);" class="btn btn-primary mt-10 btn-corner right-15" onclick="doLoginBtn();">登录</a>
+                                    <a th:href="@{/sys/goregist}" class="btn mt-10 btn-corner signup">用户注册</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <p id="nav">
+                <a class="pull-left" href="#" title="Password Lost and Found">忘记密码</a>
+                <a class="pull-right" th:href="@{/sys/goregist}" title="Sign Up">用户注册</a>
+            </p>
+
+        </div>
+    </div>
+</div>
+</form>
+
+<!-- MAIN CONTENT AREA ENDS -->
+<!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
+
+<!-- CORE JS FRAMEWORK - START -->
+<script th:src="@{/filecoin/assets/js/jquery-1.11.2.min.js}"></script>
+<script th:src="@{/filecoin/assets/js/jquery.easing.min.js}"></script>
+<script th:src="@{/filecoin/assets/plugins/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/filecoin/assets/plugins/pace/pace.min.js}"></script>
+<script th:src="@{/filecoin/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js}"></script>
+<script th:src="@{/filecoin/assets/plugins/viewport/viewportchecker.js}"></script>
+
+<script th:src="@{/plugins/layer/layer.js}"></script>
+<script th:src="@{/plugins/jsMap.js}"></script>
+<script th:src="@{/plugins/common.js}"></script>
+<script th:src="@{/plugins/public.js}"></script>
+<script th:src="@{/js/modules/sys/login.js}"></script>
+<!-- jQuery Validation plugin javascript-->
+<script th:src="@{/plugins/jquery-validation/js/jquery.validate.js}"></script>
+<!-- 自定义validation方法 -->
+<script th:src="@{/plugins/jquery-validation/js/additional-methods.js}"></script>
+<!-- jquery validation 默认中文返回信息js  -->
+<script th:src="@{/plugins/jquery-validation/js/localization/messages_zh.min.js}"></script>
+<script th:src="@{/plugins/jquery-validation/form-validate-demo.js}"></script>
+
+<script th:inline="javascript">
+    var ctx= [[${#httpServletRequest.getContextPath()}]];
+    window.jQuery || document.write('<script src="'+ctx+'/filecoin/assets/js/jquery-1.11.2.min.js}"><\/script>');
+</script>
+<!-- CORE JS FRAMEWORK - END -->
+
+<!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
+
+<!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
+
+<!-- CORE TEMPLATE JS - START -->
+<script th:src="@{/filecoin/assets/js/scripts.js}"></script>
+<!-- END CORE TEMPLATE JS - END -->
+<script th:inline="javascript">
+    $(function(){
+        $("#mainForm").validate({
+            rules: {
+                username: {
+                    required: true
+                },
+                password: {
+                    required: true
+                }
+            },
+            messages: {
+                username: {
+                    required: "请输入邮箱地址!"
+                },
+                password: {
+                    required: "请输入密码!"
+                }
+            }
+        });
+
+    });
+    function getCaptcha(){
+        $("#captchaImgId").attr("src",ctx+"/captcha.jpg?t=" + $.now());
+    }
+    function doLoginBtn() {
+        $("#mainForm").submit();
+    }
+
+    $.validator.setDefaults({
+        submitHandler: function () {
+            var jsonParam = Core.serializeJsonStr($("#mainForm"));
+            LoginFunc.doLogin(jsonParam);
+        }
+    });
+</script>
+
+</body>
+
+</html>

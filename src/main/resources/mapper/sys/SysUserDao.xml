@@ -71,7 +71,8 @@
 			`mobile`, 
 			`status`, 
 			`create_user_id`,
-			`create_time`
+			`create_time`,
+			`invitation_code`
 		)
 		values
 		(
@@ -83,7 +84,8 @@
 			#{mobile}, 
 			#{status}, 
 			#{createUserId},
-			#{createTime}
+			#{createTime},
+			#{invitationCode}
 		)
 	</insert>
 	 
@@ -95,6 +97,7 @@
 			<if test="email != null">`email` = #{email}, </if>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="status != null">`status` = #{status}, </if>
+			<if test="invitationCode != null">`invitation_code` = #{invitationCode}, </if>
 		</set>
 		where user_id = #{userId} 
 		<if test="createUserId != null">

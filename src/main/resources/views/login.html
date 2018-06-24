@@ -102,7 +102,7 @@
                     success: function(jsonResult){
                         if(jsonResult.code == 0){//登录成功
                             localStorage.setItem("token", jsonResult.token);
-                            parent.location.href ='index.html';
+                            parent.location.href ='index-upms.html';
                         }else{
                             vm.error = true;
                             vm.errorMsg = jsonResult.msg;
