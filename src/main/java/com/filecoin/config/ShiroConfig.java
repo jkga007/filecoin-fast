@@ -74,6 +74,9 @@ public class ShiroConfig {
         filterMap.put("/sys/goregist", "anon");
         //跳转用户主页
         filterMap.put("/sys/gomasterindex", "anon");
+        //跳转矿工管理
+        filterMap.put("/sys/gominer", "anon");
+
 
         filterMap.put("/**/*.css", "anon");
         filterMap.put("/**/*.js", "anon");

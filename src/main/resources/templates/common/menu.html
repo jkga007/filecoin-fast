@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:fragment="commonMenu(activeClass)">
+
+    <ul class='wraplist'>
+        <li class='menusection'>菜 单</li>
+        <li th:class="${activeClass eq 'index-dashboard'}? 'open':''">
+            <a th:href="@{/sys/gomasterindex}">
+                <i class="fa fa-th-large"></i>
+                <span class="title">用户面板</span>
+            </a>
+        </li>
+        <li th:class="${activeClass eq 'miner'}? 'open':''">
+            <a th:href="@{/sys/gominer}">
+                <i class="fa fa-bullseye"></i>
+                <span class="title">矿工管理</span>
+            </a>
+        </li>
+        <li th:class="${activeClass eq 'marketcap'}? 'open':''">
+            <a href="index-marketcap.html">
+                <i class="fa fa-flash"></i>
+                <span class="title">付款记录</span>
+            </a>
+        </li>
+        <li th:class="${activeClass eq 'wallet'}? 'open':''">
+            <a href="my-wallet.html">
+                <i class="img"><img th:src="@{/filecoin/data/icons/wallet-o.png}" style="width:16px" alt=""></i>
+                <span class="title">付款设置</span>
+            </a>
+        </li>
+        <li th:class="${activeClass eq 'security'}? 'open':''">
+            <a href="security.html">
+                <i class="fa fa-lock"></i>
+                <span class="title">安全设置</span>
+            </a>
+        </li>
+
+        <li th:class="${activeClass eq 'account-confirmation'}? 'open':''">
+            <a href="javascript:;">
+                <i class="fa fa-gear"></i>
+                <span class="title">个人中心</span>
+                <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+                <li>
+                    <a class="" href="settings.html">General Settings</a>
+                </li>
+                <li>
+                    <a class="" href="account-confirmation.html">Account Confirmation</a>
+                </li>
+            </ul>
+        </li>
+
+        <li th:class="${activeClass eq 'faq'}? 'open':''">
+            <a href="javascript:;">
+                <i class="fa fa-question-circle"></i>
+                <span class="title">帮助中心</span>
+                <span class="arrow "></span>
+            </a>
+            <ul class="sub-menu">
+                <li>
+                    <a class="" href="ui-faq.html">FAQ</a>
+                </li>
+                <li>
+                    <a class="" href="ui-support.html">Help center</a>
+                </li>
+
+            </ul>
+
+        <li th:class="${activeClass eq 'highway'}? 'open':''">
+            <a href="highway.html">
+                <i class="fa fa-comments"></i>
+                <span class="title">推广有礼</span>
+            </a>
+
+        </li>
+        </li>
+    </ul>
+
+</div>
+</html>

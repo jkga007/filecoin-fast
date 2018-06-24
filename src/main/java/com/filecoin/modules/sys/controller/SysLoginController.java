@@ -225,6 +225,15 @@ public class SysLoginController extends AbstractController {
 	}
 
 	/**
+	 * 去矿工管理页
+	 */
+	@RequestMapping(value = "/sys/gominer", method = RequestMethod.GET)
+	public ModelAndView gominer(Model model) {
+		model.addAttribute("msg","bbb");
+		return new ModelAndView("sys/miner");
+	}
+
+	/**
 	 * 测试发送简单邮件
 	 */
 	@RequestMapping(value = "testsimplemail", method = RequestMethod.GET)

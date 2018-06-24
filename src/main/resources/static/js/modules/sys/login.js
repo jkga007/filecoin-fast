@@ -31,8 +31,23 @@ var LoginFunc = (function () {
                 });
             }
         }, true,true);
+    };
 
+    loginFunc.getLoginUser = function () {
 
+        var path = ctx + "/sys/user/info";
+        var ajax = new AJAXPacket(path, "正在执行...请稍后");
+        Core.sendPacket(ajax, function (packet) {
+            var resultCode = packet.code;
+            var message = packet.msg;
+            var data = packet.data;
+            if (resultCode == "0") {
+                var userObj = packet.user;
+//                var user = $.parseJSON(userObj);
+                alert("当前登录用户是：------"+userObj.username);
+                $("#userNameo").html(userObj.username);
+            }
+        }, true,false);
     };
 
 
