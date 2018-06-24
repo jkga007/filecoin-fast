@@ -146,7 +146,7 @@ public class SysLoginController extends AbstractController {
 		//生成token，并保存到数据库
 		JsonResult jsonResult = sysUserTokenService.createToken(userEntity.getUserId());
 		model.addAttribute("jsonResult",jsonResult);
-		return new ModelAndView("regist-result");
+		return new ModelAndView("sys/regist-result");
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class SysLoginController extends AbstractController {
 	@RequestMapping(value = "/sys/goindex", method = RequestMethod.GET)
 	public ModelAndView goindex(Model model) {
 		model.addAttribute("msg","aaa");
-		return new ModelAndView("index-filecoin");
+		return new ModelAndView("sys/index-filecoin");
 	}
 
 	/**
@@ -204,7 +204,7 @@ public class SysLoginController extends AbstractController {
 	@RequestMapping(value = "/sys/gomasterindex", method = RequestMethod.GET)
 	public ModelAndView gomasterindex(Model model) {
 		model.addAttribute("msg","aaa");
-		return new ModelAndView("index-dashboard");
+		return new ModelAndView("sys/index-dashboard");
 	}
 
 	/**
@@ -213,7 +213,7 @@ public class SysLoginController extends AbstractController {
 	@RequestMapping(value = "/sys/goregist", method = RequestMethod.GET)
 	public ModelAndView goregist(Model model) {
 		model.addAttribute("msg","bbb");
-		return new ModelAndView("regist-filecoin");
+		return new ModelAndView("sys/regist-filecoin");
 	}
 	/**
 	 * 去登录页
@@ -221,7 +221,7 @@ public class SysLoginController extends AbstractController {
 	@RequestMapping(value = "/sys/gologin", method = RequestMethod.GET)
 	public ModelAndView gologin(Model model) {
 		model.addAttribute("msg","bbb");
-		return new ModelAndView("login");
+		return new ModelAndView("sys/login");
 	}
 
 	/**
