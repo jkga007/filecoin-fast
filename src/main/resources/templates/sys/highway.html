@@ -1,51 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <!-- 
-        * @Package: ipfsun.com
-        * @Version: 1.0.0
-    -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>IPFS星际云矿池</title>
-    <meta content="" name="description" />
-    <meta content="" name="author" />
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="../assets/images/favicon.png" type="image/x-icon" />
-    <!-- For iPhone -->
-    <link rel="apple-touch-icon-precomposed" href="../assets/images/apple-touch-icon-57-precomposed.png">
-    <!-- For iPhone 4 Retina display -->
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/images/apple-touch-icon-114-precomposed.png">
-    <!-- For iPad -->
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/images/apple-touch-icon-72-precomposed.png">
-    <!-- For iPad Retina display -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/images/apple-touch-icon-144-precomposed.png">
-
-
-    <!-- CORE CSS FRAMEWORK - START -->
-    <link href="../assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen" />
-    <link href="../assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/fonts/webfont/cryptocoins.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/fonts/icomoon/ipfsun.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/css/animate.min.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/plugins/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css" />
-    <!-- CORE CSS FRAMEWORK - END -->
-
-    <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - START -->
-    <link href="../assets/plugins/icheck/skins/all.css" rel="stylesheet" type="text/css" media="screen">
-    <!-- HEADER SCRIPTS INCLUDED ON THIS PAGE - END -->
-
-
-    <!-- CORE CSS TEMPLATE - START -->
-    <link href="../assets/css/style.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/css/responsive.css" rel="stylesheet" type="text/css" />
-    <!-- CORE CSS TEMPLATE - END -->
-
-</head>
+<head th:include="/common/header :: commonHead('IPFS星际云矿池')"></head>
 <!-- END HEAD -->
 
 <!-- BEGIN BODY -->
@@ -152,7 +108,7 @@
                 <ul class="info-menu right-links list-inline list-unstyled">
                     <li class="profile">
                         <a href="#" data-toggle="dropdown" class="toggle">
-                           <span>richie963 <i class="fa fa-angle-down"></i></span>
+                           <span id="userNameo"> <i class="fa fa-angle-down"></i></span>
                         </a>
                         <ul class="dropdown-menu profile animated fadeIn">
                             <li>
@@ -188,68 +144,7 @@
         <div class="page-sidebar fixedscroll">
 
             <!-- MAIN MENU - START -->
-            <div class="page-sidebar-wrapper" id="main-menu-wrapper">
-
-
-                <ul class='wraplist'>
-                    <li class='menusection'>菜 单</li>
-                    <li class="">
-                        <a href="index-dashboard.html">
-                            <i class="fa fa-th-large"></i>
-                            <span class="title">用户面板</span>
-                        </a>
-                    </li>
-                    <li class="">
-                <a href="miner.html">
-                            <i class="fa fa-bullseye"></i>
-                            <span class="title">矿工管理</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="pay.html">
-                            <i class="fa fa-flash"></i>
-                            <span class="title">付款记录</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="my-wallet.html">
-                            <i class="img"><img src="../data/icons/wallet-o.png" style="width:16px" alt=""></i>
-                            <span class="title">付款设置</span>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="security.html">
-                            <i class="fa fa-lock"></i>
-                            <span class="title">安全设置</span>
-                        </a>
-                    </li>
-
-                                         <li class="">
-                        <a href="settings.html">
-                            <i class="fa fa-gear"></i>
-                            <span class="title">个人中心</span>
-                        </a>
-                        
-                    </li>
-                    
-                    <li class="">
-                        <a href="faq.html">
-                            <i class="fa fa-question-circle"></i>
-                            <span class="title">帮助中心</span>
-                        </a>
-                    </li>
-                        
-                        <li class="open">
-                        <a href="highway.html">
-                            <i class="fa fa-comments"></i>
-                            <span class="title">推广有礼</span>
-                        </a>
-                        
-                    </li>
-                    </li>
-                </ul>
-
-            </div>
+            <div class="page-sidebar-wrapper" id="main-menu-wrapper" th:include="/common/menu :: commonMenu('highway')"></div>
             <!-- MAIN MENU - END -->
 
         </div>
@@ -718,32 +613,18 @@
     </div>
     <!-- END CONTAINER -->
     <!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
-
-
-    <!-- CORE JS FRAMEWORK - START -->
-    <script src="../assets/js/jquery-1.11.2.min.js"></script>
-    <script src="../assets/js/jquery.easing.min.js"></script>
-    <script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../assets/plugins/pace/pace.min.js"></script>
-    <script src="../assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="../assets/plugins/viewport/viewportchecker.js"></script>
-    <script>
-        window.jQuery||document.write('<script src="../assets/js/jquery-1.11.2.min.js"><\/script>');
-    </script>
-    <!-- CORE JS FRAMEWORK - END -->
-
-
-    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
-    <script src="../assets/plugins/chartjs-chart/Chart.min.js"></script>
-    <script src="../assets/js/chart-chartjs.js"></script>
-
-    <script src="../assets/plugins/icheck/icheck.min.js"></script>
-    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
-
-
-    <!-- CORE TEMPLATE JS - START -->
-    <script src="../assets/js/scripts.js"></script>
+    <!-- 引入公共js -->
+    <span th:include="/common/footer :: commonOnLoadJs"></span>
+    <!-- 登录js -->
+    <script th:src="@{/js/modules/sys/login.js}"></script>
     <!-- END CORE TEMPLATE JS - END -->
+    <script th:inline="javascript">
+
+        $(function(){
+            LoginFunc.getLoginUser();
+        });
+
+    </script>
 
 </body>
 

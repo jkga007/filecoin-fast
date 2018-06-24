@@ -234,6 +234,51 @@ public class SysLoginController extends AbstractController {
 	}
 
 	/**
+	 * 跳转付款设置
+	 */
+	@RequestMapping(value = "/sys/gomywallet", method = RequestMethod.GET)
+	public ModelAndView gomywallet(Model model) {
+		model.addAttribute("msg","bbb");
+		return new ModelAndView("sys/my-wallet");
+	}
+
+	/**
+	 * 跳转安全中心
+	 */
+	@RequestMapping(value = "/sys/gosecurity", method = RequestMethod.GET)
+	public ModelAndView gosecurity(Model model) {
+		model.addAttribute("msg","bbb");
+		return new ModelAndView("sys/security");
+	}
+
+	/**
+	 * 跳转个人中心
+	 */
+	@RequestMapping(value = "/sys/gosettings", method = RequestMethod.GET)
+	public ModelAndView gosettings(Model model) {
+		model.addAttribute("msg","bbb");
+		return new ModelAndView("sys/settings");
+	}
+
+	/**
+	 * 跳转帮助中心
+	 */
+	@RequestMapping(value = "/sys/gofaq", method = RequestMethod.GET)
+	public ModelAndView gofaq(Model model) {
+		model.addAttribute("msg","bbb");
+		return new ModelAndView("sys/faq");
+	}
+
+	/**
+	 * 跳转推广有礼
+	 */
+	@RequestMapping(value = "/sys/gohighway", method = RequestMethod.GET)
+	public ModelAndView gohighway(Model model) {
+		model.addAttribute("msg","bbb");
+		return new ModelAndView("sys/highway");
+	}
+
+	/**
 	 * 去付款记录页
 	 */
 	@RequestMapping(value = "/sys/gopay", method = RequestMethod.GET)
