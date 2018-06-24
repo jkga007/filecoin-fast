@@ -7,8 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * 定时任务日志
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2016年12月1日 下午10:30:02
  */
 @Mapper

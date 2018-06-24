@@ -11,8 +11,8 @@ import java.util.Properties;
 /**
  * 生成验证码配置
  *
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2017-04-20 19:22
  */
 @Configuration

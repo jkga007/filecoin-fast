@@ -22,8 +22,8 @@ import java.util.Set;
 /**
  * 系统菜单
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2016年10月27日 下午9:58:15
  */
 @RestController

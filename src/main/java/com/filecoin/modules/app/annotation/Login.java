@@ -4,8 +4,8 @@ import java.lang.annotation.*;
 
 /**
  * app登录效验
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2017/9/23 14:30
  */
 @Target(ElementType.METHOD)

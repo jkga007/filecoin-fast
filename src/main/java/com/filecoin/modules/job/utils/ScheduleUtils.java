@@ -9,8 +9,8 @@ import org.quartz.*;
 /**
  * 定时任务工具类
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2016年11月30日 下午12:44:59
  */
 public class ScheduleUtils {

@@ -13,8 +13,8 @@ import java.io.InputStream;
 
 /**
  * 七牛云存储
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2017-03-25 15:41
  */
 public class QiniuCloudStorageService extends CloudStorageService {

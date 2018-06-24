@@ -5,8 +5,8 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * SQL过滤
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2017-04-01 16:16
  */
 public class SQLFilter {

@@ -25,8 +25,8 @@ import java.util.Map;
 /**
  * 系统用户
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author r25437,g20416
+ * @email support@filecoinon.com
  * @date 2016年9月18日 上午9:46:09
  */
 @Service("sysUserService")
