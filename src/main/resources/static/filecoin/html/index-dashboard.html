@@ -201,13 +201,13 @@
                         </a>
                     </li>
                     <li class="">
-                        <a href="index-trading-view.html">
+                        <a href="miner.html">
                             <i class="fa fa-bullseye"></i>
                             <span class="title">矿工管理</span>
                         </a>
                     </li>
                     <li class="">
-                        <a href="index-marketcap.html">
+                        <a href="pay.html">
                             <i class="fa fa-flash"></i>
                             <span class="title">付款记录</span>
                         </a>
@@ -285,7 +285,16 @@
                             <h1 class="title">用户面板</h1>
                             <!-- PAGE HEADING TAG - END -->
                         </div>
-
+<div class="pull-right hidden-xs">
+                            <ol class="breadcrumb">
+                                <li>
+                                    <a href="index-dashboard.html"><i class="fa fa-home"></i>矿池</a>
+                                </li>
+                                <li class="active">
+                                    <strong>用户面板</strong>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -377,7 +386,7 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div id="demoarea-chart">
-                                        <div id="demoarea-container" style="width: 100%;height:310px; text-align: center; margin:0 auto;"></div>
+                                        <div id="demoarea-container" style="width: 100%;height:294px; text-align: center; margin:0 auto;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -397,23 +406,53 @@
                         <div class="content-body">
                             <div class="row">
                                 <div class="col-xs-12 mt-5">
-                                    <script>
-                                        baseUrl = "https://widgets.cryptocompare.com/";
-                                        var scripts = document.getElementsByTagName("script");
-                                        var embedder = scripts[scripts.length - 1];
-                                        (function() {
-                                            var appName = encodeURIComponent(window.location.hostname);
-                                            if (appName == "") {
-                                                appName = "local";
-                                            }
-                                            var s = document.createElement("script");
-                                            s.type = "text/javascript";
-                                            s.async = true;
-                                            var theUrl = baseUrl + 'serve/v1/coin/multi?fsyms=BTC,ETH,XMR,LTC,XRP,NEO,DASH&tsyms=USD,EUR,CNY,GBP';
-                                            s.src = theUrl + (theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
-                                            embedder.parentNode.appendChild(s);
-                                        })();
-                                    </script>
+  <table id="tech-companies-1" class="table table-small-font no-mb table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>交易所</th>
+                                                    <th data-priority="1">币种</th>
+                                                    <th data-priority="2">价格</th>
+                                                    <th data-priority="3">涨幅</th>
+                                                    
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th><i class="fa fa-dot-circle-o complete"></i>LBank</th>
+                                                    <td>FIL6</td>
+                                                    <td>$10.56</td>
+                                                    <td>1.82%</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>&nbsp;</th>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>&nbsp;</th>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>&nbsp;</th>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>&nbsp;</th>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                    <td>&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="4" align="right">上次更新时间：2018年6月23日 19：41 </th>
+                                                </tr>
+                                                <!-- Repeat -->
+                                               
+                                            </tbody>
+                                        </table>
                                 </div>
                             </div>
                         </div>
