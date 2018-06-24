@@ -137,7 +137,16 @@ body.boxed .page-topbar {
     margin-left: 5% !important;
 }
 /*body *{  vertical-align: top; }*/
-
+.systeminfo{
+	font-weight:bold;
+	background:#d63138;
+	padding:0 5px;
+	margin:0 5px;
+	
+}
+.col-md-3gg{
+	width:15%;
+}
 .paddingLeft0 {
     padding-left: 0px;
 }
@@ -365,7 +374,7 @@ a:hover, a:focus {
 .bg-accent {
     background-image: -webkit-linear-gradient(to right, #e8962e, #e45131) !important;
     background-image: -webkit-gradient(linear, left top, left bottom, from(to right), color-stop(#e8962e), to(#e45131)) !important;
-    background-image: linear-gradient(to right bottom, #e8962e, #e45131) !important;
+    background-image: linear-gradient(to right bottom, #27a9e3, #2195c9) !important;
     padding: 3px 8px;
     color: #ffffff;
 }
@@ -3299,8 +3308,6 @@ and (orientation : portrait) {
     background-color: #fafafa;
 }
 .tab-content {
-    padding: 15px;
-    border: 1px solid #eaeaea;
     background-color: #ffffff;
     border-top: 0px;
 }
@@ -4763,7 +4770,12 @@ a.cke_button_off:hover, .cke_hc a.cke_button_off:focus, .cke_hc a.cke_button_off
     background-image: -webkit-gradient(linear, left top, left bottom, from(to right), color-stop(#e8962e), to(#e45131)) !important;
     background-image: linear-gradient(to right bottom, #27e273, #21ca66) !important;
 }
-.has-register-to-right-bottom span{color:#fff;}
+.has-gray-to-right-bottom {
+    background-image: -webkit-linear-gradient(to right, #e8962e, #e45131) !important;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(to right), color-stop(#e8962e), to(#e45131)) !important;
+    background-image: linear-gradient(to right bottom, #b9b9b9, #9d9d9d) !important;
+}
+.has-register-to-right-bottom span,.has-gray-to-right-bottom span{color:#fff;}
 .has-gift-to-right-bottom {
     background-image: -webkit-linear-gradient(to right, #e8962e, #e45131) !important;
     background-image: -webkit-gradient(linear, left top, left bottom, from(to right), color-stop(#e8962e), to(#e45131)) !important;
@@ -6986,7 +6998,7 @@ border-left: 3px solid transparent;
     top: 5px;
     right: 0;
 }
-.r4_counter.has-gradient-to-right-bottom .icon-after,
+.r4_counter.has-gradient-to-right-bottom .icon-after,.r4_counter.has-register-to-right-bottom .icon-after,.r4_counter.has-gray-to-right-bottom .icon-after,.r4_counter.has-gift-to-right-bottom .icon-after,
 .r4_counter:hover .icon-after{
     opacity: 0.2
 }
