@@ -99,4 +99,32 @@ public class Constant {
         }
     }
 
+    /**
+     * 用户状态
+     */
+    public enum UserStatus {
+        /**
+         * 正常
+         */
+        OK(1),
+        /**
+         * 需要激活
+         */
+        NEED_ACTIVE(2),
+        /**
+         * 锁定
+         */
+        CLOCK(0);
+
+        private int value;
+
+        UserStatus(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
 }
