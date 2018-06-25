@@ -4,6 +4,7 @@ import com.filecoin.common.exception.FileCoinException;
 import com.filecoin.common.utils.Constant;
 import com.filecoin.common.utils.JsonResult;
 import com.filecoin.common.utils.SnowflakeIdWorker;
+import com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity;
 import com.filecoin.modules.filecoin.service.DInvitationCodeInfoService;
 import com.filecoin.modules.sys.oauth2.UserLoginEntity;
 import com.filecoin.modules.sys.service.SysUserTokenService;
@@ -100,6 +101,12 @@ public class SysLoginController extends AbstractController {
 			String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
 			if(!captcha.equalsIgnoreCase(kaptcha)){
 				return JsonResult.error("验证码不正确");
+			}
+
+			//查询激活码
+			DInvitationCodeInfoEntity dInvitationCodeInfoEntity = dInvitationCodeInfoService.queryObject(vcode);
+			if(dInvitationCodeInfoEntity == null){
+				return JsonResult.error("激活码无效!,请检查!");
 			}
 			//用户信息
 			SysUserEntity user = sysUserService.queryByUserName(email);
