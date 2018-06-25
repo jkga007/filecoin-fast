@@ -1,8 +1,10 @@
 package com.filecoin.modules.filecoin.service.impl;
 
+import com.filecoin.common.utils.InvitationCodeGnerateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,5 +57,25 @@ public class DInvitationCodeInfoServiceImpl implements DInvitationCodeInfoServic
 	@Override
 	public Integer selectCountbyInvitationCode(Map<String, Object> map) {
 		return dInvitationCodeInfoDao.selectCountbyInvitationCode(map);
+	}
+
+	@Override
+	public void createInvitationCodeByUser(Long userId){
+		synchronized (DInvitationCodeInfoServiceImpl.class){
+			while(true) {
+				String invitationCode = InvitationCodeGnerateUtil.toSerialCode(userId);
+				Map<String,Object> paramMap = new HashMap<>();
+				paramMap.put("invitationCode",invitationCode);
+				int count = queryTotal(paramMap);
+				if(count ==0) {
+					DInvitationCodeInfoEntity dInvitationCodeInfoEntity = new DInvitationCodeInfoEntity();
+					dInvitationCodeInfoEntity.setInvitationCode(invitationCode);
+					dInvitationCodeInfoEntity.setStatus("00");
+					dInvitationCodeInfoEntity.setUserId(userId);
+					save(dInvitationCodeInfoEntity);
+					break;
+				}
+			}
+		}
 	}
 }
