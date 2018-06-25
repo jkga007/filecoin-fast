@@ -90,8 +90,8 @@ public class ShiroConfig {
         filterMap.put("/sys/gohighway", "anon");
         //重新发送邮件
         filterMap.put("/sys/resendMail", "anon");
-        //返回修改邮箱信息
-        filterMap.put("/sys/returnEditMail", "anon");
+        //返回修改邮箱用户信息
+        filterMap.put("/sys/getEditMailUser", "anon");
 
 
 

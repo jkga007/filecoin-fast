@@ -94,7 +94,7 @@ public class SysLoginController extends AbstractController {
 	 * 注册
 	 */
 	@RequestMapping(value = "/sys/regist", method = RequestMethod.POST)
-	public JsonResult regist(String email, String vcode, String password, String captcha)
+	public JsonResult regist(String email, String vcode, String password, String captcha, String registType,Long userId)
 			throws FileCoinException {
 		JsonResult jsonResult = null;
 		try{
@@ -111,7 +111,11 @@ public class SysLoginController extends AbstractController {
 			//用户信息
 			SysUserEntity user = sysUserService.queryByUserName(email);
 
-			if(user != null){
+			if("U".equals(registType) && userId !=null){
+				user = sysUserService.queryObject(userId);
+			}
+
+			if(user != null && "C".equals(registType)){
                 Integer status = user.getStatus();
 				if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
 					return JsonResult.error("该用户已注册!处于待激活状态,请激活!");
@@ -127,7 +131,7 @@ public class SysLoginController extends AbstractController {
 			SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
 
 			SysUserEntity userEntity = new SysUserEntity();
-			userEntity.setUserId(idWorker0.nextId());
+
 			userEntity.setPassword(password);
 			userEntity.setEmail(email);
 			userEntity.setUsername(email);
@@ -136,12 +140,25 @@ public class SysLoginController extends AbstractController {
 			userEntity.setCreateUserId(1L);
 			List<Long> roleIdList = new ArrayList<>();
 			userEntity.setRoleIdList(roleIdList);
+
+			if("C".equals(registType)){
+				//新注册
+				userEntity.setUserId(idWorker0.nextId());
+				sysUserService.save(userEntity);
+			}else if("U".equals(registType)){
+				if(user == null){
+					return JsonResult.error("获取用户信息失败!");
+				}
+				//返回修改的注册
+				userEntity.setUserId(user.getUserId());
+				sysUserService.update(userEntity);
+			}
+
 			// 发送注册邮件
 			sendTemplateMail(userEntity.getEmail(), userEntity.getUserId(), idWorker0.timeGen1());
-			sysUserService.save(userEntity);
 
 			//生成token，并保存到数据库
-			jsonResult = JsonResult.ok("注册成功, 快去激活").put("registEmail",userEntity.getEmail()).put("userId",userEntity.getUserId());
+			jsonResult = JsonResult.ok("注册成功, 快去激活").put("registEmail",userEntity.getEmail()).put("userId",userEntity.getUserId()+"");
 
 		}catch(Exception e){
 			e.printStackTrace();
@@ -152,6 +169,41 @@ public class SysLoginController extends AbstractController {
 		return jsonResult;
 	}
 
+
+	/**
+	 * 获取待激活邮件对应的user信息,以便于返回修改
+	 * @param userMail
+	 * @param userId
+	 * @return
+	 */
+	@PostMapping(value = "/sys/getEditMailUser")
+	public JsonResult getEditMailUser(
+			@RequestParam(value = "userMail",required = true) String userMail,
+			@RequestParam(value = "userId",required = true) Long userId
+	) {
+		SysUserEntity sysUserEntity = sysUserService.queryObject(userId);
+		if(sysUserEntity != null){
+			String email = sysUserEntity.getEmail();
+			if(!userMail.equals(email)){
+				return JsonResult.error("注册用户与邮箱不匹配!,请重新注册!");
+			}
+			Integer status = sysUserEntity.getStatus();
+			//如果不是需要激活的,不需要再发邮件
+			if(Constant.UserStatus.NEED_ACTIVE.getValue() != status){
+				return JsonResult.error("该邮箱已激活!");
+			}
+		}else{
+			return JsonResult.error("获取原注册信息失败!,请重新注册!");
+		}
+		return JsonResult.ok("查询成功!").put("retEditMailUser",sysUserEntity);
+	}
+
+	/**
+	 * 重新发送邮件
+	 * @param userMail
+	 * @param userId
+	 * @return
+	 */
 	@PostMapping(value = "/sys/resendMail")
 	public JsonResult resendMail(
 			@RequestParam(value = "userMail",required = true) String userMail,
