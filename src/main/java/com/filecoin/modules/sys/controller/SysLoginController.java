@@ -178,6 +178,8 @@ public class SysLoginController extends AbstractController {
 					userEntity.setStatus(Constant.UserStatus.OK.getValue());
 					List<Long> roleIdList = new ArrayList<>();
 					userEntity.setRoleIdList(roleIdList);
+					//不修改密码
+					userEntity.setPassword(null);
 					//处理用户激活事件
 					JsonResult jsonResult = sysUserService.activationUser(userEntity);
 					model.addAttribute("jsonResult",jsonResult);

@@ -96,7 +96,7 @@ public class SysUserServiceImpl implements SysUserService {
 	@Transactional
 	public void update(SysUserEntity user) {
 		if(StringUtils.isBlank(user.getPassword())){
-			user.setPassword(null);
+//			user.setPassword(null);
 		}else{
 			user.setPassword(new Sha256Hash(user.getPassword(), user.getSalt()).toHex());
 		}
