@@ -105,18 +105,18 @@
                     </a>
                     <ul class="dropdown-menu profile animated fadeIn">
                         <li>
-                            <a href="account-confirmation.html">
+                            <a th:href="@{/sys/gosettings}">
                                 <i class="fa fa-wrench"></i> 账户设置
                             </a>
                         </li>
 
                         <li>
-                            <a href="ui-support.html">
+                            <a th:href="@{/sys/gofaq}">
                                 <i class="fa fa-info"></i> 用户帮助
                             </a>
                         </li>
                         <li class="last">
-                            <a href="ui-login.html">
+                            <a href="javascript:void(0);" onclick="LoginFunc.doLogout();">
                                 <i class="fa fa-lock"></i> 退出
                             </a>
                         </li>

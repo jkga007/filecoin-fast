@@ -254,10 +254,9 @@ var Core = Core
                         core.close(_layerIndex);
                     }
                     var jsondata = $.parseJSON(xhr.responseText);
-                    console.log(jsondata);
                     //token过期，则跳转到登录页面
                     if(jsondata.code == 401){
-                        alert("token过期或不正确！");
+                        window.location.href = ctx + "/sys/gologin";
                     }
                 }
             });
