@@ -2,10 +2,10 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8"/>
-        <title>Javazhan验证邮件</title>
+        <title>IPFS星际云矿池验证邮件</title>
     </head>
     <body>
         您好,这是验证邮件,请点击下面的链接完成验证,
-        <a href="#" th:href="@{ http://{url}/filecoin-app/sys/activation/{id}/{timestamp}(url=${url},id=${id},timestamp=${timestamp}) }">激活账号</a>。
+        <a href="javascript:void(0);" th:href="@{ http://{url}/filecoin-app/sys/activation/{id}/{timestamp}?{other}(url=${url},id=${id},timestamp=${timestamp},other=${other}) }">激活账号</a>。
     </body>
 </html>

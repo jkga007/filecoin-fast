@@ -370,6 +370,7 @@ public class SysLoginController extends AbstractController {
 			context.setVariable("id", userId);
 			context.setVariable("timestamp", timestamp);
 			context.setVariable("url", "localhost:8080");
+			context.setVariable("other", "utm_campaign=filecoin-email-verification&utm_content=html&utm_medium=email&utm_source=verification-email");
 			String emailContent = templateEngine.process("emailTemplate", context);
 			helper.setText(emailContent, true);
 		} catch (MessagingException e) {
