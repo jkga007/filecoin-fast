@@ -30,6 +30,7 @@ var InvitationCodeFunc = (function () {
                 $("#invitationCountLit_h3").html(""+countlit);
                 $("#invitationCode_h3_lit").html(""+countlit);
                 $("#invitationCode_h3_lit_2").html(""+countlit);
+                $("#invitationCode_h3_lit_3").html(""+countlit);
                 $("#invitationRate_h3").html("执行费率："+rate);
                 $("#invitationLotteryCode_h3").html("抽奖码："+lotteryCode);
                 $("#invitationLotteryCode_h3_2").html("您的抽奖码为："+lotteryCode);
