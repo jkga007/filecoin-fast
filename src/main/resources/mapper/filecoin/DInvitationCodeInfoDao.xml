@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.filecoin.modules.filecoin.dao.DInvitationCodeInfoDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity" id="dInvitationCodeInfoMap">
+        <result property="invitationCode" column="invitation_code"/>
+        <result property="userId" column="user_id"/>
+        <result property="status" column="status"/>
+        <result property="updatetime" column="updatetime"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity">
+		select * from d_invitation_code_info where invitation_code = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity">
+		select * from d_invitation_code_info
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by invitation_code desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from d_invitation_code_info 
+	</select>
+	 
+	<insert id="save" parameterType="com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity">
+		insert into d_invitation_code_info
+		(
+			`invitation_code`, 
+			`user_id`, 
+			`status`, 
+			`updatetime`
+		)
+		values
+		(
+			#{invitationCode}, 
+			#{userId}, 
+			#{status}, 
+			#{updatetime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity">
+		update d_invitation_code_info 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="updatetime != null">`updatetime` = #{updatetime}</if>
+		</set>
+		where invitation_code = #{invitationCode}
+	</update>
+	
+	<delete id="delete">
+		delete from d_invitation_code_info where invitation_code = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from d_invitation_code_info where invitation_code in 
+		<foreach item="invitationCode" collection="array" open="(" separator="," close=")">
+			#{invitationCode}
+		</foreach>
+	</delete>
+
+	<!--获得邀请码已经邀请人数量 -->
+	<select id="selectCountbyInvitationCode" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*)
+        from d_invitation_code_info a,sys_user b
+        where a.user_id = #{userId} and b.invitation_code=a.invitation_code
+    </select>
+
+</mapper>
