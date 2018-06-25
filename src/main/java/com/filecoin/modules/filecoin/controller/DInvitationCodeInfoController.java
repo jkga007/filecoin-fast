@@ -97,7 +97,7 @@ public class DInvitationCodeInfoController extends AbstractController {
 	 *根据邀请码及当前登录用户获取邀请码已经邀请人数量
 	 */
 	@PostMapping("getCountByInvitationCode")
-	public JsonResult login(String invitation_code){
+	public JsonResult getCountByInvitationCode(){
 		Long userId = getUserId();
 		Map<String,Object> paramMap = new HashMap<>();
 		paramMap.put("userId",userId);
