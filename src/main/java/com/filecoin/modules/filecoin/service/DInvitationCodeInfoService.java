@@ -33,4 +33,11 @@ public interface DInvitationCodeInfoService {
 	 * @return
 	 */
 	Integer selectCountbyInvitationCode(Map<String,Object> map);
+
+	/**
+	 * 激活成功后，生成用户对应的邀请码
+	 * @param userId
+	 * @return
+	 */
+	void createInvitationCodeByUser(Long userId);
 }
