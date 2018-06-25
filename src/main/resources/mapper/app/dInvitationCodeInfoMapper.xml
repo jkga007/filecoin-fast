@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.filecoin.modules.app.dao.dInvitationCodeInfoDao">
+    <!-- dInvitationCodeInfo的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_dInvitationCodeInfo_Map" type="com.filecoin.modules.app.entity.dInvitationCodeInfo">
+        <result column="invitation_code" property="invitationCode" />
+        <result column="user_id" property="userId" />
+        <result column="status" property="status" />
+        <result column="updatetime" property="updatetime" />
+    </resultMap>
+
+    <!-- 数据库中表名为:d_invitation_code_info的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="d_invitation_code_info_Column">
+        d_invitation_code_info.invitation_code as invitation_code
+        ,d_invitation_code_info.user_id as user_id
+        ,d_invitation_code_info.status as status
+        ,d_invitation_code_info.updatetime as updatetime
+    </sql>
+
+    <!--获得类名为:dInvitationCodeInfo对应的数据库表的数据总行数 -->
+    <select id="getdInvitationCodeInfoRowCount" resultType="java.lang.Long">
+        select count(*) from d_invitation_code_info
+    </select>
+    <!--获得邀请码已经邀请人数量 -->
+    <select id="selectCountbyInvitationCode" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(*)
+        from d_invitation_code_info a,sys_user b
+        where a.user_id = #{userId} and b.invitation_code=a.invitation_code
+    </select>
+    <!-- 获得类名为:dInvitationCodeInfo对应数据库中表的数据集合 -->
+    <select id="selectdInvitationCodeInfo" resultMap="result_dInvitationCodeInfo_Map">
+        select 
+        <include refid="d_invitation_code_info_Column" /> 
+        from d_invitation_code_info
+    </select> 
+
+    <!-- 将dInvitationCodeInfo插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertdInvitationCodeInfo" parameterType="com.filecoin.modules.app.entity.dInvitationCodeInfo">
+        insert into d_invitation_code_info(invitation_code,user_id,status,updatetime) 
+        values(#{invitationCode},#{userId},#{status},#{updatetime})
+    </insert>
+
+    <!-- 将dInvitationCodeInfo中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptydInvitationCodeInfo" parameterType="com.filecoin.modules.app.entity.dInvitationCodeInfo">
+        insert into d_invitation_code_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="invitationCode != null">invitation_code,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="status != null">status,</if>
+            <if test="updatetime != null">updatetime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="invitationCode != null"> #{invitationCode},</if>
+            <if test="userId != null"> #{userId},</if>
+            <if test="status != null"> #{status},</if>
+            <if test="updatetime != null"> #{updatetime},</if>
+        </trim>
+    </insert>
+
+</mapper>
