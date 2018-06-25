@@ -97,9 +97,18 @@ public class SysLoginController extends AbstractController {
 		}
 		//用户信息
 		SysUserEntity user = sysUserService.queryByUserName(email);
+		Integer status = user.getStatus();
 
 		if(user != null){
-			return JsonResult.error("该用户已存在!");
+			if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
+				return JsonResult.error("该用户已注册!处于待激活状态,请激活!");
+			}
+			if(Constant.UserStatus.CLOCK.getValue() == status){
+				return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
+			}
+			if(Constant.UserStatus.OK.getValue() == status){
+				return JsonResult.error("该用户已存在!,请登录!");
+			}
 		}
 
 		SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
@@ -110,7 +119,7 @@ public class SysLoginController extends AbstractController {
 		userEntity.setEmail(email);
 		userEntity.setUsername(email);
 		userEntity.setInvitationCode(vcode);
-        userEntity.setStatus(2);
+        userEntity.setStatus(Constant.UserStatus.NEED_ACTIVE.getValue());
 		userEntity.setCreateUserId(1L);
 		List<Long> roleIdList = new ArrayList<>();
 		userEntity.setRoleIdList(roleIdList);
@@ -139,20 +148,35 @@ public class SysLoginController extends AbstractController {
 			@PathVariable Long timestamp,
 			HttpServletResponse response,
 			Model model
-	) throws IOException {
-		SysUserEntity userEntity = sysUserService.queryObject(userId);
-		if(userEntity != null) {
-			if(userEntity.getStatus()==2) {//只有等于2的用户才进行激活，已激活的用户不用进行激活处理
-				userEntity.setStatus(1);
-				List<Long> roleIdList = new ArrayList<>();
-				userEntity.setRoleIdList(roleIdList);
-				sysUserService.update(userEntity);
-				dInvitationCodeInfoService.createInvitationCodeByUser(userEntity.getUserId());
+	) throws FileCoinException {
+		try{
+			SysUserEntity userEntity = sysUserService.queryObject(userId);
+			if(userEntity != null) {
+
+				Integer status = userEntity.getStatus();
+				//待激活状态才去激活
+				if(Constant.UserStatus.NEED_ACTIVE.getValue() == status) {
+					userEntity.setStatus(Constant.UserStatus.OK.getValue());
+					List<Long> roleIdList = new ArrayList<>();
+					userEntity.setRoleIdList(roleIdList);
+					sysUserService.update(userEntity);
+
+					//生成token，并保存到数据库
+					JsonResult jsonResult = sysUserTokenService.createToken(userEntity.getUserId());
+					dInvitationCodeInfoService.createInvitationCodeByUser(userEntity.getUserId());
+					model.addAttribute("jsonResult",jsonResult);
+
+				}else if(Constant.UserStatus.CLOCK.getValue() == status){
+					model.addAttribute("jsonResult",JsonResult.error("该用户已锁定!,请联系管理员解锁!"));
+				}else if(Constant.UserStatus.OK.getValue() == status){
+					model.addAttribute("jsonResult",JsonResult.error("该用户已激活!,请登录!"));
+				}
 			}
+
+		}catch(Exception e){
+			model.addAttribute("jsonResult",JsonResult.error("激活失败!,请重试或联系管理员!"));
 		}
-		//生成token，并保存到数据库
-		JsonResult jsonResult = sysUserTokenService.createToken(userEntity.getUserId());
-		model.addAttribute("jsonResult",jsonResult);
+
 		return new ModelAndView("sys/regist-result");
 	}
 
@@ -160,7 +184,7 @@ public class SysLoginController extends AbstractController {
 	 * 登录
 	 */
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
-	public Map<String, Object> login(@RequestBody UserLoginEntity userlogin)throws IOException {
+	public Map<String, Object> login(@RequestBody UserLoginEntity userlogin)throws Exception {
 		//本项目已实现，前后端完全分离，但页面还是跟项目放在一起了，所以还是会依赖session
 		//如果想把页面单独放到nginx里，实现前后端完全分离，则需要把验证码注释掉(因为不再依赖session了)
 		String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);

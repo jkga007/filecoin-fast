@@ -13,11 +13,20 @@
             var jsonResult = [[${jsonResult}]];
             //document.ready 方法
             $(function () {
-                Core.alert("注册成功!,准备跳转首页！", 1,false, function () {
-                    localStorage.removeItem("token");
-                    localStorage.setItem("token",jsonResult.token);
-                    window.location.href = ctx+"/sys/gomasterindex";
-                });
+                var code = jsonResult.code;
+                var msg = jsonResult.msg;
+                if(code == 0){
+                    Core.alert("注册成功!,准备跳转首页！", 1,false, function () {
+                        localStorage.removeItem("token");
+                        localStorage.setItem("token",jsonResult.token);
+                        window.location.href = ctx+"/sys/gomasterindex";
+                    });
+                }else{
+                    Core.alert(msg, 2,false, function () {
+                        window.location.href = ctx+"/sys/goindex";
+                    });
+                }
+
             });
         </script>
     </body>
