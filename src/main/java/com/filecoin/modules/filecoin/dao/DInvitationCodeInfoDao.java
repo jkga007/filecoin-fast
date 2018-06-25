@@ -20,4 +20,10 @@ public interface DInvitationCodeInfoDao extends BaseDao<DInvitationCodeInfoEntit
      * @return
      */
     Integer selectCountbyInvitationCode(Map<String,Object> map);
+
+    /**
+     * 获得登陆用户邀请码
+     * @return
+     */
+    DInvitationCodeInfoEntity queryObjectByMap(Map<String,Object> map);
 }

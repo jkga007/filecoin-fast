@@ -102,7 +102,9 @@ public class DInvitationCodeInfoController extends AbstractController {
 		Map<String,Object> paramMap = new HashMap<>();
 		paramMap.put("userId",userId);
 		int count = dInvitationCodeInfoService.selectCountbyInvitationCode(paramMap);
-		return JsonResult.ok().put("count",count);
+		DInvitationCodeInfoEntity dInvitationCodeInfoEntity = dInvitationCodeInfoService.queryObjectByMap(paramMap);
+		return JsonResult.ok().put("count",count).put("invitationCode",dInvitationCodeInfoEntity.getInvitationCode())
+				.put("lotteryCode",dInvitationCodeInfoEntity.getInvitationCode()).put("rate",(10-count)*0.5+"%");
 	}
 	
 }

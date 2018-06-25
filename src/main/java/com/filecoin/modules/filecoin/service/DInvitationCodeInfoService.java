@@ -40,4 +40,10 @@ public interface DInvitationCodeInfoService {
 	 * @return
 	 */
 	void createInvitationCodeByUser(Long userId);
+
+	/**
+	 * 获得登陆用户邀请码
+	 * @return
+	 */
+	DInvitationCodeInfoEntity queryObjectByMap(Map<String,Object> map);
 }
