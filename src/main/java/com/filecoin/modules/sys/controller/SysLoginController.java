@@ -14,6 +14,8 @@ import com.filecoin.modules.sys.entity.SysUserEntity;
 import com.filecoin.modules.sys.service.SysUserService;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -46,6 +48,9 @@ import java.util.Map;
  */
 @RestController
 public class SysLoginController extends AbstractController {
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
 	@Autowired
 	private Producer producer;
 	@Autowired
@@ -88,48 +93,54 @@ public class SysLoginController extends AbstractController {
 	 * 注册
 	 */
 	@RequestMapping(value = "/sys/regist", method = RequestMethod.POST)
-	public Map<String, Object> regist(String email, String vcode, String password, String captcha)throws IOException {
-		//本项目已实现，前后端完全分离，但页面还是跟项目放在一起了，所以还是会依赖session
-		//如果想把页面单独放到nginx里，实现前后端完全分离，则需要把验证码注释掉(因为不再依赖session了)
-		String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
-		if(!captcha.equalsIgnoreCase(kaptcha)){
-			return JsonResult.error("验证码不正确");
+	public JsonResult regist(String email, String vcode, String password, String captcha)
+			throws FileCoinException {
+		JsonResult jsonResult = null;
+		try{
+			String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+			if(!captcha.equalsIgnoreCase(kaptcha)){
+				return JsonResult.error("验证码不正确");
+			}
+			//用户信息
+			SysUserEntity user = sysUserService.queryByUserName(email);
+			Integer status = user.getStatus();
+
+			if(user != null){
+				if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
+					return JsonResult.error("该用户已注册!处于待激活状态,请激活!");
+				}
+				if(Constant.UserStatus.CLOCK.getValue() == status){
+					return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
+				}
+				if(Constant.UserStatus.OK.getValue() == status){
+					return JsonResult.error("该用户已存在!,请登录!");
+				}
+			}
+
+			SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
+
+			SysUserEntity userEntity = new SysUserEntity();
+			userEntity.setUserId(idWorker0.nextId());
+			userEntity.setPassword(password);
+			userEntity.setEmail(email);
+			userEntity.setUsername(email);
+			userEntity.setInvitationCode(vcode);
+			userEntity.setStatus(Constant.UserStatus.NEED_ACTIVE.getValue());
+			userEntity.setCreateUserId(1L);
+			List<Long> roleIdList = new ArrayList<>();
+			userEntity.setRoleIdList(roleIdList);
+			// 发送注册邮件
+			sendTemplateMail(userEntity.getEmail(), userEntity.getUserId(), idWorker0.timeGen1());
+			sysUserService.save(userEntity);
+
+			//生成token，并保存到数据库
+			jsonResult = JsonResult.ok("注册成功, 快去激活").put("registEmail",userEntity.getEmail()).put("userId",userEntity.getUserId());
+
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw new FileCoinException("注册失败！,请重试或联系管理员！", e);
 		}
-		//用户信息
-		SysUserEntity user = sysUserService.queryByUserName(email);
-		Integer status = user.getStatus();
-
-		if(user != null){
-			if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
-				return JsonResult.error("该用户已注册!处于待激活状态,请激活!");
-			}
-			if(Constant.UserStatus.CLOCK.getValue() == status){
-				return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
-			}
-			if(Constant.UserStatus.OK.getValue() == status){
-				return JsonResult.error("该用户已存在!,请登录!");
-			}
-		}
-
-		SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
-
-		SysUserEntity userEntity = new SysUserEntity();
-		userEntity.setUserId(idWorker0.nextId());
-		userEntity.setPassword(password);
-		userEntity.setEmail(email);
-		userEntity.setUsername(email);
-		userEntity.setInvitationCode(vcode);
-        userEntity.setStatus(Constant.UserStatus.NEED_ACTIVE.getValue());
-		userEntity.setCreateUserId(1L);
-		List<Long> roleIdList = new ArrayList<>();
-		userEntity.setRoleIdList(roleIdList);
-		// 发送注册邮件
-		sendTemplateMail(userEntity.getEmail(), userEntity.getUserId(), idWorker0.timeGen1());
-		sysUserService.save(userEntity);
-
-		//生成token，并保存到数据库
-		JsonResult jsonResult = JsonResult.ok("注册成功, 快去激活").put("registEmail",userEntity.getEmail()).put("userId",userEntity.getUserId());
-
 
 		return jsonResult;
 	}
@@ -140,7 +151,7 @@ public class SysLoginController extends AbstractController {
 	 * @param timestamp
 	 * @param response
 	 * @return
-	 * @throws IOException
+	 * @throws FileCoinException
 	 */
 	@RequestMapping(value = "/sys/activation/{userId}/{timestamp}", method = RequestMethod.GET)
 	public ModelAndView activation(
@@ -156,6 +167,7 @@ public class SysLoginController extends AbstractController {
 				Integer status = userEntity.getStatus();
 				//待激活状态才去激活
 				if(Constant.UserStatus.NEED_ACTIVE.getValue() == status) {
+					//变更用户状态为正常状态
 					userEntity.setStatus(Constant.UserStatus.OK.getValue());
 					List<Long> roleIdList = new ArrayList<>();
 					userEntity.setRoleIdList(roleIdList);
@@ -174,6 +186,8 @@ public class SysLoginController extends AbstractController {
 			}
 
 		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(e.getMessage());
 			model.addAttribute("jsonResult",JsonResult.error("激活失败!,请重试或联系管理员!"));
 		}
 
@@ -184,29 +198,38 @@ public class SysLoginController extends AbstractController {
 	 * 登录
 	 */
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
-	public Map<String, Object> login(@RequestBody UserLoginEntity userlogin)throws Exception {
-		//本项目已实现，前后端完全分离，但页面还是跟项目放在一起了，所以还是会依赖session
-		//如果想把页面单独放到nginx里，实现前后端完全分离，则需要把验证码注释掉(因为不再依赖session了)
-		String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
-		if(!userlogin.getCaptcha().equalsIgnoreCase(kaptcha)){
-			return JsonResult.error("验证码不正确");
+	public Map<String, Object> login(@RequestBody UserLoginEntity userlogin)
+			throws FileCoinException {
+		JsonResult jsonResult = null;
+		try{
+			String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+			if(!userlogin.getCaptcha().equalsIgnoreCase(kaptcha)){
+				return JsonResult.error("验证码不正确");
+			}
+
+			//用户信息
+			SysUserEntity user = sysUserService.queryByUserName(userlogin.getUsername());
+
+			//账号不存在、密码错误
+			if(user == null || !user.getPassword().equals(new Sha256Hash(userlogin.getPassword(), user.getSalt()).toHex())) {
+				return JsonResult.error("账号或密码不正确");
+			}
+
+			Integer status = user.getStatus();
+			if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
+				return JsonResult.error("该用户已注册!处于待激活状态,请激活!");
+			}
+			if(Constant.UserStatus.CLOCK.getValue() == status){
+				return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
+			}
+
+			//生成token，并保存到数据库
+			jsonResult = sysUserTokenService.createToken(user.getUserId());
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error(e.getMessage());
+			throw new FileCoinException("登录失败！,请重试或联系管理员！", e);
 		}
-
-		//用户信息
-		SysUserEntity user = sysUserService.queryByUserName(userlogin.getUsername());
-
-		//账号不存在、密码错误
-		if(user == null || !user.getPassword().equals(new Sha256Hash(userlogin.getPassword(), user.getSalt()).toHex())) {
-			return JsonResult.error("账号或密码不正确");
-		}
-
-		//账号锁定
-		if(user.getStatus() == 0){
-			return JsonResult.error("账号已被锁定,请联系管理员");
-		}
-
-		//生成token，并保存到数据库
-		JsonResult jsonResult = sysUserTokenService.createToken(user.getUserId());
 		return jsonResult;
 	}
 
@@ -350,6 +373,8 @@ public class SysLoginController extends AbstractController {
 			String emailContent = templateEngine.process("emailTemplate", context);
 			helper.setText(emailContent, true);
 		} catch (MessagingException e) {
+			e.printStackTrace();
+			logger.error(e.getMessage());
 			throw new FileCoinException("邮件发送失败！,请检查您的邮箱！", e);
 		}
 		javaMailSender.send(message);
