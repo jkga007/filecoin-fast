@@ -2,11 +2,14 @@ package com.filecoin.modules.sys.service.impl;
 
 import com.filecoin.common.exception.FileCoinException;
 import com.filecoin.common.utils.Constant;
+import com.filecoin.common.utils.JsonResult;
+import com.filecoin.modules.filecoin.service.DInvitationCodeInfoService;
 import com.filecoin.modules.sys.dao.SysUserDao;
 import com.filecoin.modules.sys.entity.SysUserEntity;
 import com.filecoin.modules.sys.service.SysRoleService;
 import com.filecoin.modules.sys.service.SysUserRoleService;
 import com.filecoin.modules.sys.service.SysUserService;
+import com.filecoin.modules.sys.service.SysUserTokenService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -37,6 +40,10 @@ public class SysUserServiceImpl implements SysUserService {
 	private SysUserRoleService sysUserRoleService;
 	@Autowired
 	private SysRoleService sysRoleService;
+	@Autowired
+	private SysUserTokenService sysUserTokenService;
+	@Autowired
+	private DInvitationCodeInfoService dInvitationCodeInfoService;
 
 	@Override
 	public List<String> queryAllPerms(Long userId) {
@@ -133,5 +140,14 @@ public class SysUserServiceImpl implements SysUserService {
 		if(!roleIdList.containsAll(user.getRoleIdList())){
 			throw new FileCoinException("新增用户所选角色，不是本人创建");
 		}
+	}
+
+	@Override
+	@Transactional
+	public JsonResult activationUser(SysUserEntity userEntity) {
+		update(userEntity);
+		dInvitationCodeInfoService.createInvitationCodeByUser(userEntity.getUserId());
+		JsonResult jsonResult = sysUserTokenService.createToken(userEntity.getUserId());
+		return jsonResult;
 	}
 }
