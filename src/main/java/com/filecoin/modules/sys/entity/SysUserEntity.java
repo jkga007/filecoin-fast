@@ -168,7 +168,7 @@ public class SysUserEntity implements Serializable {
 	}
 
 	/**
-	 * 获取：状态  0：禁用   1：正常
+	 * 获取：状态  0：禁用   1：正常 2:待激活
 	 * @return Integer
 	 */
 	public Integer getStatus() {

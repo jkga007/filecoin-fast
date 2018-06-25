@@ -142,7 +142,7 @@ public class SysLoginController extends AbstractController {
 	) throws IOException {
 		SysUserEntity userEntity = sysUserService.queryObject(userId);
 		if(userEntity != null) {
-			if(userEntity.getStatus().equals("2")) {//只有等于2的用户才进行激活，已激活的用户不用进行激活处理
+			if(userEntity.getStatus()==2) {//只有等于2的用户才进行激活，已激活的用户不用进行激活处理
 				userEntity.setStatus(1);
 				List<Long> roleIdList = new ArrayList<>();
 				userEntity.setRoleIdList(roleIdList);
@@ -322,7 +322,7 @@ public class SysLoginController extends AbstractController {
 			Context context = new Context();
 			context.setVariable("id", userId);
 			context.setVariable("timestamp", timestamp);
-			context.setVariable("url", "10.110.13.42:8080");
+			context.setVariable("url", "localhost:8080");
 			String emailContent = templateEngine.process("emailTemplate", context);
 			helper.setText(emailContent, true);
 		} catch (MessagingException e) {
