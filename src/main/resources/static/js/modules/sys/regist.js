@@ -38,11 +38,13 @@ var RegistFunc = (function () {
             if (resultCode == "0") {
                 var email = packet.registEmail;
                 var userId = packet.userId;
+                var mailUrl = packet.mailUrl;
                 Core.alert("提交成功~ 点击进入下一步", 1,false, function () {
                     $("#registEmail").html(email);
                     $('#regist_type').val("U");
                     $("#user_mail").val(email);
                     $("#user_id").val(userId);
+                    $("#mailUrl").val(mailUrl);
                     //模拟点击第二步
                     globleIndex = 1;
                     $('.processorBox li').eq(globleIndex).click();

@@ -156,9 +156,12 @@ public class SysLoginController extends AbstractController {
 
 			// 发送注册邮件
 			sendTemplateMail(userEntity.getEmail(), userEntity.getUserId(), idWorker0.timeGen1());
+			String emailUser = userEntity.getEmail();
+			String emailEnd = emailUser.substring(emailUser.indexOf("@")+1,emailUser.length());
+			String mailUrl = "mail."+emailEnd;
 
 			//生成token，并保存到数据库
-			jsonResult = JsonResult.ok("注册成功, 快去激活").put("registEmail",userEntity.getEmail()).put("userId",userEntity.getUserId()+"");
+			jsonResult = JsonResult.ok("注册成功, 快去激活").put("registEmail",userEntity.getEmail()).put("userId",userEntity.getUserId()+"").put("mailUrl",mailUrl);
 
 		}catch(Exception e){
 			e.printStackTrace();
