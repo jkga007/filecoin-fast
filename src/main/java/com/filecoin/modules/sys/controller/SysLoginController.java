@@ -171,11 +171,8 @@ public class SysLoginController extends AbstractController {
 					userEntity.setStatus(Constant.UserStatus.OK.getValue());
 					List<Long> roleIdList = new ArrayList<>();
 					userEntity.setRoleIdList(roleIdList);
-					sysUserService.update(userEntity);
-
-					//生成token，并保存到数据库
-					JsonResult jsonResult = sysUserTokenService.createToken(userEntity.getUserId());
-					dInvitationCodeInfoService.createInvitationCodeByUser(userEntity.getUserId());
+					//处理用户激活事件
+					JsonResult jsonResult = sysUserService.activationUser(userEntity);
 					model.addAttribute("jsonResult",jsonResult);
 
 				}else if(Constant.UserStatus.CLOCK.getValue() == status){

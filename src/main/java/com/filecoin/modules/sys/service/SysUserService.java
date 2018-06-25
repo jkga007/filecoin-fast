@@ -1,5 +1,6 @@
 package com.filecoin.modules.sys.service;
 
+import com.filecoin.common.utils.JsonResult;
 import com.filecoin.modules.sys.entity.SysUserEntity;
 
 import java.util.List;
@@ -70,4 +71,13 @@ public interface SysUserService {
 	 * @param newPassword  新密码
 	 */
 	int updatePassword(Long userId, String password, String newPassword);
+
+	/**
+	 * 激活用户
+	 * 1.修改用户状态为正常
+	 * 2.生成用户邀请码
+	 * 3.让用户登录到shiro
+	 * @param userEntity
+	 */
+	JsonResult activationUser(SysUserEntity userEntity);
 }
