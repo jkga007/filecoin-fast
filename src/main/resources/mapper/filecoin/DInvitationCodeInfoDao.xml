@@ -15,6 +15,15 @@
 		select * from d_invitation_code_info where invitation_code = #{value}
 	</select>
 
+	<select id="queryObjectByMap" resultType="com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity">
+		select * from d_invitation_code_info
+		<where>
+			<if test="userId != null">
+				`user_id` = #{userId}
+			</if>
+		</where>
+	</select>
+
 	<select id="queryList" resultType="com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity">
 		select * from d_invitation_code_info
         <choose>
