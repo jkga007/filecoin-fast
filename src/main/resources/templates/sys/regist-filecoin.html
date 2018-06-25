@@ -115,7 +115,7 @@
 						<strong class="f16">感谢注册，确认邮件已发送至你的注册邮箱 : <br /><span id="registEmail"></span></strong>
 						<p class="c7b">请进入邮箱查看邮件，并激活IPFS星际云矿池帐号。</p>
 						<p>
-							<a class="btn btn_primary mt20" href="javascript:;">登录邮箱</a>
+							<a class="btn btn_primary mt20" href="#" onclick="openMailUrl();">登录邮箱</a>
 						</p>
 						<p class="c7b mt20">没有收到邮件？</p>
 						<p>1. 请检查邮箱地址是否正确，你可以返回 <a href="#" onclick="RegistFunc.getEditMailUser();" class="c46">重新填写</a></p>
@@ -231,6 +231,8 @@
 		<input type="hidden" name="user_id" id="user_id" value=""/>
 		<input type="hidden" name="user_mail" id="user_mail" value=""/>
 		<input type="hidden" name="regist_type" id="regist_type" value="C"/>
+		<input type="hidden" name="mailUrl" id="mailUrl" value="C"/>
+
 		<footer id="footer" class="w960 oh">
 		
 			</nav>
@@ -267,6 +269,11 @@
 				}
 				setTimeout(function(){ $('.tipsBox').remove(); },time);
 			}
+		}
+
+		function openMailUrl(){
+		    var url = $("#mailUrl").val();
+		    window.open("https://"+url,"_blank");
 		}
 		
 		$(function(){
