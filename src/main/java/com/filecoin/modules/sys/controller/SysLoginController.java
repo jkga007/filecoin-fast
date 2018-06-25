@@ -1,5 +1,6 @@
 package com.filecoin.modules.sys.controller;
 
+import com.filecoin.common.exception.FileCoinException;
 import com.filecoin.common.utils.Constant;
 import com.filecoin.common.utils.JsonResult;
 import com.filecoin.common.utils.SnowflakeIdWorker;
@@ -305,7 +306,7 @@ public class SysLoginController extends AbstractController {
 		javaMailSender.send(message);
 	}
 
-	public void sendTemplateMail(String recipient,Long userId,Long timestamp) {
+	public void sendTemplateMail(String recipient,Long userId,Long timestamp) throws FileCoinException {
 		MimeMessage message = javaMailSender.createMimeMessage();
 		try {
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -315,11 +316,11 @@ public class SysLoginController extends AbstractController {
 			Context context = new Context();
 			context.setVariable("id", userId);
 			context.setVariable("timestamp", timestamp);
-			context.setVariable("url", "172.16.9.210:18181");
+			context.setVariable("url", "10.110.13.42:8080");
 			String emailContent = templateEngine.process("emailTemplate", context);
 			helper.setText(emailContent, true);
 		} catch (MessagingException e) {
-			throw new RuntimeException("Messaging  Exception !", e);
+			throw new FileCoinException("邮件发送失败！,请检查您的邮箱！", e);
 		}
 		javaMailSender.send(message);
 	}
