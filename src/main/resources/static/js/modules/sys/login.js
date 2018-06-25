@@ -1,5 +1,5 @@
 /**
- * 注册验证方法
+ * 登录相关方法
  * 20180620
  * @author g20416
  */
@@ -50,6 +50,23 @@ var LoginFunc = (function () {
                 window.location.href = ctx + "/sys/gologin";
             }
         }, true,false);
+    };
+
+    loginFunc.doLogout = function () {
+
+        var path = ctx + "/sys/logout";
+        var ajax = new AJAXPacket(path, "正在退出...请稍后");
+
+        Core.sendPacket(ajax, function (packet) {
+            var resultCode = packet.code;
+            var message = packet.msg;
+            if (resultCode == "0") {
+                localStorage.removeItem("token");
+                window.location.href = ctx + "/sys/gologin";
+            } else {
+
+            }
+        }, true,true);
     };
 
 
