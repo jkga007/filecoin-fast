@@ -31,7 +31,12 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from d_invitation_code_info 
+		select count(*) from d_invitation_code_info
+		<where>
+			<if test="invitationCode != null">
+				`invitation_code` = #{invitationCode}
+			</if>
+		</where>
 	</select>
 	 
 	<insert id="save" parameterType="com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity">
@@ -47,7 +52,7 @@
 			#{invitationCode}, 
 			#{userId}, 
 			#{status}, 
-			#{updatetime}
+			NOW()
 		)
 	</insert>
 	 
@@ -56,7 +61,7 @@
 		<set>
 			<if test="userId != null">`user_id` = #{userId}, </if>
 			<if test="status != null">`status` = #{status}, </if>
-			<if test="updatetime != null">`updatetime` = #{updatetime}</if>
+			<if test="updatetime != null">`updatetime` = NOW()</if>
 		</set>
 		where invitation_code = #{invitationCode}
 	</update>

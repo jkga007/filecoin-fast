@@ -3,6 +3,7 @@ package com.filecoin.modules.sys.controller;
 import com.filecoin.common.utils.Constant;
 import com.filecoin.common.utils.JsonResult;
 import com.filecoin.common.utils.SnowflakeIdWorker;
+import com.filecoin.modules.filecoin.service.DInvitationCodeInfoService;
 import com.filecoin.modules.sys.oauth2.UserLoginEntity;
 import com.filecoin.modules.sys.service.SysUserTokenService;
 import com.google.code.kaptcha.Constants;
@@ -56,6 +57,8 @@ public class SysLoginController extends AbstractController {
 
 	@Autowired
 	private TemplateEngine templateEngine;
+	@Autowired
+	private DInvitationCodeInfoService dInvitationCodeInfoService;
 
 	@Value("${spring.mail.username}")
 	private String sender;
@@ -145,6 +148,7 @@ public class SysLoginController extends AbstractController {
 		}
 		//生成token，并保存到数据库
 		JsonResult jsonResult = sysUserTokenService.createToken(userEntity.getUserId());
+		dInvitationCodeInfoService.createInvitationCodeByUser(userEntity.getUserId());
 		model.addAttribute("jsonResult",jsonResult);
 		return new ModelAndView("sys/regist-result");
 	}
