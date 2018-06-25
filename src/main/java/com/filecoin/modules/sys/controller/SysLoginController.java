@@ -142,14 +142,16 @@ public class SysLoginController extends AbstractController {
 	) throws IOException {
 		SysUserEntity userEntity = sysUserService.queryObject(userId);
 		if(userEntity != null) {
-			userEntity.setStatus(1);
-			List<Long> roleIdList = new ArrayList<>();
-			userEntity.setRoleIdList(roleIdList);
-			sysUserService.update(userEntity);
+			if(userEntity.getStatus().equals("2")) {//只有等于2的用户才进行激活，已激活的用户不用进行激活处理
+				userEntity.setStatus(1);
+				List<Long> roleIdList = new ArrayList<>();
+				userEntity.setRoleIdList(roleIdList);
+				sysUserService.update(userEntity);
+				dInvitationCodeInfoService.createInvitationCodeByUser(userEntity.getUserId());
+			}
 		}
 		//生成token，并保存到数据库
 		JsonResult jsonResult = sysUserTokenService.createToken(userEntity.getUserId());
-		dInvitationCodeInfoService.createInvitationCodeByUser(userEntity.getUserId());
 		model.addAttribute("jsonResult",jsonResult);
 		return new ModelAndView("sys/regist-result");
 	}
