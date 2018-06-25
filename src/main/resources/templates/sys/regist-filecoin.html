@@ -120,7 +120,7 @@
 						<p class="c7b mt20">没有收到邮件？</p>
 						<p>1. 请检查邮箱地址是否正确，你可以返回 <a href="#" class="c46">重新填写</a></p>
 						<p>2. 检查你的邮件垃圾箱</p>
-						<p>3. 若仍未收到确认，请尝试 <a href="#" class="c46">重新发送</a></p>
+						<p>3. 若仍未收到确认，请尝试 <a href="#" id="btn_sendMail" onclick="sendMainRep(this);" class="c46">重新发送</a></p>
 					</div>
                     <div class="clear"></div>
 				</div><!-- // step2 end -->
@@ -264,6 +264,25 @@
 				}
 				setTimeout(function(){ $('.tipsBox').remove(); },time);
 			}
+		}
+
+        var times;
+		function sendMainRep(obj){
+			var _this = $(obj);
+			_this.attr("disabled","disabled");
+			times = 2 * 30;
+			_this.html(times + '秒可以重新发送');
+			var timer = setInterval(function(){
+				times--;
+				//alert(times);
+				_this.html(times + '秒可以重新发送');
+				if(times == 0){
+					_this.html('重新发送');
+					_this.removeAttr('disabled');
+					clearInterval(timer);
+				}
+			},1000);
+			_this.attr('disabled','disabled');
 		}
 		
 		$(function(){
