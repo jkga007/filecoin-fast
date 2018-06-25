@@ -34,7 +34,7 @@ var InvitationCodeFunc = (function () {
                 $("#invitationLotteryCode_h3").html("抽奖码："+lotteryCode);
                 $("#invitationLotteryCode_h3_2").html("您的抽奖码为："+lotteryCode);
 
-                alert(count+"-"+invitationCode+"-"+lotteryCode+"-"+rate);
+                // alert(count+"-"+invitationCode+"-"+lotteryCode+"-"+rate);
             }else{
                 Core.alert("获取邀请码信息错误！", 2,false, function () {
 
