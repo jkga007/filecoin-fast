@@ -39,7 +39,7 @@ var RegistFunc = (function () {
                 });
             } else {
                 Core.alert("错误代码："+resultCode+",错误信息："+message, 2,false, function () {
-
+                    getCaptcha();
                 });
             }
         }, true,true);
