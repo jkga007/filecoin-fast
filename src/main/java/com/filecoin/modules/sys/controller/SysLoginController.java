@@ -103,9 +103,9 @@ public class SysLoginController extends AbstractController {
 			}
 			//用户信息
 			SysUserEntity user = sysUserService.queryByUserName(email);
-			Integer status = user.getStatus();
 
 			if(user != null){
+                Integer status = user.getStatus();
 				if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
 					return JsonResult.error("该用户已注册!处于待激活状态,请激活!");
 				}
