@@ -152,6 +152,32 @@ public class SysLoginController extends AbstractController {
 		return jsonResult;
 	}
 
+	@PostMapping(value = "/sys/resendMail")
+	public JsonResult resendMail(
+			@RequestParam(value = "userMail",required = true) String userMail,
+			@RequestParam(value = "userId",required = true) Long userId
+	) {
+		SysUserEntity sysUserEntity = sysUserService.queryObject(userId);
+		if(sysUserEntity != null){
+			String email = sysUserEntity.getEmail();
+			if(!userMail.equals(email)){
+				return JsonResult.error("注册用户与邮箱不匹配!,请重新注册!");
+			}
+			Integer status = sysUserEntity.getStatus();
+			//如果不是需要激活的,不需要再发邮件
+			if(Constant.UserStatus.NEED_ACTIVE.getValue() != status){
+				return JsonResult.error("该邮箱已激活!");
+			}
+		}else{
+			return JsonResult.error("注册失败!,请重新注册!");
+		}
+
+		SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
+		// 发送注册邮件
+		sendTemplateMail(userMail, userId, idWorker0.timeGen1());
+		return JsonResult.ok("邮件发送成功!");
+	}
+
 	/**
 	 * 激活
 	 * @param userId

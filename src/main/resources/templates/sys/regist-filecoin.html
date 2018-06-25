@@ -120,7 +120,7 @@
 						<p class="c7b mt20">没有收到邮件？</p>
 						<p>1. 请检查邮箱地址是否正确，你可以返回 <a href="#" class="c46">重新填写</a></p>
 						<p>2. 检查你的邮件垃圾箱</p>
-						<p>3. 若仍未收到确认，请尝试 <a href="#" id="btn_sendMail" onclick="sendMainRep(this);" class="c46">重新发送</a></p>
+						<p>3. 若仍未收到确认，请尝试 <a href="#" onclick="RegistFunc.resendMail(this);" class="c46">重新发送</a></p>
 					</div>
                     <div class="clear"></div>
 				</div><!-- // step2 end -->
@@ -228,6 +228,8 @@
 				</div><!-- // step5 end -->
 			</div>
 		</div><!-- // container end -->
+		<input type="hidden" name="user_id" id="user_id" value="460894143359483904"/>
+		<input type="hidden" name="user_mail" id="user_mail" value="316955509@qq.com"/>
 		<footer id="footer" class="w960 oh">
 		
 			</nav>
@@ -265,25 +267,6 @@
 				setTimeout(function(){ $('.tipsBox').remove(); },time);
 			}
 		}
-
-        var times;
-		function sendMainRep(obj){
-			var _this = $(obj);
-			_this.attr("disabled","disabled");
-			times = 2 * 30;
-			_this.html(times + '秒可以重新发送');
-			var timer = setInterval(function(){
-				times--;
-				//alert(times);
-				_this.html(times + '秒可以重新发送');
-				if(times == 0){
-					_this.html('重新发送');
-					_this.removeAttr('disabled');
-					clearInterval(timer);
-				}
-			},1000);
-			_this.attr('disabled','disabled');
-		}
 		
 		$(function(){
 			//AJAX提交以及验证表单
@@ -313,10 +296,10 @@
 			//切换步骤（目前只用来演示）
 			$('.processorBox li').click(function(){
                 var i = $(this).index();
-                if(i == globleIndex){
+//                if(i == globleIndex){
                     $('.processorBox li').removeClass('current').eq(i).addClass('current');
                     $('.step').fadeOut(300).eq(i).fadeIn(500);
-				}
+//				}
 			});
 		});
 	</script>
