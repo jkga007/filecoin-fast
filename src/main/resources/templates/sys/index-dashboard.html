@@ -36,14 +36,23 @@
                             <h1 class="title">用户面板</h1>
                             <!-- PAGE HEADING TAG - END -->
                         </div>
-
+                        <div class="pull-right hidden-xs">
+                            <ol class="breadcrumb">
+                                <li>
+                                    <a href="index-dashboard.html"><i class="fa fa-home"></i>矿池</a>
+                                </li>
+                                <li class="active">
+                                    <strong>用户面板</strong>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <section class="box nobox marginBottom0">
                         <div class="content-body">
                             <div class="row">
-                            	<div class="col-lg-4 col-sm-6 col-xs-12">
+                                <div class="col-lg-4 col-sm-6 col-xs-12">
                                     <div class="r4_counter db_box has-gradient-to-right-bottom">
                                         <div class="icon-after icon-computer"></div>
                                         <i class='pull-left icon-computer icon-md icon-white mt-10'></i>
@@ -63,7 +72,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-4 col-sm-6 col-xs-12">
                                     <div class="r4_counter db_box has-gradient-to-right-bottom">
                                         <div class="icon-after icon-hardisk"></div>
@@ -94,7 +103,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-lg-4 col-sm-6 col-xs-12">
                                     <div class="r4_counter db_box">
                                         <div class="icon-after icon-filalt"></div>
@@ -128,7 +137,7 @@
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div id="demoarea-chart">
-                                        <div id="demoarea-container" style="width: 100%;height:310px; text-align: center; margin:0 auto;"></div>
+                                        <div id="demoarea-container" style="width: 100%;height:294px; text-align: center; margin:0 auto;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -148,23 +157,21 @@
                         <div class="content-body">
                             <div class="row">
                                 <div class="col-xs-12 mt-5">
-                                    <script>
-                                        baseUrl = "https://widgets.cryptocompare.com/";
-                                        var scripts = document.getElementsByTagName("script");
-                                        var embedder = scripts[scripts.length - 1];
-                                        (function() {
-                                            var appName = encodeURIComponent(window.location.hostname);
-                                            if (appName == "") {
-                                                appName = "local";
-                                            }
-                                            var s = document.createElement("script");
-                                            s.type = "text/javascript";
-                                            s.async = true;
-                                            var theUrl = baseUrl + 'serve/v1/coin/multi?fsyms=BTC,ETH,XMR,LTC,XRP,NEO,DASH&tsyms=USD,EUR,CNY,GBP';
-                                            s.src = theUrl + (theUrl.indexOf("?") >= 0 ? "&" : "?") + "app=" + appName;
-                                            embedder.parentNode.appendChild(s);
-                                        })();
-                                    </script>
+                                    <table id="tech-companies-1" class="table table-small-font no-mb table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>交易所</th>
+                                            <th data-priority="1">币种</th>
+                                            <th data-priority="2">价格</th>
+                                            <th data-priority="3">涨幅</th>
+                                            <!--<th data-priority="4">更新时间</th>-->
+
+                                        </thead>
+                                        <tbody id="coinTickersTbody">
+                                        <!-- Repeat -->
+
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -186,23 +193,23 @@
                                 <div class="col-xs-12">
                                     <div class="transfer-wraper">
                                         <div class="form-group no-mb">
-                                                <div class="input-group mb-10">
+                                            <div class="input-group mb-10">
                                                 <span class="input-group-addon">1</span>
                                                 <span class="form-control">矿池开放注册</span>
-                                                </div>
-   											    <div class="input-group mb-10">
+                                            </div>
+                                            <div class="input-group mb-10">
                                                 <span class="input-group-addon">2</span>
                                                 <span class="form-control">矿池开放注册</span>
-                                                </div>
-                                                   											    <div class="input-group mb-10">
+                                            </div>
+                                            <div class="input-group mb-10">
                                                 <span class="input-group-addon">3</span>
                                                 <span class="form-control">矿池开放注册</span>
-                                                </div>
-                                                   											    <div class="input-group mb-10">
+                                            </div>
+                                            <div class="input-group mb-10">
                                                 <span class="input-group-addon">4</span>
                                                 <span class="form-control">矿池开放注册</span>
-                                                </div>
-                                                
+                                            </div>
+
                                         </div>
 
                                     </div>
@@ -226,7 +233,7 @@
                                 <div class="col-xs-12">
                                     <div class="transaction-wraper">
 
-                                         <img th:src="@{/filecoin/data/profile/qr.jpg}" width="366px" height="176">
+                                        <img th:src="@{/filecoin/data/profile/qr.jpg}" width="366px" height="176">
 
 
                                     </div>
@@ -250,7 +257,7 @@
                                     <div class="transfer-wraper">
                                         <div class="form-group no-mb">
 
-                                            
+
                                             <div class="input-group mb-10">
                                                 <span class="input-group-addon has-gradient-to-right-bottom">
                                                        <i class='icon-windows icon-white'></i>
@@ -266,16 +273,16 @@
                                                 <a href="#" class="input-group-addon" data-color-class="primary" data-animate=" animated fadeIn" data-toggle="tooltip" data-original-title="copy" data-placement="top"><i class="sysdownload">开发中</i></a>
                                             </div>
 
-                                            
+
                                             <div class="input-group">
                                                 <span class="input-group-addon has-gradient-to-right-bottom">
-                                                        <i class='icon-windows icon-white'></i>   
+                                                        <i class='icon-windows icon-white'></i>
                                                     </span>
                                                 <p class="form-control-static with-border"></p>
                                                 <a href="#" class="input-group-addon" data-color-class="primary" data-animate=" animated fadeIn" data-toggle="tooltip" data-original-title="copy" data-placement="top"><i class="sysdownload">开发中</i></a>
                                             </div>
-                                            
-                                            
+
+
 
                                             <div class="col-sm-6">
                                                 <button type="button" class="btn btn-primary btn-lg mt-20 has-gradient-to-right-bottom" style="width:100%">系统镜像下载</button>
@@ -295,9 +302,9 @@
 
                 <div class="clearfix"></div>
 
-                
 
-                
+
+
 
                 <div class="clearfix"></div>
 
@@ -305,7 +312,7 @@
             </div>
         </section>
         <!-- END CONTENT -->
-        
+
 
         <div class="chatapi-windows ">
 
@@ -317,11 +324,14 @@
     <span th:include="/common/footer :: commonOnLoadJs"></span>
     <!-- 登录js -->
     <script th:src="@{/js/modules/sys/login.js}"></script>
+    <!-- 面板js -->
+    <script th:src="@{/js/modules/sys/dashboard.js}"></script>
     <!-- END CORE TEMPLATE JS - END -->
     <script th:inline="javascript">
 
         $(function(){
             LoginFunc.getLoginUser();
+            DashboardFunc.getTickers();
         });
 
     </script>
