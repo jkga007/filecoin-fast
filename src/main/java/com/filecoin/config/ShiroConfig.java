@@ -92,8 +92,8 @@ public class ShiroConfig {
         filterMap.put("/sys/resendMail", "anon");
         //返回修改邮箱用户信息
         filterMap.put("/sys/getEditMailUser", "anon");
-
-
+        //获取交易所实时价格
+        filterMap.put("/sys/getCoinTickers", "anon");
 
         filterMap.put("/**/*.css", "anon");
         filterMap.put("/**/*.js", "anon");

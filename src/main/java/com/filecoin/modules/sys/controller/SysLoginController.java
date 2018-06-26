@@ -1,5 +1,6 @@
 package com.filecoin.modules.sys.controller;
 
+import com.filecoin.common.annotation.SysLog;
 import com.filecoin.common.exception.FileCoinException;
 import com.filecoin.common.utils.Constant;
 import com.filecoin.common.utils.JsonResult;
@@ -13,6 +14,9 @@ import com.google.code.kaptcha.Producer;
 import com.filecoin.common.utils.ShiroUtils;
 import com.filecoin.modules.sys.entity.SysUserEntity;
 import com.filecoin.modules.sys.service.SysUserService;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.slf4j.Logger;
@@ -471,6 +475,29 @@ public class SysLoginController extends AbstractController {
 			throw new FileCoinException("邮件发送失败！,请检查您的邮箱！", e);
 		}
 		javaMailSender.send(message);
+	}
+
+	/**
+	 * 获取交易所实时价格
+	 */
+	@RequestMapping(value = "/sys/getCoinTickers", method = RequestMethod.POST)
+	public JsonResult getCoinTickers(Model model) {
+		String s = null;
+		try{
+			OkHttpClient client = new OkHttpClient();
+
+			Request request = new Request.Builder()
+					.url("https://block.cc/api/v1/coin/tickers?coin=filecoin&exchange=&symbol=&page=0&size=50")
+					.get()
+					.build();
+
+			Response response = client.newCall(request).execute();
+			s = response.body().string();
+		}catch(Exception e){
+			throw new FileCoinException("获取交易所实时价格错误!");
+		}
+
+		return JsonResult.ok("获取交易所实时价格成功").put("coinData",s);
 	}
 	
 }
