@@ -52,6 +52,4 @@ spring:
     thymeleaf:
       mode: HTML5
       cache: false
-filecoin:
-    fullurl: 10.110.13.42:8080
 
