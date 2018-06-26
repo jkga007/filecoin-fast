@@ -25,8 +25,15 @@ var LoginFunc = (function () {
                 localStorage.removeItem("token");
                 localStorage.setItem("token",packet.token);
                 window.location.href = ctx + "/sys/gomasterindex";
-            } else {
-                Core.alert("账号或密码错误！", 2,false, function () {
+            } else if(resultCode == "1") {
+                //登录返回信息为待注册
+                var userId = packet.userId;
+                var email = packet.email;
+                Core.alert(message, 2,false, function () {
+                    window.location.href = ctx + "/sys/goregist";
+                });
+            }else {
+                Core.alert(message, 2,false, function () {
                     window.location.href = ctx + "/sys/gologin";
                 });
             }

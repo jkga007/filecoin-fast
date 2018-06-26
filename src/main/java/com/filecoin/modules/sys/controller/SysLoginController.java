@@ -115,10 +115,14 @@ public class SysLoginController extends AbstractController {
 				user = sysUserService.queryObject(userId);
 			}
 
+			//查询到用户,同时页面刚刚进来
 			if(user != null && "C".equals(registType)){
                 Integer status = user.getStatus();
 				if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
-					return JsonResult.error("该用户已注册!处于待激活状态,请激活!");
+					String emailUser = user.getEmail();
+					String emailEnd = emailUser.substring(emailUser.indexOf("@")+1,emailUser.length());
+					String mailUrl = "mail."+emailEnd;
+					return JsonResult.error(1,"该用户已注册!处于待激活状态,请激活!").put("registEmail",user.getEmail()).put("userId",user.getUserId()+"").put("mailUrl",mailUrl);
 				}
 				if(Constant.UserStatus.CLOCK.getValue() == status){
 					return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
@@ -304,7 +308,7 @@ public class SysLoginController extends AbstractController {
 
 			Integer status = user.getStatus();
 			if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
-				return JsonResult.error("该用户已注册!处于待激活状态,请激活!");
+				return JsonResult.error(1,"该用户已注册!处于待激活状态,请激活!").put("userId",user.getUserId()+"").put("email",user.getEmail());
 			}
 			if(Constant.UserStatus.CLOCK.getValue() == status){
 				return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
@@ -351,8 +355,9 @@ public class SysLoginController extends AbstractController {
 	/**
 	 * 去注册页
 	 */
-	@RequestMapping(value = "/sys/goregist", method = RequestMethod.GET)
-	public ModelAndView goregist(Model model) {
+	@RequestMapping(value = "/sys/goregist", method = {RequestMethod.GET})
+	public ModelAndView goregist(
+			Model model) {
 		model.addAttribute("msg","bbb");
 		return new ModelAndView("sys/regist-filecoin");
 	}
