@@ -16,6 +16,8 @@ public class MyTest {
         int length = email.length();
         String substring = email.substring(i+1, length);
         System.out.println(substring);
+        String a = new Sha256Hash("admin", "YzcmCZNvbXocrsz9dm8e").toHex();
+        System.out.println(a);
 
 
     }

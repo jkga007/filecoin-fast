@@ -49,8 +49,23 @@ var RegistFunc = (function () {
                     globleIndex = 1;
                     $('.processorBox li').eq(globleIndex).click();
                 });
-            } else {
-                Core.alert("错误代码："+resultCode+",错误信息："+message, 2,false, function () {
+            } else if(resultCode == "1"){
+                var email = packet.registEmail;
+                var userId = packet.userId;
+                var mailUrl = packet.mailUrl;
+                //待激活的信息,跳转激活页面(意外关闭页面或者怎么样)
+                Core.alert(message, 2,false, function () {
+                    $("#registEmail").html(email);
+                    $('#regist_type').val("U");
+                    $("#user_mail").val(email);
+                    $("#user_id").val(userId);
+                    $("#mailUrl").val(mailUrl);
+                    //模拟点击第二步
+                    globleIndex = 1;
+                    $('.processorBox li').eq(globleIndex).click();
+                });
+            }else {
+                Core.alert(message, 2,false, function () {
                     getCaptcha();
                 });
             }
