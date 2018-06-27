@@ -21,14 +21,16 @@ public class MyTest {
 //        System.out.println(substring);
 //        String a = new Sha256Hash("admin", "YzcmCZNvbXocrsz9dm8e").toHex();
 //        System.out.println(a);
-        OkHttpClient client = new OkHttpClient();
-
-        Request request = new Request.Builder()
-                .url("https://data.block.cc/api/v1/tickers?market=bitfinex")
-                .get()
-                .build();
-
-        Response response = client.newCall(request).execute();
-        System.out.println(response.body().string());
+//        OkHttpClient client = new OkHttpClient();
+//
+//        Request request = new Request.Builder()
+//                .url("https://data.block.cc/api/v1/tickers?market=bitfinex")
+//                .get()
+//                .build();
+//
+//        Response response = client.newCall(request).execute();
+//        System.out.println(response.body().string());
+        String a = new Sha256Hash("abcd1234", "kAtjQ0OywvPvMIbVxdO2").toHex();
+        System.out.println(a);
     }
 }
