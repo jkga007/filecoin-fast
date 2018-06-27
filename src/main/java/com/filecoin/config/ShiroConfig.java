@@ -62,6 +62,7 @@ public class ShiroConfig {
 
         //登录
         filterMap.put("/sys/login", "anon");
+        filterMap.put("/sys/loginBack", "anon");
         //注册
         filterMap.put("/sys/regist", "anon");
         //跳转登录页
