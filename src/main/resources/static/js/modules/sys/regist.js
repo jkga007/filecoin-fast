@@ -39,7 +39,7 @@ var RegistFunc = (function () {
                 var email = packet.registEmail;
                 var userId = packet.userId;
                 var mailUrl = packet.mailUrl;
-                Core.alert("提交成功~ 点击进入下一步", 1,false, function () {
+                Core.alert("注册成功~ 点击进入下一步", 1,false, function () {
                     $("#registEmail").html(email);
                     $('#regist_type').val("U");
                     $("#user_mail").val(email);
