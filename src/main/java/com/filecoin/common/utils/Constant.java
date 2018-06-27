@@ -111,6 +111,16 @@ public class Constant {
          * 需要激活
          */
         NEED_ACTIVE(2),
+
+        /**
+         * 需要绑定手机号
+         */
+        NEED_BIND_MOBILE(3),
+
+        /**
+         * 需要补充矿工资料
+         */
+        NEED_INPUT_MINER(4),
         /**
          * 锁定
          */
@@ -119,6 +129,34 @@ public class Constant {
         private int value;
 
         UserStatus(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    /**
+     * 发送状态
+     */
+    public enum SendStatus {
+        /**
+         * 已发送
+         */
+        NEED_SEND(0),
+        /**
+         * 发送成功
+         */
+        SUCCESS(1),
+        /**
+         * 发送失败
+         */
+        ERROR(2);
+
+        private int value;
+
+        SendStatus(int value) {
             this.value = value;
         }
 

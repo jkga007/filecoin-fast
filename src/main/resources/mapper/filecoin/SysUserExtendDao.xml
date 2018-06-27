@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.filecoin.modules.filecoin.dao.SysUserExtendDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.filecoin.modules.filecoin.entity.SysUserExtendEntity" id="sysUserExtendMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="trueName" column="true_name"/>
+        <result property="iccid" column="iccid"/>
+        <result property="minerMachineAddr" column="miner_machine_addr"/>
+        <result property="minerMachineEnv" column="miner_machine_env"/>
+        <result property="onLineTime" column="on_line_time"/>
+        <result property="storageLen" column="storage_len"/>
+        <result property="bandWidth" column="band_width"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.filecoin.modules.filecoin.entity.SysUserExtendEntity">
+		select * from sys_user_extend where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.filecoin.modules.filecoin.entity.SysUserExtendEntity">
+		select * from sys_user_extend
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from sys_user_extend 
+	</select>
+	 
+	<insert id="save" parameterType="com.filecoin.modules.filecoin.entity.SysUserExtendEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_user_extend
+		(
+			`user_id`, 
+			`true_name`, 
+			`iccid`, 
+			`miner_machine_addr`, 
+			`miner_machine_env`, 
+			`on_line_time`, 
+			`storage_len`, 
+			`band_width`
+		)
+		values
+		(
+			#{userId}, 
+			#{trueName}, 
+			#{iccid}, 
+			#{minerMachineAddr}, 
+			#{minerMachineEnv}, 
+			#{onLineTime}, 
+			#{storageLen}, 
+			#{bandWidth}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.filecoin.modules.filecoin.entity.SysUserExtendEntity">
+		update sys_user_extend 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="trueName != null">`true_name` = #{trueName}, </if>
+			<if test="iccid != null">`iccid` = #{iccid}, </if>
+			<if test="minerMachineAddr != null">`miner_machine_addr` = #{minerMachineAddr}, </if>
+			<if test="minerMachineEnv != null">`miner_machine_env` = #{minerMachineEnv}, </if>
+			<if test="onLineTime != null">`on_line_time` = #{onLineTime}, </if>
+			<if test="storageLen != null">`storage_len` = #{storageLen}, </if>
+			<if test="bandWidth != null">`band_width` = #{bandWidth}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_user_extend where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from sys_user_extend where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
