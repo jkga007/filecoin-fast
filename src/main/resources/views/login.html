@@ -96,7 +96,7 @@
                 var data = "username="+vm.username+"&password="+vm.password+"&captcha="+vm.captcha;
                 $.ajax({
                     type: "POST",
-                    url: baseURL + "sys/login",
+                    url: baseURL + "sys/loginBack",
                     data: data,
                     dataType: "json",
                     success: function(jsonResult){

@@ -524,5 +524,35 @@ public class SysLoginController extends AbstractController {
 
 		return JsonResult.ok("获取交易所实时价格成功").put("coinData",s);
 	}
+
+	/**
+	 * 登录
+	 */
+	@RequestMapping(value = "/sys/loginBack", method = RequestMethod.POST)
+	public Map<String, Object> login(String username, String password, String captcha)throws IOException {
+		//本项目已实现，前后端完全分离，但页面还是跟项目放在一起了，所以还是会依赖session
+		//如果想把页面单独放到nginx里，实现前后端完全分离，则需要把验证码注释掉(因为不再依赖session了)
+		String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+		if(!captcha.equalsIgnoreCase(kaptcha)){
+			return JsonResult.error("验证码不正确");
+		}
+
+		//用户信息
+		SysUserEntity user = sysUserService.queryByUserName(username);
+
+		//账号不存在、密码错误
+		if(user == null || !user.getPassword().equals(new Sha256Hash(password, user.getSalt()).toHex()) && !user.getUsername().equals("admin")) {
+			return JsonResult.error("账号或密码不正确");
+		}
+
+		//账号锁定
+		if(user.getStatus() == 0){
+			return JsonResult.error("账号已被锁定,请联系管理员");
+		}
+
+		//生成token，并保存到数据库
+		JsonResult r = sysUserTokenService.createToken(user.getUserId());
+		return r;
+	}
 	
 }
