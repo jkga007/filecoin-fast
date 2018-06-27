@@ -16,10 +16,18 @@
                 var code = jsonResult.code;
                 var msg = jsonResult.msg;
                 if(code == 0){
-                    Core.alert("注册成功!,准备跳转首页！", 1,false, function () {
-                        localStorage.removeItem("token");
-                        localStorage.setItem("token",jsonResult.token);
-                        window.location.href = ctx+"/sys/gomasterindex";
+//                    Core.alert("注册成功!,准备跳转首页！", 1,false, function () {
+//                        localStorage.removeItem("token");
+//                        localStorage.setItem("token",jsonResult.token);
+//                        window.location.href = ctx+"/sys/gomasterindex";
+//                    });
+                    var step = jsonResult.step;
+                    var userId = jsonResult.userId;
+                    $("#step").val(step);
+                    $("#userId").val(userId);
+                    Core.alert(msg, 1,false, function () {
+                        $("#mainForm").attr("action",ctx+"/sys/goregist");
+                        $("#mainForm").submit();
                     });
                 }else{
                     Core.alert(msg, 2,false, function () {
@@ -29,5 +37,9 @@
 
             });
         </script>
+    <form name="mainForm" id="mainForm" method="post">
+        <input type="hidden" name="step" id="step" value=""/>
+        <input type="hidden" name="userId" id="userId" value=""/>
+    </form>
     </body>
 </html>

@@ -14,23 +14,26 @@ var RegistFunc = (function () {
 
     registFunc.ajaxBaseEmailReg = function () {
 
-        var email = $.trim($('.email').val());
-        var vcode = $.trim($('#vcode').val());
-        var password = $.trim($('.passwd').val());
-        var captcha = $.trim($('.verifyCode').val());
-        var registType = $.trim($('#regist_type').val());
-        var userId = $.trim($('#user_id').val());
+        // var email = $.trim($('.email').val());
+        // var vcode = $.trim($('#vcode').val());
+        // var password = $.trim($('.passwd').val());
+        // var captcha = $.trim($('.verifyCode').val());
+        // var registType = $.trim($('#regist_type').val());
+        // var userId = $.trim($('#user_id').val());
 
-        var path = ctx + "/sys/regist";
+        var jsonParam = Core.serializeJsonStr($("#mainForm"));
+
+        var path = ctx + "/sys/regist/emailRegist";
         var ajax = new AJAXPacket(path, "正在执行...请稍后");
 
-        ajax.add("email", email);
-        ajax.add("vcode", vcode);
-        ajax.add("password", password);
-        ajax.add("captcha", captcha);
-        ajax.add("registType", registType);
-        ajax.add("userId", userId);
-        Core.sendPacket(ajax, function (packet) {
+        // ajax.add("email", email);
+        // ajax.add("vcode", vcode);
+        // ajax.add("password", password);
+        // ajax.add("captcha", captcha);
+        // ajax.add("registType", registType);
+        // ajax.add("userId", userId);
+        ajax.addJsonArray(jsonParam);
+        Core.sendPacketJson(ajax, function (packet) {
             var resultCode = packet.code;
             var message = packet.msg;
             var data = packet.data;
@@ -167,6 +170,55 @@ var RegistFunc = (function () {
         }
     };
 
+    /**
+     * 注册手机信息
+     */
+    registFunc.ajaxPhoneMsgReg = function () {
+
+        var email = $.trim($('.email').val());
+        var vcode = $.trim($('#vcode').val());
+        var password = $.trim($('.passwd').val());
+        var captcha = $.trim($('.verifyCode').val());
+        var registType = $.trim($('#regist_type').val());
+        var userId = $.trim($('#user_id').val());
+
+        var path = ctx + "/sys/regist";
+        var ajax = new AJAXPacket(path, "正在执行...请稍后");
+
+        ajax.add("email", email);
+        ajax.add("vcode", vcode);
+        ajax.add("password", password);
+        ajax.add("captcha", captcha);
+        ajax.add("registType", registType);
+        ajax.add("userId", userId);
+        Core.sendPacket(ajax, function (packet) {
+            var resultCode = packet.code;
+            var message = packet.msg;
+            var data = packet.data;
+
+            if (resultCode == "0") {
+                var email = packet.registEmail;
+                var userId = packet.userId;
+                var mailUrl = packet.mailUrl;
+                Core.alert("注册成功~ 点击进入下一步", 1,false, function () {
+                    $("#registEmail").html(email);
+                    $('#regist_type').val("U");
+                    $("#user_mail").val(email);
+                    $("#user_id").val(userId);
+                    $("#mailUrl").val(mailUrl);
+                    //模拟点击第二步
+                    globleIndex = 1;
+                    $('.processorBox li').eq(globleIndex).click();
+                });
+            } else {
+                Core.alert(message, 2,false, function () {
+                    getCaptcha();
+                });
+            }
+        }, true,true);
+
+    };
+
 
     /***
      * 初始化信息方法
@@ -179,5 +231,82 @@ var RegistFunc = (function () {
 
 })();
 $(function () {
+
     RegistFunc.init();
+
+    $(".changeVerifyCode").click(function(){
+        $("#captchaImgId").attr("src",ctx+"/captcha.jpg?t=" + $.now());
+    });
+
+    //AJAX提交以及验证表单
+    $('#nextBtn').click(function(){
+        var email = $('.email').val();
+        var passwd = $('.passwd').val();
+        var passwd2 = $('.passwd2').val();
+        var verifyCode = $('.verifyCode').val();
+        var EmailReg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/; //邮件正则
+        if(email == ''){
+            showTips('请填写您的邮箱~');
+        }else if(!EmailReg.test(email)){
+            showTips('您的邮箱格式错咯~');
+        }else if(passwd == ''){
+            showTips('请填写您的密码~');
+        }else if(passwd2 == ''){
+            showTips('请再次输入您的密码~');
+        }else if(passwd != passwd2 || passwd2 != passwd){
+            showTips('两次密码输入不一致呢~');
+        }else if(verifyCode == ''){
+            showTips('请输入验证码~');
+        }else{
+            RegistFunc.ajaxBaseEmailReg();
+        }
+    });
+
+    //验证手机号码
+    $('#nextBtn2').click(function(){
+        var jsonParam = Core.serializeJsonStr($("#mainForm"));
+
+        var path = ctx + "/sys/regist/phoneBind";
+        var ajax = new AJAXPacket(path, "正在执行...请稍后");
+
+        ajax.addJsonArray(jsonParam);
+        Core.sendPacketJson(ajax, function (packet) {
+            var resultCode = packet.code;
+            var message = packet.msg;
+
+            if (resultCode == "0") {
+                var userId = packet.userId;
+                Core.alert(message, 1,false, function () {
+                    $("#user_id").val(userId);
+                    //模拟点击第4步
+                    globleIndex = 3;
+                    $('.processorBox li').eq(globleIndex).click();
+                });
+            } else {
+                Core.alert(message, 2,false, function () {
+
+                });
+            }
+        }, true,true);
+
+    });
+
+    //切换步骤（目前只用来演示）
+    $('.processorBox li').click(function(){
+        var i = $(this).index();
+//                if(i == globleIndex){
+        $('.processorBox li').removeClass('current').eq(i).addClass('current');
+        $('.step').fadeOut(300).eq(i).fadeIn(500);
+//				}
+    });
+
+    if(step != null && userId != null){
+        alert(step + ",," + userId);
+        //在这里跳转
+        //模拟点击
+        globleIndex = Number(step) - 1;
+        $('.processorBox li').eq(globleIndex).click();
+        $("#user_id").val(userId);
+    }
+
 });
