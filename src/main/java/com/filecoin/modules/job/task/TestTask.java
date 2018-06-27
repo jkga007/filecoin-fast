@@ -2,6 +2,7 @@ package com.filecoin.modules.job.task;
 
 
 
+import com.filecoin.modules.filecoin.service.WSendMessageService;
 import com.filecoin.modules.sys.entity.SysUserEntity;
 import com.filecoin.modules.sys.service.SysUserService;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -24,25 +25,23 @@ public class TestTask {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Autowired
-	private SysUserService sysUserService;
+	private WSendMessageService wSendMessageService;
 
 	//定时任务只能接受一个参数；如果有多个参数，使用json数据即可
-	public void test(String params){
-		logger.info("我是带参数的test方法，正在被执行，参数为：" + params);
+	public void batchSendMessageByParam(String params){
+		logger.info("我是带参数的batchSendMessage方法，正在被执行，参数为：" + params);
 		
 		try {
 			Thread.sleep(1000L);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
-		SysUserEntity user = sysUserService.queryObject(1L);
-		System.out.println(ToStringBuilder.reflectionToString(user));
-		
 	}
 	
-	
-	public void test2(){
-		logger.info("我是不带参数的test2方法，正在被执行");
+	//定时任务，无需参数的
+	public void batchSendMessage(){
+		logger.info("我是不带参数的batchSendMessage方法，正在被执行");
+		//获取待发送短信列表 15秒执行一次，一次发送50条
+
 	}
 }
