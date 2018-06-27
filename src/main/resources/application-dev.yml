@@ -39,8 +39,8 @@ spring:
     mail:
       protocol: smtp
       host: smtp.qq.com
-      username: 316955509@qq.com
-      password: fzhgucnqbvejbife
+      username: support@ipfsun.com
+      password: wnkqslunibgccaga
       default-encoding: UTF-8
       properties:
         mail:

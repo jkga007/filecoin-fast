@@ -119,6 +119,7 @@ public class SysLoginController extends AbstractController {
                 user = sysUserService.queryObject(userId);
 			}
 
+
 			//查询到用户,同时页面刚刚进来
 			if(user != null && "C".equals(registType)){
                 Integer status = user.getStatus();
@@ -144,8 +145,10 @@ public class SysLoginController extends AbstractController {
 			SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
 
 			SysUserEntity userEntity = new SysUserEntity();
-
-			String userOldEmail = user.getEmail();
+            String userOldEmail = "";
+            if(user != null){
+                userOldEmail = user.getEmail();
+            }
 			userEntity.setPassword(password);
 			userEntity.setEmail(email);
 			userEntity.setUsername(email);
@@ -180,6 +183,7 @@ public class SysLoginController extends AbstractController {
                 }
 				//返回修改的注册
 				userEntity.setUserId(user.getUserId());
+                userEntity.setSalt(user.getSalt());
 				sysUserService.update(userEntity);
 			}
 

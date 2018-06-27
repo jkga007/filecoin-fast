@@ -364,3 +364,19 @@ CREATE INDEX IDX_QRTZ_FT_J_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_NAME,JOB_GROU
 CREATE INDEX IDX_QRTZ_FT_JG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,JOB_GROUP);
 CREATE INDEX IDX_QRTZ_FT_T_G ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP);
 CREATE INDEX IDX_QRTZ_FT_TG ON QRTZ_FIRED_TRIGGERS(SCHED_NAME,TRIGGER_GROUP);
+
+cd /root/work/apache-tomcat-8.5.31/webapps
+unzip filecoin-app.zip
+
+cd /root/work/apache-tomcat-8.5.31/bin
+nohup ./startup.sh &
+tail -200f /root/work/apache-tomcat-8.5.31/logs/catalina.out
+
+ubuntu 安装nginx
+https://www.cnblogs.com/piscesLoveCc/p/5794926.html
+查询nigix进程
+ps -ef | grep nginx
+杀主进程
+kill -QUIT 主进程号
+
+sudo /usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
