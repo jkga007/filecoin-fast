@@ -88,15 +88,33 @@
                                         <input type="password" class="form-control" id="password" name="password" value="" placeholder="password">
                                     </div>
                                 </div>
+                            </div>
 
+                            <div class="col-xs-12">
                                 <div class="form-group">
                                     <label class="form-label">验证码：</label>
                                     <div class="controls">
                                         <input type="text" id="captcha" name="captcha" class="frm_input verifyCode" maxlength="5"/>
-                                        <img id="captchaImgId" th:src="@{/captcha.jpg}" alt="" />
-                                        <a class="changeVerifyCode" href="javascript:void(0);" onclick = "getCaptcha();">换一张</a>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label"></label>
+                                    <div class="controls">
+                                        <img id="captchaImgId" th:src="@{/captcha.jpg}" alt="" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <div class="form-group">
+                                    <label class="form-label"></label>
+                                    <div class="controls">
+                                        <a id="captchaImgId_cg" class="changeVerifyCode" href="#" onclick = "getCaptcha();">换一张</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
 
                                 <div class="pull-left">
                                     <a href="javascript:void(0);" class="btn btn-primary mt-10 btn-corner right-15" onclick="doLoginBtn();">登录</a>

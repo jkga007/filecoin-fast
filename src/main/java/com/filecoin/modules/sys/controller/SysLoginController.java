@@ -116,17 +116,22 @@ public class SysLoginController extends AbstractController {
 			SysUserEntity user = sysUserService.queryByUserName(email);
 
 			if("U".equals(registType) && userId !=null){
-				user = sysUserService.queryObject(userId);
+                user = sysUserService.queryObject(userId);
 			}
 
 			//查询到用户,同时页面刚刚进来
 			if(user != null && "C".equals(registType)){
                 Integer status = user.getStatus();
 				if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
-					String emailUser = user.getEmail();
-					String emailEnd = emailUser.substring(emailUser.indexOf("@")+1,emailUser.length());
-					String mailUrl = "mail."+emailEnd;
-					return JsonResult.error(1,"该用户已注册!处于待激活状态,请激活!").put("registEmail",user.getEmail()).put("userId",user.getUserId()+"").put("mailUrl",mailUrl);
+					if(user.getPassword().equals(new Sha256Hash(password, user.getSalt()).toHex())) {
+						String emailUser = user.getEmail();
+						String emailEnd = emailUser.substring(emailUser.indexOf("@")+1,emailUser.length());
+						String mailUrl = "mail."+emailEnd;
+						return JsonResult.error(1,"该用户已注册!处于待激活状态,请激活!").put("registEmail",user.getEmail()).put("userId",user.getUserId()+"").put("mailUrl",mailUrl);
+					}else{
+						return JsonResult.error("该用户已激活!,请输入正确密码继续!");
+					}
+
 				}
 				if(Constant.UserStatus.CLOCK.getValue() == status){
 					return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
@@ -140,6 +145,7 @@ public class SysLoginController extends AbstractController {
 
 			SysUserEntity userEntity = new SysUserEntity();
 
+			String userOldEmail = user.getEmail();
 			userEntity.setPassword(password);
 			userEntity.setEmail(email);
 			userEntity.setUsername(email);
@@ -154,9 +160,24 @@ public class SysLoginController extends AbstractController {
 				userEntity.setUserId(idWorker0.nextId());
 				sysUserService.save(userEntity);
 			}else if("U".equals(registType)){
+			    //如果是返回修改
 				if(user == null){
 					return JsonResult.error("获取用户信息失败!");
-				}
+				}else{
+				    //如果新旧email不一致
+				    if(!email.equals(userOldEmail)){
+				        //查询新的email是否在数据中存在
+                        SysUserEntity userByEmail = sysUserService.queryByUserName(email);
+                        //如果新修改的
+                        if(userByEmail != null){
+                            Long userIdOld = userByEmail.getUserId();
+                            //新旧ID不一样
+                            if(userIdOld != user.getUserId()){
+                                return JsonResult.error("新填写的邮箱已被注册!,请检查!");
+                            }
+                        }
+                    }
+                }
 				//返回修改的注册
 				userEntity.setUserId(user.getUserId());
 				sysUserService.update(userEntity);
@@ -465,7 +486,7 @@ public class SysLoginController extends AbstractController {
 			Context context = new Context();
 			context.setVariable("id", userId);
 			context.setVariable("timestamp", timestamp);
-			context.setVariable("url", "localhost:8080");
+			context.setVariable("url", "120.79.242.64");
 			context.setVariable("other", "utm_campaign=filecoin-email-verification&utm_content=html&utm_medium=email&utm_source=verification-email");
 			String emailContent = templateEngine.process("emailTemplate", context);
 			helper.setText(emailContent, true);

@@ -21,6 +21,7 @@ CREATE TABLE `sys_user` (
   `mobile` varchar(100) COMMENT '手机号',
   `status` tinyint COMMENT '状态  0：禁用   1：正常',
   `create_user_id` bigint(20) COMMENT '创建者ID',
+  `invitation_code` varchar(16) COMMENT '邀请人邀请码',
   `create_time` datetime COMMENT '创建时间',
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX (`username`)
@@ -85,6 +86,14 @@ CREATE TABLE `sys_log` (
   `create_date` datetime COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=`InnoDB` DEFAULT CHARACTER SET utf8 COMMENT='系统日志';
+
+CREATE TABLE `d_invitation_code_info` (
+  `invitation_code` char(6) NOT NULL COMMENT '邀请码',
+  `user_id` bigint(20) NOT NULL COMMENT '归属用户id',
+  `status` char(2) NOT NULL COMMENT '状态 00-未使用 01-已使用',
+  `updatetime` datetime NOT NULL COMMENT '更新时间',
+  UNIQUE KEY `uk_invitation_code` (`invitation_code`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- 初始数据 
 INSERT INTO `sys_user` (`user_id`, `username`, `password`, `salt`, `email`, `mobile`, `status`, `create_user_id`, `create_time`) VALUES ('1', 'admin', '9ec9750e709431dad22365cabc5c625482e574c74adaebba7dd02f1129e4ce1d', 'YzcmCZNvbXocrsz9dm8e', 'root@renren.io', '13612345678', '1', '1', '2016-11-11 11:11:11');

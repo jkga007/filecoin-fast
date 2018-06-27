@@ -53,6 +53,8 @@ var LoginFunc = (function () {
 //                var user = $.parseJSON(userObj);
 //                 alert("当前登录用户是：------"+userObj.username);
                 $("#userNameo").html(userObj.username);
+                $("#userMailInner").val(userObj.email);
+                $("#userMailInnerSmall").html("您认证的邮箱地址："+userObj.email+" 已通过认证！");
             }else{
                 window.location.href = ctx + "/sys/gologin";
             }
