@@ -13,5 +13,5 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface SysUserExtendDao extends BaseDao<SysUserExtendEntity> {
-	
+    SysUserExtendEntity queryObjectByUserId(Long userId);
 }

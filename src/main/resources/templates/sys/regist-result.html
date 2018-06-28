@@ -8,27 +8,27 @@
         <script th:src="@{/libs/jquery.min.js}"></script>
         <script th:src="@{/plugins/layer/layer.js}"></script>
         <script th:src="@{/plugins/public.js}"></script>
+        <script th:src="@{/plugins/crtptojs/crypto-js.js}"></script>
         <script type="text/javascript" th:inline="javascript">
             var ctx= [[${#httpServletRequest.getContextPath()}]];
             var jsonResult = [[${jsonResult}]];
             //document.ready 方法
             $(function () {
+
+                // alert(plaintext);
                 var code = jsonResult.code;
                 var msg = jsonResult.msg;
                 if(code == 0){
-//                    Core.alert("注册成功!,准备跳转首页！", 1,false, function () {
-//                        localStorage.removeItem("token");
-//                        localStorage.setItem("token",jsonResult.token);
-//                        window.location.href = ctx+"/sys/gomasterindex";
-//                    });
                     var step = jsonResult.step;
-                    var userId = jsonResult.userId;
-                    $("#step").val(step);
-                    $("#userId").val(userId);
+                    var userId = jsonResult.userId+"";
+
+                    // base64 encrypt
+                    var rawStr = step+"#"+userId;
+                    var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
+                    var base64 = CryptoJS.enc.Base64.stringify(wordArray);
+
                     Core.alert(msg, 1,false, function () {
-                        // $("#mainForm").attr("action",ctx+"/modules/filecoin/regist.html");
-                        // $("#mainForm").submit();
-                        var url = "/modules/filecoin/regist.html?step="+step+"&userId="+userId;
+                        var url = "/modules/filecoin/regist.html?value="+base64;
                         window.location.href = url;
                     });
                 }else{
@@ -39,9 +39,5 @@
 
             });
         </script>
-    <form name="mainForm" id="mainForm" method="post">
-        <input type="hidden" name="step" id="step" value=""/>
-        <input type="hidden" name="userId" id="userId" value=""/>
-    </form>
     </body>
 </html>

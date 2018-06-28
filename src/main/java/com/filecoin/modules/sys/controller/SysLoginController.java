@@ -230,32 +230,52 @@ public class SysLoginController extends AbstractController {
 			//手机信息绑定
 			case "phoneBind":
 
-				//保存用户扩展信息
-				SysUserExtendEntity extendEntity = new SysUserExtendEntity();
-				extendEntity.setId(idWorker0.nextId());
+				SysUserEntity sysUserEntity = sysUserService.queryObject(userId);
+				if(sysUserEntity == null){
+					return JsonResult.error("用户不存在!,请检查!");
+				}
+				SysUserExtendEntity extendEntity = userExtendService.queryObjectByUserId(userId);
+				if(extendEntity == null){
+					extendEntity = new SysUserExtendEntity();
+					extendEntity.setUserId(userId);
+				}
+				//真实姓名
 				extendEntity.setTrueName(trueName);
-				extendEntity.setUserId(userId);
+				//身份证号
 				extendEntity.setIccid(iccid);
 
-				userExtendService.save(extendEntity);
-				//保存发送手机短信信息
+				//修改用户中的手机号信息,状态信息
 
-				WSendMessageEntity messageEntity = new WSendMessageEntity();
-				messageEntity.setId(idWorker0.nextId());
-				messageEntity.setInsertTime(new Date());
-				messageEntity.setMobile(phone);
-				messageEntity.setStatus(Constant.SendStatus.NEED_SEND.getValue());
-				messageEntity.setUserId(userId);
+				sysUserEntity.setStatus(Constant.UserStatus.NEED_INPUT_MINER.getValue());
+				List<Long> roleIdList = new ArrayList<>();
+				sysUserEntity.setRoleIdList(roleIdList);
 
-				messageService.save(messageEntity);
-
-				SysUserEntity user = sysUserService.queryObject(userId);
-				jsonResult = JsonResult.ok("手机绑定成功!,请完善矿工资料").put("userId",user);
+				userExtendService.saveOrUpdateAndEditUser(extendEntity,sysUserEntity);
+				jsonResult = JsonResult.ok("手机绑定成功!,请完善矿工资料").put("userId",userId+"").put("step",4);
 
 				break;
 			//矿工资料完善
 			case "minerInput":
+				SysUserEntity sysUserEntity2 = sysUserService.queryObject(userId);
+				if(sysUserEntity2 == null){
+					return JsonResult.error("用户不存在!,请检查!");
+				}
+				SysUserExtendEntity extendEntity2 = userExtendService.queryObjectByUserId(userId);
+				if(extendEntity2 == null){
+					return JsonResult.error("用户资料不完善!,请检查!");
+				}
+				extendEntity2.setBandWidth(bandWidth);
+				extendEntity2.setMinerMachineAddr(minerMachineAddr);
+				extendEntity2.setMinerMachineEnv(minerMachineEnv);
+				extendEntity2.setOnLineTime(onLineTime);
+				extendEntity2.setStorageLen(storageLen);
+				//修改用户状态为正常
+				sysUserEntity2.setStatus(Constant.UserStatus.OK.getValue());
+				List<Long> roleIdList2 = new ArrayList<>();
+				sysUserEntity2.setRoleIdList(roleIdList2);
 
+				jsonResult = userExtendService.saveOrUpdateAndActive(extendEntity2, sysUserEntity2);
+				jsonResult = jsonResult.put("code","矿工资料完善成功!,请查看邀请码并登陆!").put("userId",userId+"").put("step",5);
 				break;
 			//邀请注册
 			case "YQZC":

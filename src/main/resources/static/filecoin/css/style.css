@@ -1082,7 +1082,8 @@ header {
 #particles-js {
 	width: 100%;
 	height: 100%;
-	background-image: url('../images/banner2.png');
+	background-image:url('../images/banner2.png');
+	background-color:#000;
 	background-size: cover;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
@@ -1131,9 +1132,7 @@ header {
     text-align: center;
     position: absolute;
     top: 150%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+	width:100%;
 }
 
 .cd-intro .home-arrow-down .btn {

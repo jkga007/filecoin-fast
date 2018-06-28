@@ -203,7 +203,7 @@
 
         $.validator.setDefaults({
             submitHandler: function () {
-                var jsonParam = Core.serializeJsonStr($("#msg_validate"));
+                var jsonParam = Core.serializeJsonStr("msg_validate");
                 LoginFunc.doLogin(jsonParam);
             }
         });

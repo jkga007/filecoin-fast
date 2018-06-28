@@ -21,7 +21,7 @@ var RegistFunc = (function () {
         // var registType = $.trim($('#regist_type').val());
         // var userId = $.trim($('#user_id').val());
 
-        var jsonParam = Core.serializeJsonStr($("#mainForm"));
+        var jsonParam = Core.serializeJsonStr("mainForm");
 
         var path = ctx + "/sys/regist/emailRegist";
         var ajax = new AJAXPacket(path, "正在执行...请稍后");
@@ -264,32 +264,103 @@ $(function () {
 
     //验证手机号码
     $('#nextBtn2').click(function(){
-        var jsonParam = Core.serializeJsonStr($("#mainForm"));
 
-        var path = ctx + "/sys/regist/phoneBind";
-        var ajax = new AJAXPacket(path, "正在执行...请稍后");
-
-        ajax.addJsonArray(jsonParam);
-        Core.sendPacketJson(ajax, function (packet) {
-            var resultCode = packet.code;
-            var message = packet.msg;
-
-            if (resultCode == "0") {
-                var userId = packet.userId;
-                Core.alert(message, 1,false, function () {
-                    $("#user_id").val(userId);
-                    //模拟点击第4步
-                    globleIndex = 3;
-                    $('.processorBox li').eq(globleIndex).click();
-                });
-            } else {
-                Core.alert(message, 2,false, function () {
-
-                });
-            }
-        }, true,true);
+        $("#step3_frm").submit();
 
     });
+
+    //验证矿工资料
+    $('#finishedBtn').click(function(){
+
+        $("#step4_frm").submit();
+
+    });
+
+    $("#step3_frm").validate({
+        rules: {
+            trueName: {
+                required: true
+            },
+            iccid: {
+                required: true
+            },
+            phone: {
+                required: true
+            },
+            phoneYzm: {
+                required: true
+            }
+        },
+        messages: {
+            trueName: {
+                required: "请输入真实姓名"
+            },
+            iccid: {
+                required: "请输入身份证号"
+            },
+            phone: {
+                required: "请输入手机号码"
+            },
+            phoneYzm: {
+                required: "请输入手机验证码"
+            }
+        },
+        submitHandler:function(form){
+
+            var jsonParam = Core.serializeJsonStr("mainForm,step1_frm,step3_frm,step4_frm");
+
+            var path = ctx + "/sys/regist/phoneBind";
+            var ajax = new AJAXPacket(path, "正在执行...请稍后");
+
+            ajax.addJsonArray(jsonParam);
+            Core.sendPacketJson(ajax, function (packet) {
+                var resultCode = packet.code;
+                var message = packet.msg;
+
+                if (resultCode == "0") {
+                    var userId = packet.userId;
+                    Core.alert(message, 1,false, function () {
+                        $("#user_id").val(userId);
+                        //模拟点击第4步
+                        globleIndex = 3;
+                        $('.processorBox li').eq(globleIndex).click();
+                        var url = "/modules/filecoin/regist.html?step="+4+"&userId="+userId;
+                        window.location.href = url;
+                    });
+                } else {
+                    Core.alert(message, 2,false, function () {
+
+                    });
+                }
+            }, true,true);
+
+            return false;
+        }
+    });
+
+
+    $("#step4_frm").validate({
+        rules: {
+            minerMachineAddr: {
+                required: true
+            }
+        },
+        messages: {
+            minerMachineAddr: {
+                required: "请输入矿机位置"
+            }
+        },
+        submitHandler:function(form){
+
+            alert(255);
+
+            return false;
+        }
+    });
+
+
+
+
 
     //切换步骤（目前只用来演示）
     $('.processorBox li').click(function(){
@@ -300,7 +371,8 @@ $(function () {
 //				}
     });
 
-    if(step != null && userId != null){
+    if(step != '' && userId != ''){
+        alert(1);
         //在这里跳转
         //模拟点击
         globleIndex = Number(step) - 1;

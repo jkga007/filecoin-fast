@@ -10,17 +10,23 @@ var Core = Core
          */
         core.serializeJsonStr = function (jqObj) {
             var o = {};
-            var a = $(jqObj).serializeArray();
-            $.each(a, function () {
-                if (o[this.name]) {
-                    if (!o[this.name].push) {
-                        o[this.name] = [o[this.name]];
+            var objArr = new Array();
+            // if(jqObj.indexOf(",") != -1){
+            objArr = jqObj.split(",");
+            // }
+            for(var i=0;i<objArr.length;i++){
+                var a = $("#"+objArr[i]).serializeArray();
+                $.each(a, function () {
+                    if (o[this.name]) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
                     }
-                    o[this.name].push(this.value || '');
-                } else {
-                    o[this.name] = this.value || '';
-                }
-            });
+                });
+            }
             return o;
         };
 
@@ -395,10 +401,11 @@ var Core = Core
                     if (loadingFlag) {
                         core.close(_layerIndex);
                     }
+                    console.log(xhr.responseJSON);
                     //token过期，则跳转到登录页面
-                    if(xhr.responseJSON.code == 401){
-                        parent.location.href = ctx + 'login.html';
-                    }
+                    // if(xhr.responseJSON.code == 401){
+                    //     parent.location.href = ctx + 'login.html';
+                    // }
                 }
             });
         };

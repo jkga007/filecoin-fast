@@ -1,6 +1,8 @@
 package com.filecoin.modules.filecoin.service;
 
+import com.filecoin.common.utils.JsonResult;
 import com.filecoin.modules.filecoin.entity.SysUserExtendEntity;
+import com.filecoin.modules.sys.entity.SysUserEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +29,11 @@ public interface SysUserExtendService {
 	void delete(Long id);
 	
 	void deleteBatch(Long[] ids);
+
+	SysUserExtendEntity queryObjectByUserId(Long userId);
+
+	void saveOrUpdate(SysUserExtendEntity sysUserExtend);
+
+	void saveOrUpdateAndEditUser(SysUserExtendEntity sysUserExtend, SysUserEntity user);
+	JsonResult saveOrUpdateAndActive(SysUserExtendEntity sysUserExtend, SysUserEntity user);
 }
