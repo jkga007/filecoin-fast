@@ -12,7 +12,7 @@ public class Constant {
 	public static final int SUPER_ADMIN = 1;
 
 	/** 验证码短信模版 **/
-	public static final String IDENTIFYING_CODE_SMS_TEMPLATE_CODE = "SMS_138315045";
+	public static final String IDENTIFYING_CODE_SMS_TEMPLATE_CODE = "SMS_138061565";
 
 	/**
 	 * 菜单类型
