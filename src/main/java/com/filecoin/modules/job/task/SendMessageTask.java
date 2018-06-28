@@ -66,10 +66,12 @@ public class SendMessageTask {
 			wSendMessageEntityUpdate.setId(wSendMessageEntity.getId());
 			try {
 				SendSmsResponse sendSmsResponse = SmsSendUtil.sendSms(smsMap);
+				wSendMessageEntityUpdate.setStatus(Constant.SendStatus.SUCCESS.getValue());
 				wSendMessageEntityUpdate.setReturnCode(sendSmsResponse.getCode());
 				wSendMessageEntityUpdate.setReturnMessage(sendSmsResponse.getMessage());
 			}catch(Exception e){
 				logger.error(e.getMessage());
+				wSendMessageEntityUpdate.setStatus(Constant.SendStatus.ERROR.getValue());
 				wSendMessageEntityUpdate.setReturnCode("ERROR");
 				wSendMessageEntityUpdate.setReturnMessage("Send Exception");
 			}finally{

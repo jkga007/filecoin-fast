@@ -70,13 +70,41 @@ public class WSendMessageController extends AbstractController{
 		
 		return JsonResult.ok().put("wSendMessage", wSendMessage);
 	}
-	
+
+	/**
+	 * 验证码验证
+	 */
+	@RequestMapping("/validate")
+	public JsonResult validate(@PathVariable("mobile") String mobile,@PathVariable("id") Long userId,
+							   @PathVariable("identifyingCode") String identifyingCode){
+		//提取验证码信息
+		Map<String,Object> parasMap = new HashMap<>();
+		parasMap.put("mobile",mobile);
+		parasMap.put("userId",userId);
+		parasMap.put("identifyingCode",identifyingCode);
+		List<WSendMessageEntity> wSendMessageEntityList = wSendMessageService.queryList(parasMap);
+		if(wSendMessageEntityList!=null && wSendMessageEntityList.size()>0){
+			//
+		}else{
+			return JsonResult.error("验证码无效，请重新输入！");
+		}
+		return JsonResult.ok();
+	}
+
 	/**
 	 * 保存
 	 */
 	@RequestMapping("/save")
 	@RequiresPermissions("filecoin:wsendmessage:save")
 	public JsonResult save(@PathVariable("mobile") String mobile,@PathVariable("id") Long userId){
+		//获取当前用户状态及用户信息
+		SysUserEntity sysUser=sysUserService.queryObject(userId);
+		if(sysUser!=null){
+			return JsonResult.error("无此用户，请确认用户信息是否正确！");
+		}else if(sysUser.getStatus()!=Constant.UserStatus.NEED_BIND_MOBILE.getValue()){
+			return JsonResult.error("用户当前状态不允许进行手机验证码下发，请稍后再试！");
+		}
+
 		//根据手机号码获取是否已经被注册
 		SysUserEntity sysUserEntity=sysUserService.queryByMobile(mobile);
 		if(sysUserEntity!=null){
