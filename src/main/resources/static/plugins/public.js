@@ -262,7 +262,7 @@ var Core = Core
                     var jsondata = $.parseJSON(xhr.responseText);
                     //token过期，则跳转到登录页面
                     if(jsondata.code == 401){
-                        window.location.href = ctx + "/sys/gologin";
+                        window.location.href = ctx + "/modules/filecoin/login.html";
                     }
                 }
             });
