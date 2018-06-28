@@ -26,8 +26,10 @@
                     $("#step").val(step);
                     $("#userId").val(userId);
                     Core.alert(msg, 1,false, function () {
-                        $("#mainForm").attr("action",ctx+"/sys/goregist");
-                        $("#mainForm").submit();
+                        // $("#mainForm").attr("action",ctx+"/modules/filecoin/regist.html");
+                        // $("#mainForm").submit();
+                        var url = "/modules/filecoin/regist.html?step="+step+"&userId="+userId;
+                        window.location.href = url;
                     });
                 }else{
                     Core.alert(msg, 2,false, function () {

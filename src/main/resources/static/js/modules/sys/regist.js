@@ -301,7 +301,6 @@ $(function () {
     });
 
     if(step != null && userId != null){
-        alert(step + ",," + userId);
         //在这里跳转
         //模拟点击
         globleIndex = Number(step) - 1;

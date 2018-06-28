@@ -31,7 +31,7 @@ var LoginFunc = (function () {
                 var userId = packet.userId;
                 var email = packet.email;
                 Core.alert(message, 2,false, function () {
-                    window.location.href = ctx + "/sys/goregist";
+                    window.location.href = ctx + "/modules/filecoin/index-dashboard.html";
                 });
             }else {
                 Core.alert(message, 2,false, function () {
