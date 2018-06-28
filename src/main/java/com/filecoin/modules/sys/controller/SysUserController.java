@@ -9,6 +9,8 @@ import com.filecoin.common.validator.Assert;
 import com.filecoin.common.validator.ValidatorUtils;
 import com.filecoin.common.validator.group.AddGroup;
 import com.filecoin.common.validator.group.UpdateGroup;
+import com.filecoin.modules.filecoin.entity.SysUserExtendEntity;
+import com.filecoin.modules.filecoin.service.SysUserExtendService;
 import com.filecoin.modules.sys.entity.SysUserEntity;
 import com.filecoin.modules.sys.service.SysUserRoleService;
 import com.filecoin.modules.sys.service.SysUserService;
@@ -35,6 +37,8 @@ public class SysUserController extends AbstractController {
 	private SysUserService sysUserService;
 	@Autowired
 	private SysUserRoleService sysUserRoleService;
+	@Autowired
+	private SysUserExtendService userExtendService;
 	
 	/**
 	 * 所有用户列表
@@ -62,7 +66,9 @@ public class SysUserController extends AbstractController {
 	 */
 	@RequestMapping("/info")
 	public JsonResult info(){
-		return JsonResult.ok().put("user", getUser());
+		SysUserEntity user = getUser();
+		SysUserExtendEntity sysUserExtendEntity = userExtendService.queryObjectByUserId(user.getUserId());
+		return JsonResult.ok().put("user", user).put("sysUserExtend",sysUserExtendEntity);
 	}
 	
 	/**

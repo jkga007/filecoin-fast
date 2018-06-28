@@ -26,4 +26,6 @@ public interface DInvitationCodeInfoDao extends BaseDao<DInvitationCodeInfoEntit
      * @return
      */
     DInvitationCodeInfoEntity queryObjectByMap(Map<String,Object> map);
+
+    DInvitationCodeInfoEntity queryObjectByUserId(Long userId);
 }

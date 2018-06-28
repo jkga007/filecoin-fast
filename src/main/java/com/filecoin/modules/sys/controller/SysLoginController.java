@@ -153,7 +153,7 @@ public class SysLoginController extends AbstractController {
 							return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
 						}
 						if(Constant.UserStatus.OK.getValue() == status){
-							return JsonResult.error("该用户已存在!,请登录!");
+							return JsonResult.error("该用户已注册!");
 						}
 					}
 
@@ -247,6 +247,7 @@ public class SysLoginController extends AbstractController {
 				//修改用户中的手机号信息,状态信息
 
 				sysUserEntity.setStatus(Constant.UserStatus.NEED_INPUT_MINER.getValue());
+				sysUserEntity.setMobile(phone);
 				List<Long> roleIdList = new ArrayList<>();
 				sysUserEntity.setRoleIdList(roleIdList);
 

@@ -14,6 +14,9 @@
 	<select id="queryObject" resultType="com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity">
 		select * from d_invitation_code_info where invitation_code = #{value}
 	</select>
+	<select id="queryObjectByUserId" resultType="com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity">
+		select * from d_invitation_code_info where user_id = #{value}
+	</select>
 
 	<select id="queryObjectByMap" resultType="com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity">
 		select * from d_invitation_code_info
