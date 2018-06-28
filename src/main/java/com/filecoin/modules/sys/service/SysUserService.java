@@ -31,6 +31,11 @@ public interface SysUserService {
 	 * 根据用户名，查询系统用户
 	 */
 	SysUserEntity queryByUserName(String username);
+
+	/**
+	 * 根据手机号码，查询系统用户
+	 */
+	SysUserEntity queryByMobile(String mobile);
 	
 	/**
 	 * 根据用户ID，查询用户

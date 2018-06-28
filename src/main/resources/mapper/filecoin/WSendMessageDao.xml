@@ -13,6 +13,7 @@
         <result property="status" column="status"/>
         <result property="returnCode" column="return_code"/>
         <result property="returnMessage" column="return_message"/>
+		<result property="identifyingCode" column="identifying_code"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.filecoin.modules.filecoin.entity.WSendMessageEntity">
@@ -21,6 +22,20 @@
 
 	<select id="queryList" resultType="com.filecoin.modules.filecoin.entity.WSendMessageEntity">
 		select * from w_send_message
+		<where>
+			<if test="status != null">
+				and status = #{status}
+			</if>
+			<if test="mobile != null">
+				and mobile = #{mobile}
+			</if>
+			<if test="userId != null">
+				and userId = #{userId}
+			</if>
+			<if test="insertTimeInt != null">
+				and date_add(insert_time,interval #{insertTimeInt} minute)>now()
+			</if>
+		</where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -53,7 +68,7 @@
 		(
 			#{mobile}, 
 			#{userId}, 
-			#{insertTime}, 
+			NOW(),
 			#{sendTime}, 
 			#{status}, 
 			#{returnCode}, 
@@ -66,8 +81,8 @@
 		<set>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="userId != null">`user_id` = #{userId}, </if>
-			<if test="insertTime != null">`insert_time` = #{insertTime}, </if>
-			<if test="sendTime != null">`send_time` = #{sendTime}, </if>
+			<if test="insertTime != null">`insert_time` = NOW(), </if>
+			<if test="sendTime != null">`send_time` = NOW(), </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="returnCode != null">`return_code` = #{returnCode}, </if>
 			<if test="returnMessage != null">`return_message` = #{returnMessage}</if>
