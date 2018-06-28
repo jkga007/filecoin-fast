@@ -59,6 +59,11 @@ public class SysUserServiceImpl implements SysUserService {
 	public SysUserEntity queryByUserName(String username) {
 		return sysUserDao.queryByUserName(username);
 	}
+
+	@Override
+	public SysUserEntity queryByMobile(String mobile){
+		return sysUserDao.queryByMobile(mobile);
+	}
 	
 	@Override
 	public SysUserEntity queryObject(Long userId) {
