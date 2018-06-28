@@ -24,7 +24,8 @@ var LoginFunc = (function () {
             if (resultCode == "0") {
                 localStorage.removeItem("token");
                 localStorage.setItem("token",packet.token);
-                window.location.href = ctx + "/sys/gomasterindex";
+                // window.location.href = ctx + "/sys/gomasterindex";
+                window.location.href = ctx + "/modules/filecoin/index-dashboard.html";
             } else if(resultCode == "1") {
                 //登录返回信息为待注册
                 var userId = packet.userId;
@@ -34,7 +35,7 @@ var LoginFunc = (function () {
                 });
             }else {
                 Core.alert(message, 2,false, function () {
-                    window.location.href = ctx + "/sys/gologin";
+                    window.location.href = ctx + "/modules/filecoin/login.html";
                 });
             }
         }, true,true);
