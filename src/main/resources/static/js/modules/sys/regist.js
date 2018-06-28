@@ -21,7 +21,7 @@ var RegistFunc = (function () {
         // var registType = $.trim($('#regist_type').val());
         // var userId = $.trim($('#user_id').val());
 
-        var jsonParam = Core.serializeJsonStr("mainForm");
+        var jsonParam = Core.serializeJsonStr("mainForm,step1_frm,step3_frm,step4_frm");
 
         var path = ctx + "/sys/regist/emailRegist";
         var ajax = new AJAXPacket(path, "正在执行...请稍后");
@@ -277,7 +277,8 @@ $(function () {
     $("#step1_frm").validate({
         rules: {
             email: {
-                required: true
+                required: true,
+                email:true
             },
             vcode: {
                 required: true
@@ -286,7 +287,8 @@ $(function () {
                 required: true
             },
             passwd2: {
-                required: true
+                required: true,
+                equalTo: "#passwd"
             },
             captcha: {
                 required: true
@@ -294,19 +296,21 @@ $(function () {
         },
         messages: {
             email: {
-                required: "请输入邮箱地址!"
+                required: "请填写您的邮箱~",
+                email:"您的邮箱格式错咯~"
             },
             vcode: {
-                required: "请输入邀请码!"
+                required: "请输入邀请码~"
             },
             passwd: {
-                required: "请输入密码!"
+                required: "请输入密码~"
             },
             passwd2: {
-                required: "请输入确认密码!"
+                required: "请再次输入您的密码~",
+                equalTo: "两次密码输入不一致呢~"
             },
             captcha: {
-                required: "请输入验证码!"
+                required: "请输入验证码~"
             }
         },
         submitHandler:function(form){
