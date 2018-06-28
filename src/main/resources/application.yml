@@ -6,7 +6,7 @@ server:
         min-spare-threads: 30
     port: 8080
     connection-timeout: 5000
-    context-path: /filecoin-app
+#    context-path: /
 
 spring:
     # 环境 dev|test|pro
