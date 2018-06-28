@@ -1,10 +1,10 @@
 package com.filecoin.modules.job.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.filecoin.common.utils.SpringContextUtils;
 import com.filecoin.modules.job.entity.ScheduleJobEntity;
 import com.filecoin.modules.job.entity.ScheduleJobLogEntity;
 import com.filecoin.modules.job.service.ScheduleJobLogService;
-import com.google.gson.Gson;
 
 import org.apache.commons.lang.StringUtils;
 import org.quartz.JobExecutionContext;
@@ -33,7 +33,7 @@ public class ScheduleJob extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 		String jsonJob = context.getMergedJobDataMap().getString(ScheduleJobEntity.JOB_PARAM_KEY);
-		ScheduleJobEntity scheduleJob = new Gson().fromJson(jsonJob, ScheduleJobEntity.class);
+		ScheduleJobEntity scheduleJob = JSON.parseObject(jsonJob, ScheduleJobEntity.class);
 
 		//获取scheduleJobLogService
         ScheduleJobLogService scheduleJobLogService = (ScheduleJobLogService) SpringContextUtils.getBean("scheduleJobLogService");
