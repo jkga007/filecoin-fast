@@ -26,6 +26,15 @@
 			<if test="status != null">
 				and status = #{status}
 			</if>
+			<if test="mobile != null">
+				and mobile = #{mobile}
+			</if>
+			<if test="userId != null">
+				and userId = #{userId}
+			</if>
+			<if test="insertTimeInt != null">
+				and date_add(insert_time,interval #{insertTimeInt} minute)>now()
+			</if>
 		</where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
