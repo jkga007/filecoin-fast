@@ -13,6 +13,7 @@
         <result property="status" column="status"/>
         <result property="returnCode" column="return_code"/>
         <result property="returnMessage" column="return_message"/>
+		<result property="identifyingCode" column="identifying_code"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.filecoin.modules.filecoin.entity.WSendMessageEntity">
@@ -21,6 +22,11 @@
 
 	<select id="queryList" resultType="com.filecoin.modules.filecoin.entity.WSendMessageEntity">
 		select * from w_send_message
+		<where>
+			<if test="status != null">
+				and status = #{status}
+			</if>
+		</where>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}

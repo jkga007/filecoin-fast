@@ -30,6 +30,16 @@ public class WSendMessageEntity implements Serializable {
 	private String returnCode;
 	//
 	private String returnMessage;
+	//
+	private Integer identifyingCode;
+
+	public Integer getIdentifyingCode() {
+		return identifyingCode;
+	}
+
+	public void setIdentifyingCode(Integer identifyingCode) {
+		this.identifyingCode = identifyingCode;
+	}
 
 	/**
 	 * 设置：序列id
