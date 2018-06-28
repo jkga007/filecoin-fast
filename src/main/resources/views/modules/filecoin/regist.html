@@ -50,7 +50,7 @@
 				</li>
 				<li>
 					<div class="step_inner fr">
-						<span class="icon_step">4</span>
+						<span class="icon_step">5</span>
 						<h4>邀请注册</h4>
 					</div>
 				</li>
@@ -60,7 +60,7 @@
 		</div>
 		<div class="content">
 			<div id="step1" class="step hide">
-				<!--<form action="" method="post" id="step1_frm">-->
+				<form action="" method="post" id="step1_frm" name="step1_frm">
 				<div class="frm_control_group">
 					<label class="frm_label">邮箱</label>
 					<div class="frm_controls">
@@ -101,7 +101,7 @@
 				<div class="toolBar">
 					<a id="nextBtn" class="btn btn_primary" href="javascript:;">下一步</a>
 				</div>
-				<!--</form>-->
+				</form>
 			</div><!-- // step1 end -->
 			<div id="step2" class="step hide">
 				<div class="w330">
@@ -118,7 +118,7 @@
 				<div class="clear"></div>
 			</div><!-- // step2 end -->
 			<div id="step3" class="step hide">
-				<!--<form name="" action="" method="post" id="step3_frm">-->
+				<form name="" action="" method="post" id="step3_frm" name="step3_frm">
 				<div class="frm_control_group">
 					<label class="frm_label">真实姓名：</label>
 					<div class="frm_controls">
@@ -150,10 +150,10 @@
 				<div class="toolBar">
 					<a id="nextBtn2" class="btn btn_primary" href="javascript:;">下一步</a>
 				</div>
-				<!--</form>-->
+				</form>
 			</div><!-- // step3 end -->
 			<div id="step4" class="step hide">
-				<!--<form action="" method="post" id="step4_frm">-->
+				<form action="" method="post" id="step4_frm" name="step4_frm">
 				<div class="frm_control_group">
 					<label class="frm_label">矿机所在位置</label>
 					<div class="frm_controls">
@@ -203,7 +203,7 @@
 				<div class="toolBar">
 					<a id="finishedBtn" class="btn btn_primary" href="javascript:;">完成</a>
 				</div>
-				<!--</form>-->
+				</form>
 			</div>
 			<!-- // step4 end -->
 			<div id="step5" class="step hide">
@@ -227,7 +227,6 @@
 	<input type="hidden" name="mailUrl" id="mailUrl" value=""/>
 
 	<footer id="footer" class="w960 oh">
-
 		</nav>
 	</footer><!-- // footer end -->
 </div><!-- // wrapper end -->
@@ -235,14 +234,34 @@
 	<script src="../../filecoin/register/js/jquery.min.js"></script>
 
 <script src="../../plugins/layer/layer.js"></script>
+<script src="../../plugins/jsMap.js"></script>
+<script src="../../plugins/common.js"></script>
 <script src="../../plugins/public.js"></script>
+<script src="../../js/modules/sys/login.js"></script>
+<!-- jQuery Validation plugin javascript-->
+<script src="../../plugins/jquery-validation/js/jquery.validate.js"></script>
+<!-- 自定义validation方法 -->
+<script src="../../plugins/jquery-validation/js/additional-methods.js"></script>
+<!-- jquery validation 默认中文返回信息js  -->
+<script src="../../plugins/jquery-validation/js/localization/messages_zh.min.js"></script>
+<script src="../../plugins/jquery-validation/form-validate-demo.js"></script>
 <script src="../../plugins/jquery.params.js"></script>
+<script src="../../plugins/crtptojs/crypto-js.js"></script>
 
 <script type="text/javascript">
 
     var ctx= "";
-    var step = $.query.get("step");
-    var userId = $.query.get("userId");
+    var value = $.query.get("value");
+    var parsedWordArray = CryptoJS.enc.Base64.parse(value);
+    var plaintext = parsedWordArray.toString(CryptoJS.enc.Utf8);
+    var step = 0;
+    var userId;
+    if(plaintext != ''){
+        step = plaintext.split("#")[0];
+        userId = plaintext.split("#")[1];
+    }
+    alert(step+"--"+userId);
+
 
     var globleIndex = 0;
 

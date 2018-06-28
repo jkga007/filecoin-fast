@@ -20,6 +20,10 @@
 		select * from sys_user_extend where id = #{value}
 	</select>
 
+	<select id="queryObjectByUserId" resultType="com.filecoin.modules.filecoin.entity.SysUserExtendEntity">
+		select * from sys_user_extend where user_id = #{value}
+	</select>
+
 	<select id="queryList" resultType="com.filecoin.modules.filecoin.entity.SysUserExtendEntity">
 		select * from sys_user_extend
         <choose>
