@@ -21,8 +21,8 @@
 
                 var nowId = element.attr("id")+"";
 
-                var replaceIdObj = $("#"+nowId+"_changedHere");
-                var replaceId = $("#"+nowId+"_changedHere").attr("id");
+                var replaceIdObj = $("#"+nowId+"_changeTipsHere");
+                var replaceId = replaceIdObj.attr("id");
                 if(typeof replaceId != "undefined"){
                     element = replaceIdObj;
                 }
