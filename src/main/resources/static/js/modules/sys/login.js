@@ -57,7 +57,7 @@ var LoginFunc = (function () {
                 $("#userMailInner").val(userObj.email);
                 $("#userMailInnerSmall").html("您认证的邮箱地址："+userObj.email+" 已通过认证！");
             }else{
-                window.location.href = ctx + "/sys/gologin";
+                window.location.href = ctx + "/modules/filecoin/login.html";
             }
         }, true,false);
     };
@@ -72,7 +72,7 @@ var LoginFunc = (function () {
             var message = packet.msg;
             if (resultCode == "0") {
                 localStorage.removeItem("token");
-                window.location.href = ctx + "/sys/gologin";
+                window.location.href = ctx + "/modules/filecoin/login.html";
             } else {
 
             }

@@ -324,7 +324,11 @@ $(function () {
                         //模拟点击第4步
                         globleIndex = 3;
                         $('.processorBox li').eq(globleIndex).click();
-                        var url = "/modules/filecoin/regist.html?step="+4+"&userId="+userId;
+                        // base64 encrypt
+                        var rawStr = 4+"#"+userId;
+                        var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
+                        var base64 = CryptoJS.enc.Base64.stringify(wordArray);
+                        var url = "/modules/filecoin/regist.html?value="+base64;
                         window.location.href = url;
                     });
                 } else {
@@ -352,7 +356,36 @@ $(function () {
         },
         submitHandler:function(form){
 
-            alert(255);
+            var jsonParam = Core.serializeJsonStr("mainForm,step1_frm,step3_frm,step4_frm");
+
+            var path = ctx + "/sys/regist/minerInput";
+            var ajax = new AJAXPacket(path, "正在执行...请稍后");
+
+            ajax.addJsonArray(jsonParam);
+            Core.sendPacketJson(ajax, function (packet) {
+                var resultCode = packet.code;
+                var message = packet.msg;
+
+                if (resultCode == "0") {
+                    var userId = packet.userId;
+                    Core.alert(message, 1,false, function () {
+                        $("#user_id").val(userId);
+                        //模拟点击第5步
+                        globleIndex = 4;
+                        $('.processorBox li').eq(globleIndex).click();
+                        // base64 encrypt
+                        var rawStr = 5+"#"+userId;
+                        var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
+                        var base64 = CryptoJS.enc.Base64.stringify(wordArray);
+                        var url = "/modules/filecoin/regist.html?value="+base64;
+                        window.location.href = url;
+                    });
+                } else {
+                    Core.alert(message, 2,false, function () {
+
+                    });
+                }
+            }, true,true);
 
             return false;
         }
