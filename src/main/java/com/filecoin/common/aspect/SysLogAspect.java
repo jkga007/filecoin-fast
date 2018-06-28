@@ -1,12 +1,12 @@
 package com.filecoin.common.aspect;
 
+import com.alibaba.fastjson.JSON;
 import com.filecoin.common.annotation.SysLog;
 import com.filecoin.common.utils.HttpContextUtils;
 import com.filecoin.common.utils.IPUtils;
 import com.filecoin.modules.sys.entity.SysLogEntity;
 import com.filecoin.modules.sys.entity.SysUserEntity;
 import com.filecoin.modules.sys.service.SysLogService;
-import com.google.gson.Gson;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -72,7 +72,7 @@ public class SysLogAspect {
 		//请求的参数
 		Object[] args = joinPoint.getArgs();
 		try{
-			String params = new Gson().toJson(args[0]);
+			String params = JSON.toJSONString(args[0]);
 			sysLog.setParams(params);
 		}catch (Exception e){
 

@@ -1,9 +1,9 @@
 package com.filecoin.modules.job.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.filecoin.common.exception.FileCoinException;
 import com.filecoin.common.utils.Constant;
 import com.filecoin.modules.job.entity.ScheduleJobEntity;
-import com.google.gson.Gson;
 import org.quartz.*;
 
 /**
@@ -58,7 +58,7 @@ public class ScheduleUtils {
                     withSchedule(scheduleBuilder).build();
 
             //放入参数，运行时的方法可以获取
-            jobDetail.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, new Gson().toJson(scheduleJob));
+            jobDetail.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, JSON.toJSONString(scheduleJob));
 
             scheduler.scheduleJob(jobDetail, trigger);
             
@@ -88,7 +88,7 @@ public class ScheduleUtils {
             trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
             
             //参数
-            trigger.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, new Gson().toJson(scheduleJob));
+            trigger.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, JSON.toJSONString(scheduleJob));
             
             scheduler.rescheduleJob(triggerKey, trigger);
             
@@ -109,7 +109,7 @@ public class ScheduleUtils {
         try {
         	//参数
         	JobDataMap dataMap = new JobDataMap();
-        	dataMap.put(ScheduleJobEntity.JOB_PARAM_KEY, new Gson().toJson(scheduleJob));
+        	dataMap.put(ScheduleJobEntity.JOB_PARAM_KEY, JSON.toJSONString(scheduleJob));
         	
             scheduler.triggerJob(getJobKey(scheduleJob.getJobId()), dataMap);
         } catch (SchedulerException e) {

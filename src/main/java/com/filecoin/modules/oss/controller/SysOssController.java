@@ -1,5 +1,6 @@
 package com.filecoin.modules.oss.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.filecoin.common.exception.FileCoinException;
 import com.filecoin.common.utils.*;
 import com.filecoin.common.validator.ValidatorUtils;
@@ -11,7 +12,6 @@ import com.filecoin.modules.oss.cloud.OSSFactory;
 import com.filecoin.modules.oss.entity.SysOssEntity;
 import com.filecoin.modules.oss.service.SysOssService;
 import com.filecoin.modules.sys.service.SysConfigService;
-import com.google.gson.Gson;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -92,7 +92,7 @@ public class SysOssController {
 		}
 		
 
-        sysConfigService.updateValueByKey(KEY, new Gson().toJson(config));
+        sysConfigService.updateValueByKey(KEY, JSON.toJSONString(config));
 
 		return JsonResult.ok();
 	}

@@ -1,6 +1,6 @@
 package com.filecoin.common.utils;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
@@ -32,7 +32,6 @@ public class RedisUtils {
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24;
     /**  不设置过期时长 */
     public final static long NOT_EXPIRE = -1;
-    private final static Gson gson = new Gson();
 
     public void set(String key, Object value, long expire){
         valueOperations.set(key, toJson(value));
@@ -81,13 +80,13 @@ public class RedisUtils {
                 object instanceof Double || object instanceof Boolean || object instanceof String){
             return String.valueOf(object);
         }
-        return gson.toJson(object);
+        return JSON.toJSONString(object);
     }
 
     /**
      * JSON数据，转成Object
      */
     private <T> T fromJson(String json, Class<T> clazz){
-        return gson.fromJson(json, clazz);
+        return JSON.parseObject(json, clazz);
     }
 }
