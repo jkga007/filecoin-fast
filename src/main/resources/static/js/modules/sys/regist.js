@@ -240,40 +240,81 @@ $(function () {
 
     //AJAX提交以及验证表单
     $('#nextBtn').click(function(){
-        var email = $('.email').val();
-        var passwd = $('.passwd').val();
-        var passwd2 = $('.passwd2').val();
-        var verifyCode = $('.verifyCode').val();
-        var EmailReg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/; //邮件正则
-        if(email == ''){
-            showTips('请填写您的邮箱~');
-        }else if(!EmailReg.test(email)){
-            showTips('您的邮箱格式错咯~');
-        }else if(passwd == ''){
-            showTips('请填写您的密码~');
-        }else if(passwd2 == ''){
-            showTips('请再次输入您的密码~');
-        }else if(passwd != passwd2 || passwd2 != passwd){
-            showTips('两次密码输入不一致呢~');
-        }else if(verifyCode == ''){
-            showTips('请输入验证码~');
-        }else{
-            RegistFunc.ajaxBaseEmailReg();
-        }
+
+        $("#step1_frm").submit();
+        // var email = $('.email').val();
+        // var passwd = $('.passwd').val();
+        // var passwd2 = $('.passwd2').val();
+        // var verifyCode = $('.verifyCode').val();
+        // var EmailReg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/; //邮件正则
+        // if(email == ''){
+        //     showTips('请填写您的邮箱~');
+        // }else if(!EmailReg.test(email)){
+        //     showTips('您的邮箱格式错咯~');
+        // }else if(passwd == ''){
+        //     showTips('请填写您的密码~');
+        // }else if(passwd2 == ''){
+        //     showTips('请再次输入您的密码~');
+        // }else if(passwd != passwd2 || passwd2 != passwd){
+        //     showTips('两次密码输入不一致呢~');
+        // }else if(verifyCode == ''){
+        //     showTips('请输入验证码~');
+        // }else{
+        //     RegistFunc.ajaxBaseEmailReg();
+        // }
     });
 
     //验证手机号码
     $('#nextBtn2').click(function(){
-
         $("#step3_frm").submit();
-
     });
 
     //验证矿工资料
     $('#finishedBtn').click(function(){
-
         $("#step4_frm").submit();
+    });
 
+    $("#step1_frm").validate({
+        rules: {
+            email: {
+                required: true
+            },
+            vcode: {
+                required: true
+            },
+            passwd: {
+                required: true
+            },
+            passwd2: {
+                required: true
+            },
+            captcha: {
+                required: true
+            }
+        },
+        messages: {
+            email: {
+                required: "请输入邮箱地址!"
+            },
+            vcode: {
+                required: "请输入邀请码!"
+            },
+            passwd: {
+                required: "请输入密码!"
+            },
+            passwd2: {
+                required: "请输入确认密码!"
+            },
+            captcha: {
+                required: "请输入验证码!"
+            }
+        },
+        submitHandler:function(form){
+
+            RegistFunc.ajaxBaseEmailReg();
+
+            return false;
+        }
     });
 
     $("#step3_frm").validate({
@@ -368,11 +409,17 @@ $(function () {
 
                 if (resultCode == "0") {
                     var userId = packet.userId;
+                    var token = packet.token;
+                    var expire = packet.expire;
+
                     Core.alert(message, 1,false, function () {
                         $("#user_id").val(userId);
                         //模拟点击第5步
                         globleIndex = 4;
                         $('.processorBox li').eq(globleIndex).click();
+                        //登录
+                        localStorage.removeItem("token");
+                        localStorage.setItem("token",token);
                         // base64 encrypt
                         var rawStr = 5+"#"+userId;
                         var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
@@ -391,26 +438,45 @@ $(function () {
         }
     });
 
-
-
-
-
     //切换步骤（目前只用来演示）
     $('.processorBox li').click(function(){
+        Core.closeTips();
         var i = $(this).index();
-//                if(i == globleIndex){
-        $('.processorBox li').removeClass('current').eq(i).addClass('current');
-        $('.step').fadeOut(300).eq(i).fadeIn(500);
-//				}
+        if(i == globleIndex){
+            $('.processorBox li').removeClass('current').eq(i).addClass('current');
+            $('.step').fadeOut(300).eq(i).fadeIn(500);
+        }
     });
 
     if(step != '' && userId != ''){
-        alert(1);
         //在这里跳转
         //模拟点击
         globleIndex = Number(step) - 1;
         $('.processorBox li').eq(globleIndex).click();
         $("#user_id").val(userId);
+        if(step == "5"){
+
+            var path = ctx + "/filecoin/dinvitationcodeinfo/getInvitaCodeByUserId";
+            var ajax = new AJAXPacket(path, "正在执行...请稍后");
+
+            ajax.add("userId", userId);
+            Core.sendPacket(ajax, function (packet) {
+                var resultCode = packet.code;
+                var message = packet.msg;
+
+                if (resultCode == "0") {
+                    var invitationCode = packet.invitationCode;
+                    $("#invitationCodeA").html(invitationCode);
+                } else {
+                    Core.alert(message, 2,false, function () {
+
+                    });
+                }
+            }, true,false);
+        }
+    }else{
+        globleIndex = 0;
+        $('.processorBox li').eq(globleIndex).click();
     }
 
 });

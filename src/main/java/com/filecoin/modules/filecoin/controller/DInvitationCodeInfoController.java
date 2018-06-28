@@ -93,6 +93,15 @@ public class DInvitationCodeInfoController extends AbstractController {
 		return JsonResult.ok();
 	}
 
+	/**
+	 * 删除
+	 */
+	@PostMapping("/getInvitaCodeByUserId")
+	public JsonResult getInvitaCodeByUserId(Long userId){
+		DInvitationCodeInfoEntity dInvitationCodeInfoEntity = dInvitationCodeInfoService.queryObjectByUserId(userId);
+		return JsonResult.ok().put("invitationCode",dInvitationCodeInfoEntity.getInvitationCode());
+	}
+
 	/*
 	 *根据邀请码及当前登录用户获取邀请码已经邀请人数量
 	 */

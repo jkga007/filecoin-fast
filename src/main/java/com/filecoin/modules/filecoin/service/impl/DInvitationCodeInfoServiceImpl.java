@@ -86,4 +86,9 @@ public class DInvitationCodeInfoServiceImpl implements DInvitationCodeInfoServic
 	public DInvitationCodeInfoEntity queryObjectByMap(Map<String,Object> map){
 		return dInvitationCodeInfoDao.queryObjectByMap(map);
 	}
+
+	@Override
+	public DInvitationCodeInfoEntity queryObjectByUserId(Long userId) {
+		return dInvitationCodeInfoDao.queryObjectByUserId(userId);
+	}
 }

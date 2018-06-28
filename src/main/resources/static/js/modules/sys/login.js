@@ -48,13 +48,14 @@ var LoginFunc = (function () {
         Core.sendPacket(ajax, function (packet) {
             var resultCode = packet.code;
             var message = packet.msg;
-            var data = packet.data;
             if (resultCode == "0") {
                 var userObj = packet.user;
-//                var user = $.parseJSON(userObj);
-//                 alert("当前登录用户是：------"+userObj.username);
+                var sysUserExtend = packet.sysUserExtend;
                 $("#userNameo").html(userObj.username);
+                $("#trueName").val(sysUserExtend.trueName);
                 $("#userMailInner").val(userObj.email);
+                $("#mobilePhone").val(userObj.mobile);
+                $("#iccid").val(sysUserExtend.iccid);
                 $("#userMailInnerSmall").html("您认证的邮箱地址："+userObj.email+" 已通过认证！");
             }else{
                 window.location.href = ctx + "/modules/filecoin/login.html";
@@ -92,4 +93,7 @@ var LoginFunc = (function () {
 })();
 $(function () {
     LoginFunc.init();
+    $("#logoutBtn").click(function(){
+        LoginFunc.doLogout();
+    });
 });

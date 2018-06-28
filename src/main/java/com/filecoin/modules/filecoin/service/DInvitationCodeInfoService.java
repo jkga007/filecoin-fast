@@ -15,6 +15,8 @@ import java.util.Map;
 public interface DInvitationCodeInfoService {
 	
 	DInvitationCodeInfoEntity queryObject(String invitationCode);
+
+	DInvitationCodeInfoEntity queryObjectByUserId(Long userId);
 	
 	List<DInvitationCodeInfoEntity> queryList(Map<String, Object> map);
 	

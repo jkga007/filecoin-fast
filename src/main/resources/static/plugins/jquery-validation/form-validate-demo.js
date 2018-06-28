@@ -18,6 +18,14 @@
             // errorElement: "span",
             //错误提示，错误对象
             errorPlacement:function(error,element){
+
+                var nowId = element.attr("id")+"";
+
+                var replaceIdObj = $("#"+nowId+"_changedHere");
+                var replaceId = $("#"+nowId+"_changedHere").attr("id");
+                if(typeof replaceId != "undefined"){
+                    element = replaceIdObj;
+                }
                 //去掉该节点的错误信息提示
                 var tipId = layerTipsMap.get(""+element.attr("id"));
                 if(typeof(tipId) != "undefined"){

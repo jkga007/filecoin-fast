@@ -7,7 +7,6 @@
 	<link rel="stylesheet" href="../../filecoin/register/css/layout.css"/>
 </head>
 <body>
-<form name="mainForm" id="mainForm" method="post">
 <div id="wrapper">
 	<header id="header">
 		<div id="headBox">
@@ -60,11 +59,11 @@
 		</div>
 		<div class="content">
 			<div id="step1" class="step hide">
-				<form action="" method="post" id="step1_frm" name="step1_frm">
+				<form id="step1_frm" name="step1_frm" action="" method="post" >
 				<div class="frm_control_group">
 					<label class="frm_label">邮箱</label>
 					<div class="frm_controls">
-						<input type="text" name="email" class="frm_input email" maxlength="32" value=""/>
+						<input type="text" id="email" name="email" required="true" class="frm_input email" maxlength="32" value=""/>
 						<p class="frm_tips">作为登录帐号，请填写未注册的邮箱</p>
 					</div>
 				</div>
@@ -80,27 +79,31 @@
 				<div class="frm_control_group">
 					<label class="frm_label">密码</label>
 					<div class="frm_controls">
-						<input type="password" name="passwd" class="frm_input passwd" value=""/>
+						<input type="password" id="passwd" name="passwd" class="frm_input passwd" value=""/>
 						<p class="frm_tips">字母、数字或者英文符号，最短6位，区分大小写</p>
 					</div>
 				</div>
 				<div class="frm_control_group">
 					<label class="frm_label">再次输入密码</label>
 					<div class="frm_controls">
-						<input type="password" name="passwd2" class="frm_input passwd2" value=""/>
+						<input type="password" id="passwd2" name="passwd2" class="frm_input passwd2" value=""/>
 					</div>
 				</div>
 				<div class="frm_control_group">
 					<label class="frm_label">验证码</label>
 					<div class="frm_controls verifycode">
-						<input type="text" name="captcha" class="frm_input verifyCode" maxlength="5"/>
+						<input type="text" id="captcha" name="captcha" class="frm_input verifyCode" maxlength="5"/>
 						<img id="captchaImgId" src="/captcha.jpg" alt="" />
-						<a class="changeVerifyCode" href="#">换一张</a>
+						<a class="changeVerifyCode" id="captcha_changedHere" href="#">换一张</a>
 					</div>
 				</div>
 				<div class="toolBar">
 					<a id="nextBtn" class="btn btn_primary" href="javascript:;">下一步</a>
 				</div>
+					<input type="hidden" name="userId" id="user_id" value=""/>
+					<input type="hidden" name="userMail" id="user_mail" value=""/>
+					<input type="hidden" name="registType" id="regist_type" value="C"/>
+					<input type="hidden" name="mailUrl" id="mailUrl" value=""/>
 				</form>
 			</div><!-- // step1 end -->
 			<div id="step2" class="step hide">
@@ -209,7 +212,7 @@
 			<div id="step5" class="step hide">
 				<div class="w330">
 					<strong class="f16">感谢注册成为内测用户，您的邀请码为 : </strong>
-					<p><a class="btncode btn_primary mt20" href="javascript:;">5ABE7E</a></p>
+					<p><a class="btncode btn_primary mt20" href="javascript:;" id="invitationCodeA"></a></p>
 					<p>1. 关注微信公众号</p>
 					<p>2. 加入矿池QQ群：22138062</p>
 				</div>
@@ -221,16 +224,12 @@
 			</div><!-- // step5 end -->
 		</div>
 	</div><!-- // container end -->
-	<input type="hidden" name="userId" id="user_id" value=""/>
-	<input type="hidden" name="userMail" id="user_mail" value=""/>
-	<input type="hidden" name="registType" id="regist_type" value="C"/>
-	<input type="hidden" name="mailUrl" id="mailUrl" value=""/>
+
 
 	<footer id="footer" class="w960 oh">
 		</nav>
 	</footer><!-- // footer end -->
 </div><!-- // wrapper end -->
-</form>
 	<script src="../../filecoin/register/js/jquery.min.js"></script>
 
 <script src="../../plugins/layer/layer.js"></script>
