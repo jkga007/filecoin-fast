@@ -32,6 +32,9 @@
 			<if test="userId != null">
 				and userId = #{userId}
 			</if>
+			<if test="identifyingCode != null">
+				and identifying_code = #{identifyingCode}
+			</if>
 			<if test="insertTimeInt != null">
 				and date_add(insert_time,interval #{insertTimeInt} minute)>now()
 			</if>
@@ -62,7 +65,8 @@
 			`send_time`, 
 			`status`, 
 			`return_code`, 
-			`return_message`
+			`return_message`,
+			`identifying_code`
 		)
 		values
 		(
@@ -72,7 +76,8 @@
 			#{sendTime}, 
 			#{status}, 
 			#{returnCode}, 
-			#{returnMessage}
+			#{returnMessage},
+			#{identifyingCode}
 		)
 	</insert>
 	 
