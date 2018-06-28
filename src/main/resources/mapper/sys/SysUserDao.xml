@@ -59,6 +59,10 @@
 	<select id="queryByUserName" resultType="com.filecoin.modules.sys.entity.SysUserEntity">
 		select * from sys_user where username = #{username}
 	</select>
+
+	<select id="queryByMobile" resultType="com.filecoin.modules.sys.entity.SysUserEntity">
+		select * from sys_user where mobile = #{mobile}
+	</select>
 	
 	<insert id="save" parameterType="com.filecoin.modules.sys.entity.SysUserEntity" useGeneratedKeys="true" keyProperty="userId">
 		insert into sys_user

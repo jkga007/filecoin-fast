@@ -59,7 +59,7 @@
 		(
 			#{mobile}, 
 			#{userId}, 
-			#{insertTime}, 
+			NOW(),
 			#{sendTime}, 
 			#{status}, 
 			#{returnCode}, 
@@ -72,8 +72,8 @@
 		<set>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="userId != null">`user_id` = #{userId}, </if>
-			<if test="insertTime != null">`insert_time` = #{insertTime}, </if>
-			<if test="sendTime != null">`send_time` = #{sendTime}, </if>
+			<if test="insertTime != null">`insert_time` = NOW(), </if>
+			<if test="sendTime != null">`send_time` = NOW(), </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="returnCode != null">`return_code` = #{returnCode}, </if>
 			<if test="returnMessage != null">`return_message` = #{returnMessage}</if>

@@ -2,8 +2,12 @@ package com.filecoin.modules.filecoin.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import com.filecoin.common.utils.Constant;
 import com.filecoin.modules.sys.controller.AbstractController;
+import com.filecoin.modules.sys.entity.SysUserEntity;
+import com.filecoin.modules.sys.service.SysUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +37,9 @@ import com.filecoin.common.utils.JsonResult;
 public class WSendMessageController extends AbstractController{
 	@Autowired
 	private WSendMessageService wSendMessageService;
+
+	@Autowired
+	private SysUserService sysUserService;
 	
 	/**
 	 * 列表
@@ -68,8 +75,23 @@ public class WSendMessageController extends AbstractController{
 	 */
 	@RequestMapping("/save")
 	@RequiresPermissions("filecoin:wsendmessage:save")
-	public JsonResult save(@RequestBody WSendMessageEntity wSendMessage){
-		wSendMessageService.save(wSendMessage);
+	public JsonResult save(@PathVariable("mobile") String mobile,@PathVariable("id") Long userId){
+		//根据手机号码获取是否已经被注册
+		SysUserEntity sysUserEntity=sysUserService.queryByMobile(mobile);
+		if(sysUserEntity!=null){
+			return JsonResult.error("该手机号码已被注册，请更换手机号码");
+		}
+		//手机号码15分钟内下发过短信，不让注册
+
+		WSendMessageEntity wSendMessageEntity = new WSendMessageEntity();
+		wSendMessageEntity.setUserId(userId);
+		wSendMessageEntity.setMobile(mobile);
+		wSendMessageEntity.setStatus(Constant.SendStatus.NEED_SEND.getValue());
+		Random generate = new Random();
+		int nextInt = generate.nextInt(999999);
+		if(nextInt<100000) nextInt = nextInt + 100000;
+		wSendMessageEntity.setIdentifyingCode(nextInt);
+		wSendMessageService.save(wSendMessageEntity);
 		
 		return JsonResult.ok();
 	}
