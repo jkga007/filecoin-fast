@@ -70,7 +70,27 @@ public class WSendMessageController extends AbstractController{
 		
 		return JsonResult.ok().put("wSendMessage", wSendMessage);
 	}
-	
+
+	/**
+	 * 验证码验证
+	 */
+	@RequestMapping("/validate")
+	public JsonResult validate(@PathVariable("mobile") String mobile,@PathVariable("id") Long userId,
+							   @PathVariable("identifyingCode") String identifyingCode){
+		//提取验证码信息
+		Map<String,Object> parasMap = new HashMap<>();
+		parasMap.put("mobile",mobile);
+		parasMap.put("userId",userId);
+		parasMap.put("identifyingCode",identifyingCode);
+		List<WSendMessageEntity> wSendMessageEntityList = wSendMessageService.queryList(parasMap);
+		if(wSendMessageEntityList!=null && wSendMessageEntityList.size()>0){
+			//
+		}else{
+			return JsonResult.error("验证码无效，请重新输入！");
+		}
+		return JsonResult.ok();
+	}
+
 	/**
 	 * 保存
 	 */
