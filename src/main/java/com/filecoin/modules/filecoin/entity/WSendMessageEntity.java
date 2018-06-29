@@ -32,6 +32,26 @@ public class WSendMessageEntity implements Serializable {
 	private String returnMessage;
 	//
 	private Integer identifyingCode;
+	//
+	private String requestId;
+	//
+	private String bizId;
+
+	public String getRequestId() {
+		return requestId;
+	}
+
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
+	}
+
+	public String getBizId() {
+		return bizId;
+	}
+
+	public void setBizId(String bizId) {
+		this.bizId = bizId;
+	}
 
 	public Integer getIdentifyingCode() {
 		return identifyingCode;
