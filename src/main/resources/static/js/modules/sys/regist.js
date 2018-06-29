@@ -383,6 +383,10 @@ var RegistFunc = (function () {
         }, true, false);
     };
 
+    /**
+     * 获取用户信息
+     * @param userId
+     */
     registFunc.getUserById = function (userId) {
         var path = ctx + "/sys/user/info/"+userId;
         var ajax = new AJAXPacket(path, "正在执行...请稍后");
