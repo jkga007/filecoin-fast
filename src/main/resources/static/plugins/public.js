@@ -166,6 +166,52 @@ var Core = Core
             layer.close(_layerIndex);
         };
 
+        /**
+         * 定时器方法
+         * @param obj 按钮或者href的id
+         * @param times 多久能点一次
+         * @param type 类型 href或者是button
+         * @param onclickfunc 类型 点击方法
+         */
+        core.setTimerFunc = function(obj,times,type,onclickfunc){
+            if(!onclickfunc){
+                onclickfunc = "";
+            }
+            var _this = $(obj);
+            if(type == "button"){
+                _this.val(times + '秒后可以重新发送');
+                //启动定时器
+                var timer = setInterval(function () {
+                    times--;
+                    //重新赋值
+                    _this.val(times + '秒后可以重新发送');
+                    if (times == 0) {
+                        //复位
+                        _this.val('重新发送');
+                        _this.attr('disabled', false);
+                        clearInterval(timer);
+                    }
+                }, 1000);
+                //置灰
+                _this.attr('disabled', 'disabled');
+            }
+            if(type == "href"){
+                _this.html(times + '秒后可以重新发送');
+                var timer = setInterval(function () {
+                    times--;
+                    _this.html(times + '秒后可以重新发送');
+                    if (times == 0) {
+                        _this.html('重新发送');
+                        _this.attr('onclick', onclickfunc);
+                        _this.attr('style', '');
+                        clearInterval(timer);
+                    }
+                }, 1000);
+                _this.attr('onclick', 'javascript:return false;');
+                _this.attr('style', 'opacity: 0.2');
+            }
+        };
+
         core.alert = function (msg, type, i18nFlag, retFunc) {
             if (typeof(type) == "undefined") {
                 type = 2;

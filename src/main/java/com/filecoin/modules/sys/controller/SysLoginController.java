@@ -136,28 +136,34 @@ public class SysLoginController extends AbstractController {
 					}
 
 					//查询到用户,同时页面刚刚进来
-					if(user != null && "C".equals(registType)){
-						Integer status = user.getStatus();
-						if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
-							if(user.getPassword().equals(new Sha256Hash(password, user.getSalt()).toHex())) {
-								String emailUser = user.getEmail();
-								String emailEnd = emailUser.substring(emailUser.indexOf("@")+1,emailUser.length());
-								String mailUrl = "mail."+emailEnd;
-								return JsonResult.error(1,"该用户已注册!处于待激活状态,请激活!").put("registEmail",user.getEmail()).put("userId",user.getUserId()+"").put("mailUrl",mailUrl);
-							}else{
-								return JsonResult.error("该用户已激活!,请输入正确密码继续!");
-							}
+					if(user != null){
+                        Integer status = user.getStatus();
+					    if("C".equals(registType)){
+                            if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
+                                if(user.getPassword().equals(new Sha256Hash(password, user.getSalt()).toHex())) {
+                                    String emailUser = user.getEmail();
+                                    String emailEnd = emailUser.substring(emailUser.indexOf("@")+1,emailUser.length());
+                                    String mailUrl = "mail."+emailEnd;
+                                    return JsonResult.error(1,"该用户已注册!处于待激活状态,即将跳转!").put("registEmail",user.getEmail()).put("userId",user.getUserId()+"").put("mailUrl",mailUrl);
+                                }else{
+                                    return JsonResult.error("该用户已激活!,请输入正确密码继续!");
+                                }
+                            }
+                        }
 
-						}
 						if(Constant.UserStatus.CLOCK.getValue() == status){
-							return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
+							return JsonResult.error("该用户已锁定!,请联系客服解锁!");
 						}
 						if(Constant.UserStatus.OK.getValue() == status){
 							return JsonResult.error("该用户已注册!");
 						}
+                        if(Constant.UserStatus.NEED_BIND_MOBILE.getValue() == status){
+                            return JsonResult.error(2,"该用户已注册!处于待绑定手机信息状态,即将跳转!").put("userId",user.getUserId()+"").put("step",3);
+                        }
+                        if(Constant.UserStatus.NEED_INPUT_MINER.getValue() == status){
+                            return JsonResult.error(2,"该用户已注册!处于待完善矿工信息状态,即将跳转!").put("userId",user.getUserId()+"").put("step",4);
+                        }
 					}
-
-
 
 					SysUserEntity userEntity = new SysUserEntity();
 					String userOldEmail = "";
@@ -180,7 +186,7 @@ public class SysLoginController extends AbstractController {
 					}else if("U".equals(registType)){
 						//如果是返回修改
 						if(user == null){
-							return JsonResult.error("获取用户信息失败!");
+							return JsonResult.error("获取信息失败!");
 						}else{
 							//如果新旧email不一致
 							if(!email.equals(userOldEmail)){
@@ -212,7 +218,7 @@ public class SysLoginController extends AbstractController {
 					wSendEmailService.save(wSendEmailEntity);
 
 					// 发送注册邮件
-//			sendTemplateMail(userEntity.getEmail(), userEntity.getUserId(), idWorker0.timeGen1());
+                    //sendTemplateMail(userEntity.getEmail(), userEntity.getUserId(), idWorker0.timeGen1());
 					String emailUser = userEntity.getEmail();
 					String emailEnd = emailUser.substring(emailUser.indexOf("@")+1,emailUser.length());
 					String mailUrl = "mail."+emailEnd;
@@ -223,7 +229,7 @@ public class SysLoginController extends AbstractController {
 				}catch(Exception e){
 					e.printStackTrace();
 					logger.error(e.getMessage());
-					throw new FileCoinException("注册失败！,请重试或联系管理员！", e);
+					throw new FileCoinException("注册失败！,请重试或联系客服！", e);
 				}
 
 				break;
@@ -415,44 +421,42 @@ public class SysLoginController extends AbstractController {
 	 * 登录
 	 */
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
-	public Map<String, Object> login(@RequestBody UserLoginEntity userlogin)
-			throws FileCoinException {
+	public Map<String, Object> login(@RequestBody UserLoginEntity userlogin){
 		JsonResult jsonResult = null;
-		try{
-			String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
-			if(!userlogin.getCaptcha().equalsIgnoreCase(kaptcha)){
-				return JsonResult.error("验证码不正确");
-			}
 
-			//用户信息
-			SysUserEntity user = sysUserService.queryByUserName(userlogin.getUsername());
-
-			//账号不存在、密码错误
-			if(user == null || !user.getPassword().equals(new Sha256Hash(userlogin.getPassword(), user.getSalt()).toHex())) {
-				return JsonResult.error("账号或密码不正确");
-			}
-
-			Integer status = user.getStatus();
-			if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
-				return JsonResult.error(1,"该用户已注册!处于待激活状态,请激活!").put("userId",user.getUserId()+"").put("email",user.getEmail());
-			}
-			if(Constant.UserStatus.NEED_BIND_MOBILE.getValue() == status){
-				return JsonResult.error(1,"该用户已注册!处于待激活状态,请激活!").put("userId",user.getUserId()+"").put("email",user.getEmail());
-			}
-			if(Constant.UserStatus.NEED_INPUT_MINER.getValue() == status){
-				return JsonResult.error(1,"该用户已注册!处于待激活状态,请激活!").put("userId",user.getUserId()+"").put("email",user.getEmail());
-			}
-			if(Constant.UserStatus.CLOCK.getValue() == status){
-				return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
-			}
-
-			//生成token，并保存到数据库
-			jsonResult = sysUserTokenService.createToken(user.getUserId());
-		}catch(Exception e){
-			e.printStackTrace();
-			logger.error(e.getMessage());
-			throw new FileCoinException("登录失败！,请重试或联系管理员！", e);
+		String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+		if(!userlogin.getCaptcha().equalsIgnoreCase(kaptcha)){
+			return JsonResult.error("验证码不正确");
 		}
+
+		//用户信息
+		SysUserEntity user = sysUserService.queryByUserName(userlogin.getUsername());
+
+		//账号不存在、密码错误
+		if(user == null || !user.getPassword().equals(new Sha256Hash(userlogin.getPassword(), user.getSalt()).toHex())) {
+			return JsonResult.error("账号或密码不正确");
+		}
+
+		Integer status = user.getStatus();
+		if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
+			//如果密码一致
+			if(user.getPassword().equals(new Sha256Hash(userlogin.getPassword(), user.getSalt()).toHex())) {
+				return JsonResult.error(2,"该用户已注册!处于待激活状态,即将跳转!").put("userId",user.getUserId()+"").put("step",2);
+			}
+		}
+		if(Constant.UserStatus.NEED_BIND_MOBILE.getValue() == status){
+			return JsonResult.error(2,"该用户已注册!处于待绑定手机信息状态,即将跳转!").put("userId",user.getUserId()+"").put("step",3);
+		}
+		if(Constant.UserStatus.NEED_INPUT_MINER.getValue() == status){
+			return JsonResult.error(2,"该用户已注册!处于待完善矿工信息状态,即将跳转!").put("userId",user.getUserId()+"").put("step",4);
+		}
+		if(Constant.UserStatus.CLOCK.getValue() == status){
+			return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
+		}
+
+		//生成token，并保存到数据库
+		jsonResult = sysUserTokenService.createToken(user.getUserId());
+
 		return jsonResult;
 	}
 
@@ -466,23 +470,6 @@ public class SysLoginController extends AbstractController {
 		return JsonResult.ok();
 	}
 
-	/**
-	 * 去首页,ipfs首页
-	 */
-	@RequestMapping(value = "/sys/goindex", method = RequestMethod.GET)
-	public ModelAndView goindex(Model model) {
-		model.addAttribute("msg","aaa");
-		return new ModelAndView("sys/index-filecoin");
-	}
-
-	/**
-	 * 去主页,登录后的主页
-	 */
-	@RequestMapping(value = "/sys/gomasterindex", method = RequestMethod.GET)
-	public ModelAndView gomasterindex(Model model) {
-		model.addAttribute("msg","aaa");
-		return new ModelAndView("sys/index-dashboard");
-	}
 
 	/**
 	 * 去注册页
@@ -495,77 +482,6 @@ public class SysLoginController extends AbstractController {
 		model.addAttribute("userId",userId);
 		model.addAttribute("step",step);
 		return new ModelAndView("sys/regist-filecoin");
-	}
-	/**
-	 * 去登录页
-	 */
-	@RequestMapping(value = "/sys/gologin", method = RequestMethod.GET)
-	public ModelAndView gologin(Model model) {
-		model.addAttribute("msg","bbb");
-		return new ModelAndView("sys/login");
-	}
-
-	/**
-	 * 去矿工管理页
-	 */
-	@RequestMapping(value = "/sys/gominer", method = RequestMethod.GET)
-	public ModelAndView gominer(Model model) {
-		model.addAttribute("msg","bbb");
-		return new ModelAndView("sys/miner");
-	}
-
-	/**
-	 * 跳转付款设置
-	 */
-	@RequestMapping(value = "/sys/gomywallet", method = RequestMethod.GET)
-	public ModelAndView gomywallet(Model model) {
-		model.addAttribute("msg","bbb");
-		return new ModelAndView("sys/my-wallet");
-	}
-
-	/**
-	 * 跳转安全中心
-	 */
-	@RequestMapping(value = "/sys/gosecurity", method = RequestMethod.GET)
-	public ModelAndView gosecurity(Model model) {
-		model.addAttribute("msg","bbb");
-		return new ModelAndView("sys/security");
-	}
-
-	/**
-	 * 跳转个人中心
-	 */
-	@RequestMapping(value = "/sys/gosettings", method = RequestMethod.GET)
-	public ModelAndView gosettings(Model model) {
-		model.addAttribute("msg","bbb");
-		return new ModelAndView("sys/settings");
-	}
-
-	/**
-	 * 跳转帮助中心
-	 */
-	@RequestMapping(value = "/sys/gofaq", method = RequestMethod.GET)
-	public ModelAndView gofaq(Model model) {
-		model.addAttribute("msg","bbb");
-		return new ModelAndView("sys/faq");
-	}
-
-	/**
-	 * 跳转推广有礼
-	 */
-	@RequestMapping(value = "/sys/gohighway", method = RequestMethod.GET)
-	public ModelAndView gohighway(Model model) {
-		model.addAttribute("msg","bbb");
-		return new ModelAndView("sys/highway");
-	}
-
-	/**
-	 * 去付款记录页
-	 */
-	@RequestMapping(value = "/sys/gopay", method = RequestMethod.GET)
-	public ModelAndView gopay(Model model) {
-		model.addAttribute("msg","bbb");
-		return new ModelAndView("sys/pay");
 	}
 
 //	/**

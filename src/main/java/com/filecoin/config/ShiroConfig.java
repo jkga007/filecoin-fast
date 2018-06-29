@@ -63,7 +63,11 @@ public class ShiroConfig {
         //登录
         filterMap.put("/sys/login", "anon");
         filterMap.put("/sys/loginBack", "anon");
+        //通过用户ID获取用户
+        filterMap.put("/sys/user/info/*", "anon");
+
         filterMap.put("/regist/doValidate/*", "anon");
+        filterMap.put("/regist/doValidateRegist/*", "anon");
         filterMap.put("/filecoin/wsendmessage/save/**", "anon");
         filterMap.put("/filecoin/wsendmessage/validate/**", "anon");
         //注册

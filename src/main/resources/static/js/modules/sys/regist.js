@@ -7,42 +7,28 @@
 
 var RegistFunc = (function () {
     var registFunc = {};
+
     /**
      * 填写基本信息(邮箱、内测邀请码、密码、验证码)
      * @param dictGuid
      */
-
     registFunc.ajaxBaseEmailReg = function () {
-
-        // var email = $.trim($('.email').val());
-        // var vcode = $.trim($('#vcode').val());
-        // var password = $.trim($('.passwd').val());
-        // var captcha = $.trim($('.verifyCode').val());
-        // var registType = $.trim($('#regist_type').val());
-        // var userId = $.trim($('#user_id').val());
-
         var jsonParam = Core.serializeJsonStr("mainForm,step1_frm,step3_frm,step4_frm");
 
         var path = ctx + "/sys/regist/emailRegist";
         var ajax = new AJAXPacket(path, "正在执行...请稍后");
 
-        // ajax.add("email", email);
-        // ajax.add("vcode", vcode);
-        // ajax.add("password", password);
-        // ajax.add("captcha", captcha);
-        // ajax.add("registType", registType);
-        // ajax.add("userId", userId);
         ajax.addJsonArray(jsonParam);
         Core.sendPacketJson(ajax, function (packet) {
+
             var resultCode = packet.code;
             var message = packet.msg;
-            var data = packet.data;
 
             if (resultCode == "0") {
                 var email = packet.registEmail;
                 var userId = packet.userId;
                 var mailUrl = packet.mailUrl;
-                Core.alert("注册成功~ 点击进入下一步", 1,false, function () {
+                Core.alert("注册成功~ 点击进入下一步", 1, false, function () {
                     $("#registEmail").html(email);
                     $('#regist_type').val("U");
                     $("#user_mail").val(email);
@@ -52,12 +38,12 @@ var RegistFunc = (function () {
                     globleIndex = 1;
                     $('.processorBox li').eq(globleIndex).click();
                 });
-            } else if(resultCode == "1"){
+            } else if (resultCode == "1") {
                 var email = packet.registEmail;
                 var userId = packet.userId;
                 var mailUrl = packet.mailUrl;
                 //待激活的信息,跳转激活页面(意外关闭页面或者怎么样)
-                Core.alert(message, 2,false, function () {
+                Core.alert(message, 2, false, function () {
                     $("#registEmail").html(email);
                     $('#regist_type').val("U");
                     $("#user_mail").val(email);
@@ -67,12 +53,27 @@ var RegistFunc = (function () {
                     globleIndex = 1;
                     $('.processorBox li').eq(globleIndex).click();
                 });
-            }else {
-                Core.alert(message, 2,false, function () {
-                    getCaptcha();
+            }else if (resultCode == "2") {
+                var userId = packet.userId;
+                var step = packet.step;
+                Core.alert(message, 1, false, function () {
+                    $("#user_id").val(userId);
+                    //模拟点击第4步
+                    globleIndex = Number(step)-1;
+                    $('.processorBox li').eq(globleIndex).click();
+                    // base64 encrypt
+                    var rawStr = step + "#" + userId;
+                    var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
+                    var base64 = CryptoJS.enc.Base64.stringify(wordArray);
+                    var url = "/modules/filecoin/regist.html?value=" + base64;
+                    window.location.href = url;
+                });
+            } else {
+                Core.alert(message, 2, false, function () {
+                    LoginFunc.getCaptcha();
                 });
             }
-        }, true,true);
+        }, true, true);
 
     };
 
@@ -85,7 +86,7 @@ var RegistFunc = (function () {
          */
         var userMail = $.trim($("#user_mail").val());
         var userId = $.trim($("#user_id").val());
-        if(userMail.length != 0 && userId.length != 0){
+        if (userMail.length != 0 && userId.length != 0) {
             var path = ctx + "/sys/getEditMailUser";
             var ajax = new AJAXPacket(path, "正在查询原注册信息...请稍后");
 
@@ -106,16 +107,16 @@ var RegistFunc = (function () {
                     $('.passwd').val("");
                     $('.passwd2').val("");
                     $('.verifyCode').val("");
-                    getCaptcha();
+                    LoginFunc.getCaptcha();
                     $('#registType').val("U");
 
                 } else {
-                    Core.alert(message, 2,false, function () {
+                    Core.alert(message, 2, false, function () {
                     });
                 }
-            }, true,true);
-        }else{
-            Core.alert("您的操作有误,请重新注册!", 2,false, function () {
+            }, true, true);
+        } else {
+            Core.alert("您的操作有误,请重新注册!", 2, false, function () {
 
             });
         }
@@ -125,27 +126,15 @@ var RegistFunc = (function () {
      * 重新发送邮件信息
      */
     registFunc.resendMail = function (obj) {
-        var _this = $(obj);
-        var times = 1 * 60;
-        _this.html(times + '秒后可以重新发送');
-        var timer = setInterval(function(){
-            times--;
-            _this.html(times + '秒后可以重新发送');
-            if(times == 0){
-                _this.html('重新发送');
-                _this.attr('onclick','RegistFunc.resendMail(this);');
-                _this.attr('style','');
-                clearInterval(timer);
-            }
-        },1000);
-        _this.attr('onclick','javascript:return false;');
-        _this.attr('style','opacity: 0.2');
         /**
          * 发送邮件
          */
         var userMail = $.trim($("#user_mail").val());
         var userId = $.trim($("#user_id").val());
-        if(userMail.length != 0 && userId.length != 0){
+        if (userMail.length != 0 && userId.length != 0) {
+
+            Core.setTimerFunc(obj,30,"href",'RegistFunc.resendMail(this)');
+
             var path = ctx + "/sys/resendMail";
             var ajax = new AJAXPacket(path, "正在重新发送邮件...请稍后");
 
@@ -156,74 +145,27 @@ var RegistFunc = (function () {
                 var resultCode = packet.code;
                 var message = packet.msg;
                 if (resultCode == "0") {
-                    Core.alert("重新发送邮件成功!,请注意查收!", 1,false, function () {
+                    Core.alert("重新发送邮件成功!,请注意查收!", 1, false, function () {
                     });
                 } else {
-                    Core.alert(message, 2,false, function () {
+                    Core.alert(message, 2, false, function () {
                     });
                 }
-            }, true,true);
-        }else{
-            Core.alert("您的操作有误,请重新注册!", 2,false, function () {
+            }, true, true);
+        } else {
+            Core.alert("您的操作有误,请重新注册!", 2, false, function () {
 
             });
         }
     };
 
     /**
-     * 注册手机信息
+     * 动态验证开启
      */
-    registFunc.ajaxPhoneMsgReg = function () {
-
-        var email = $.trim($('.email').val());
-        var vcode = $.trim($('#vcode').val());
-        var password = $.trim($('.passwd').val());
-        var captcha = $.trim($('.verifyCode').val());
-        var registType = $.trim($('#regist_type').val());
-        var userId = $.trim($('#user_id').val());
-
-        var path = ctx + "/sys/regist";
-        var ajax = new AJAXPacket(path, "正在执行...请稍后");
-
-        ajax.add("email", email);
-        ajax.add("vcode", vcode);
-        ajax.add("password", password);
-        ajax.add("captcha", captcha);
-        ajax.add("registType", registType);
-        ajax.add("userId", userId);
-        Core.sendPacket(ajax, function (packet) {
-            var resultCode = packet.code;
-            var message = packet.msg;
-            var data = packet.data;
-
-            if (resultCode == "0") {
-                var email = packet.registEmail;
-                var userId = packet.userId;
-                var mailUrl = packet.mailUrl;
-                Core.alert("注册成功~ 点击进入下一步", 1,false, function () {
-                    $("#registEmail").html(email);
-                    $('#regist_type').val("U");
-                    $("#user_mail").val(email);
-                    $("#user_id").val(userId);
-                    $("#mailUrl").val(mailUrl);
-                    //模拟点击第二步
-                    globleIndex = 1;
-                    $('.processorBox li').eq(globleIndex).click();
-                });
-            } else {
-                Core.alert(message, 2,false, function () {
-                    getCaptcha();
-                });
-            }
-        }, true,true);
-
-    };
-
-    //动态验证开启
-    registFunc.dynamicValidate = function(objId){
+    registFunc.dynamicValidate = function (objId) {
         switch (objId) {
             case "email":
-                $("#"+objId).rules("add", {
+                $("#" + objId).rules("add", {
                     remote: {
                         //验证邮件是否已注册
                         type: "post",
@@ -231,7 +173,7 @@ var RegistFunc = (function () {
                         cache: false,
                         data: {
                             email: function () {
-                                return $("#"+objId).val();
+                                return $("#" + objId).val();
                             }
                         }
                     },
@@ -239,7 +181,7 @@ var RegistFunc = (function () {
                 });
                 break;
             case "vcode":
-                $("#"+objId).rules("add", {
+                $("#" + objId).rules("add", {
                     remote: {
                         //验证编码是否重复
                         type: "post",
@@ -247,7 +189,7 @@ var RegistFunc = (function () {
                         cache: false,
                         data: {
                             vcode: function () {
-                                return $("#"+objId).val();
+                                return $("#" + objId).val();
                             }
                         }
                     },
@@ -259,74 +201,66 @@ var RegistFunc = (function () {
         }
     };
 
-    registFunc.onblurRemoveRules = function(){
-        $("#email").keyup(function(){
+    /**
+     * 删除动态验证remote
+     */
+    registFunc.onblurRemoveRules = function () {
+        $("#email").keyup(function () {
             $("#email").rules("remove", "remote");
         });
-        $("#vcode").keyup(function(){
+        $("#vcode").keyup(function () {
             $("#vcode").rules("remove", "remote");
         });
     };
 
+    /**
+     * 发送手机短信
+     */
     var closeTipId;
-    registFunc.sendSmsMessage = function(obj){
+    registFunc.sendSmsMessage = function (obj) {
 
-        var _this = $(obj);
         var phone = $.trim($('#phone').val());
         var userId = $.trim($('#user_id').val());
 
-        if(phone.length == 0){
-            closeTipId = Core.showTips($("#phone"),"请输入手机号码~");
+        if (phone.length == 0) {
+            closeTipId = Core.showTips($("#phone"), "请输入手机号码~");
             return false;
-        }else{
-            var times = 1 * 4;
-            _this.val(times + '秒后可以重新发送');
-            var timer = setInterval(function(){
-                times--;
-                _this.val(times + '秒后可以重新发送');
-                if(times == 0){
-                    _this.val('重新发送');
-                    _this.attr('disabled',false);
-                    clearInterval(timer);
-                }
-            },1000);
-            _this.attr('disabled','disabled');
-
+        } else {
+            Core.setTimerFunc(obj,900,"button");
             Core.close(closeTipId);
         }
 
-        if(phone.length != 0 && userId.length != 0){
-            var path = ctx + "/filecoin/wsendmessage/save/"+phone+"/"+userId;
+        if (phone.length != 0 && userId.length != 0) {
+            var path = ctx + "/filecoin/wsendmessage/save/" + phone + "/" + userId;
             var ajax = new AJAXPacket(path, "正在发送短信...请稍后");
 
             Core.sendPacket(ajax, function (packet) {
                 var resultCode = packet.code;
                 var message = packet.msg;
                 if (resultCode == "0") {
-                    Core.alert("发送成功~ ", 1,false, function () {
+                    Core.alert("发送成功~ ", 1, false, function () {
                         var nextBtn2 = $("#nextBtn2");
-                        nextBtn2.attr('onclick','javascript:$("#step3_frm").submit();');
-                        nextBtn2.attr('style','');
+                        nextBtn2.attr('onclick', 'javascript:$("#step3_frm").submit();');
+                        nextBtn2.attr('style', '');
                     });
                 } else {
-                    Core.alert(message, 2,false, function () {
-                        // var nextBtn2 = $("#nextBtn2");
-                        // nextBtn2.attr('onclick','javascript:return false;');
-                        // nextBtn2.attr('style','opacity: 0.2');
+                    Core.alert(message, 2, false, function () {
                     });
                 }
-            }, true,true);
+            }, true, true);
         }
     };
 
-    //验证手机验证码是否正确
-    registFunc.smsMessageValide = function(){
+    /**
+     * 验证手机验证码是否正确
+     */
+    registFunc.smsMessageValide = function () {
 
         var phone = $.trim($('#phone').val());
         var phoneYzm = $.trim($('#phoneYzm').val());
         var userId = $.trim($('#user_id').val());
-        if(phone.length != 0 && phoneYzm.length != 0 && userId.length != 0){
-            var path = ctx + "/filecoin/wsendmessage/validate/"+phone+"/"+userId+"/"+phoneYzm;
+        if (phone.length != 0 && phoneYzm.length != 0 && userId.length != 0) {
+            var path = ctx + "/filecoin/wsendmessage/validate/" + phone + "/" + userId + "/" + phoneYzm;
             var ajax = new AJAXPacket(path, "正在验证手机验证码...请稍后");
 
             Core.sendPacket(ajax, function (packet) {
@@ -338,15 +272,18 @@ var RegistFunc = (function () {
                     RegistFunc.bindPhoneMsg();
 
                 } else {
-                    Core.alert(message, 2,false, function () {
+                    Core.alert(message, 2, false, function () {
 
                     });
                 }
-            }, true,true);
+            }, true, true);
         }
     };
 
-    registFunc.bindPhoneMsg = function(){
+    /**
+     * 绑定手机信息
+     */
+    registFunc.bindPhoneMsg = function () {
 
         var jsonParam = Core.serializeJsonStr("mainForm,step1_frm,step3_frm,step4_frm");
 
@@ -360,26 +297,119 @@ var RegistFunc = (function () {
 
             if (resultCode == "0") {
                 var userId = packet.userId;
-                Core.alert(message, 1,false, function () {
+                Core.alert(message, 1, false, function () {
                     $("#user_id").val(userId);
                     //模拟点击第4步
                     globleIndex = 3;
                     $('.processorBox li').eq(globleIndex).click();
                     // base64 encrypt
-                    var rawStr = 4+"#"+userId;
+                    var rawStr = 4 + "#" + userId;
                     var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
                     var base64 = CryptoJS.enc.Base64.stringify(wordArray);
-                    var url = "/modules/filecoin/regist.html?value="+base64;
+                    var url = "/modules/filecoin/regist.html?value=" + base64;
                     window.location.href = url;
                 });
             } else {
-                Core.alert(message, 2,false, function () {
+                Core.alert(message, 2, false, function () {
 
                 });
             }
-        }, true,true);
+        }, true, true);
     };
 
+    /**
+     * 绑定矿机信息
+     */
+    registFunc.bindMinerMsg = function () {
+
+        var jsonParam = Core.serializeJsonStr("mainForm,step1_frm,step3_frm,step4_frm");
+
+        var path = ctx + "/sys/regist/minerInput";
+        var ajax = new AJAXPacket(path, "正在完善矿工资料...请稍后");
+
+        ajax.addJsonArray(jsonParam);
+        Core.sendPacketJson(ajax, function (packet) {
+            var resultCode = packet.code;
+            var message = packet.msg;
+
+            if (resultCode == "0") {
+                var userId = packet.userId;
+                var token = packet.token;
+                var expire = packet.expire;
+
+                Core.alert(message, 1, false, function () {
+                    $("#user_id").val(userId);
+                    //模拟点击第5步
+                    globleIndex = 4;
+                    $('.processorBox li').eq(globleIndex).click();
+                    //登录
+                    localStorage.removeItem("token");
+                    localStorage.setItem("token", token);
+                    // base64 encrypt
+                    var rawStr = 5 + "#" + userId;
+                    var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
+                    var base64 = CryptoJS.enc.Base64.stringify(wordArray);
+                    var url = "/modules/filecoin/regist.html?value=" + base64;
+                    window.location.href = url;
+                });
+            } else {
+                Core.alert(message, 2, false, function () {
+
+                });
+            }
+        }, true, true);
+    };
+
+    /**
+     * 通过用户id获取邀请码信息
+     */
+    registFunc.getInvCodeMsgByUser = function (userId) {
+        var path = ctx + "/filecoin/dinvitationcodeinfo/getInvitaCodeByUserId";
+        var ajax = new AJAXPacket(path, "正在执行...请稍后");
+
+        ajax.add("userId", userId);
+        Core.sendPacket(ajax, function (packet) {
+            var resultCode = packet.code;
+            var message = packet.msg;
+
+            if (resultCode == "0") {
+                var invitationCode = packet.invitationCode;
+                $("#invitationCodeA").html(invitationCode);
+            } else {
+                Core.alert(message, 2, false, function () {
+
+                });
+            }
+        }, true, false);
+    };
+
+    registFunc.getUserById = function (userId) {
+        var path = ctx + "/sys/user/info/"+userId;
+        var ajax = new AJAXPacket(path, "正在执行...请稍后");
+
+        ajax.add("userId", userId);
+        Core.sendPacket(ajax, function (packet) {
+            var resultCode = packet.code;
+            var message = packet.msg;
+
+            if (resultCode == "0") {
+                var user = packet.user;
+                var mailUrl = packet.mailUrl;
+                $("#registEmail").html(user.email);
+                $('#regist_type').val("U");
+                $("#user_mail").val(user.email);
+                $("#user_id").val(userId);
+                $("#mailUrl").val(mailUrl);
+                //模拟点击第二步
+                globleIndex = 1;
+                $('.processorBox li').eq(globleIndex).click();
+            } else {
+                Core.alert(message, 2, false, function () {
+
+                });
+            }
+        }, true, false);
+    };
 
     /***
      * 初始化信息方法
@@ -388,54 +418,59 @@ var RegistFunc = (function () {
         //初始化
     };
 
-
-
     return registFunc;
 
 })();
+
 $(function () {
 
     RegistFunc.init();
-    // RegistFunc.onblurRemoveRules();
 
-    // $("#step3_frm").submit();
+    value = $.query.get("value");
+    var parsedWordArray = CryptoJS.enc.Base64.parse(value);
+    var plaintext = parsedWordArray.toString(CryptoJS.enc.Utf8);
+    if(plaintext != ''){
+        step = plaintext.split("#")[0];
+        userId = plaintext.split("#")[1];
+    }
+
     var nextBtn2 = $("#nextBtn2");
-    nextBtn2.attr('onclick','javascript:return false;');
-    nextBtn2.attr('style','opacity: 0.2');
+    nextBtn2.attr('onclick', 'javascript:return false;');
+    nextBtn2.attr('style', 'opacity: 0.2');
 
-    //重发邮件按钮点击事件
-    $("#resendMailBtn").click(function(){
+    //返回修改邮件信息
+    $("#resendMailBtn").click(function () {
         var obj = $(this)[0];
         RegistFunc.resendMail(obj);
     });
 
-    $(".changeVerifyCode").click(function(){
-        $("#captchaImgId").attr("src",ctx+"/captcha.jpg?t=" + $.now());
+    //换一张验证码
+    $("#captcha_changeTipsHere").click(function () {
+        LoginFunc.getCaptcha();
     });
 
-    //AJAX提交以及验证表单
-    $('#nextBtn').click(function(){
-        // RegistFunc.dynamicValidate("email");
-        // RegistFunc.dynamicValidate("vcode");
+    //重发邮件按钮点击事件
+    $("#editMailUserBtn").click(function () {
+        RegistFunc.getEditMailUser();
+    });
+
+    $(".changeVerifyCode").click(function () {
+        $("#captchaImgId").attr("src", ctx + "/captcha.jpg?t=" + $.now());
+    });
+
+    //提交邮件注册基本信息
+    $('#nextBtn').click(function () {
         $("#step1_frm").submit();
     });
 
-    // //验证手机号码
-    // $('#nextBtn2').click(function(){
-    //     // $("#step3_frm").submit();
-    //     var nextBtn2 = $("#nextBtn2");
-    //     nextBtn2.attr('onclick','javascript:return false;');
-    //     nextBtn2.attr('style','opacity: 0.2');
-    // });
-
     //发送手机验证码
-    $("#phoneYzm_changeTipsHere").click(function(){
+    $("#phoneYzm_changeTipsHere").click(function () {
         var obj = $(this)[0];
         RegistFunc.sendSmsMessage(obj);
     });
 
     //验证矿工资料
-    $('#finishedBtn').click(function(){
+    $('#finishedBtn').click(function () {
         $("#step4_frm").submit();
     });
 
@@ -443,7 +478,7 @@ $(function () {
         rules: {
             email: {
                 required: true,
-                email:true
+                email: true
             },
             vcode: {
                 required: true
@@ -462,7 +497,7 @@ $(function () {
         messages: {
             email: {
                 required: "请填写您的邮箱~",
-                email:"您的邮箱格式错咯~"
+                email: "您的邮箱格式错咯~"
             },
             vcode: {
                 required: "请输入邀请码~"
@@ -478,21 +513,23 @@ $(function () {
                 required: "请输入验证码~"
             }
         },
-        submitHandler:function(form){
-
+        submitHandler: function (form) {
+            alert(525);
             RegistFunc.ajaxBaseEmailReg();
-
             return false;
         }
     });
 
+    //绑定手机信息验证
     $("#step3_frm").validate({
         rules: {
             trueName: {
-                required: true
+                required: true,
+                zh_and_en2: true
             },
             iccid: {
-                required: true
+                required: true,
+                isIdCode: true
             },
             phone: {
                 required: true,
@@ -504,10 +541,12 @@ $(function () {
         },
         messages: {
             trueName: {
-                required: "请输入真实姓名~"
+                required: "请输入真实姓名~",
+                zh_and_en2: "真实姓名只能输入中文和字母咯~"
             },
             iccid: {
-                required: "请输入身份证号~"
+                required: "请输入身份证号~",
+                isIdCode: "请输入正确的身份证号码咯~"
             },
             phone: {
                 required: "请输入手机号码~",
@@ -517,109 +556,291 @@ $(function () {
                 required: "请输入手机验证码~"
             }
         },
-        submitHandler:function(form){
-
+        submitHandler: function (form) {
             RegistFunc.smsMessageValide();
-
             return false;
         }
     });
 
-
+    /**
+     * 完善矿工信息
+     */
     $("#step4_frm").validate({
         rules: {
             minerMachineAddr: {
-                required: true
+                required: false
+            },
+            minerMachineEnv: {
+                required: false
+            },
+            onLineTime: {
+                required: false
+            },
+            storageLen: {
+                required: false,
+                digits: true
+            },
+            bandWidth: {
+                required: false
             }
         },
         messages: {
             minerMachineAddr: {
-                required: "请输入矿机位置"
+            },
+            minerMachineEnv: {
+            },
+            onLineTime: {
+            },
+            storageLen: {
+                digits: "请输入整数咯~"
+            },
+            bandWidth: {
             }
         },
-        submitHandler:function(form){
-
-            var jsonParam = Core.serializeJsonStr("mainForm,step1_frm,step3_frm,step4_frm");
-
-            var path = ctx + "/sys/regist/minerInput";
-            var ajax = new AJAXPacket(path, "正在执行...请稍后");
-
-            ajax.addJsonArray(jsonParam);
-            Core.sendPacketJson(ajax, function (packet) {
-                var resultCode = packet.code;
-                var message = packet.msg;
-
-                if (resultCode == "0") {
-                    var userId = packet.userId;
-                    var token = packet.token;
-                    var expire = packet.expire;
-
-                    Core.alert(message, 1,false, function () {
-                        $("#user_id").val(userId);
-                        //模拟点击第5步
-                        globleIndex = 4;
-                        $('.processorBox li').eq(globleIndex).click();
-                        //登录
-                        localStorage.removeItem("token");
-                        localStorage.setItem("token",token);
-                        // base64 encrypt
-                        var rawStr = 5+"#"+userId;
-                        var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
-                        var base64 = CryptoJS.enc.Base64.stringify(wordArray);
-                        var url = "/modules/filecoin/regist.html?value="+base64;
-                        window.location.href = url;
-                    });
-                } else {
-                    Core.alert(message, 2,false, function () {
-
-                    });
-                }
-            }, true,true);
-
+        submitHandler: function (form) {
+            RegistFunc.bindMinerMsg();
             return false;
         }
     });
 
     //切换步骤（目前只用来演示）
-    $('.processorBox li').click(function(){
+    $('.processorBox li').click(function () {
         Core.closeTips();
         var i = $(this).index();
-        if(i == globleIndex){
+        if (i == globleIndex) {
             $('.processorBox li').removeClass('current').eq(i).addClass('current');
             $('.step').fadeOut(300).eq(i).fadeIn(500);
         }
     });
 
-    if(step != '' && userId != ''){
+    if (step != '' && userId != '') {
         //在这里跳转
         //模拟点击
         globleIndex = Number(step) - 1;
         $('.processorBox li').eq(globleIndex).click();
         $("#user_id").val(userId);
-        //第五步获取注册码
-        if(step == "5"){
 
-            var path = ctx + "/filecoin/dinvitationcodeinfo/getInvitaCodeByUserId";
-            var ajax = new AJAXPacket(path, "正在执行...请稍后");
-
-            ajax.add("userId", userId);
-            Core.sendPacket(ajax, function (packet) {
-                var resultCode = packet.code;
-                var message = packet.msg;
-
-                if (resultCode == "0") {
-                    var invitationCode = packet.invitationCode;
-                    $("#invitationCodeA").html(invitationCode);
-                } else {
-                    Core.alert(message, 2,false, function () {
-
-                    });
-                }
-            }, true,false);
+        //第二步加载用户其他信息
+        if (step == "2") {
+            //获取用户信息
+            RegistFunc.getUserById(userId);
         }
-    }else{
+
+        //第五步获取注册码
+        if (step == "5") {
+            RegistFunc.getInvCodeMsgByUser(userId);
+        }
+    } else {
         globleIndex = 0;
         $('.processorBox li').eq(globleIndex).click();
     }
+
+
+    $("#openMailUrlBtn").click(function(){
+        var url = $("#mailUrl").val();
+        window.open("https://"+url,"_blank");
+    });
+
+    /**
+     * 原页面自带
+     */
+
+    $.fn.iVaryVal=function(iSet,CallBack){
+
+        /*
+
+         * Minus:点击元素--减小
+
+         * Add:点击元素--增加
+
+         * Input:表单元素
+
+         * Min:表单的最小值，非负整数
+
+         * Max:表单的最大值，正整数
+
+         */
+
+        iSet=$.extend({Minus:$('.J_minus'),Add:$('.J_add'),Input:$('.J_input'),Min:0,Max:2048},iSet);
+
+        var C=null,O=null;
+
+//插件返回值
+
+        var $CB={};
+
+//增加
+
+        iSet.Add.each(function(i){
+
+            $(this).click(function(){
+
+                O=parseInt(iSet.Input.eq(i).val());
+
+                (O+1<=iSet.Max) || (iSet.Max==null) ? iSet.Input.eq(i).val(O+1) : iSet.Input.eq(i).val(iSet.Max);
+
+//输出当前改变后的值
+
+                $CB.val=iSet.Input.eq(i).val();
+
+                $CB.index=i;
+
+//回调函数
+
+                if (typeof CallBack == 'function') {
+
+                    CallBack($CB.val,$CB.index);
+
+                }
+
+            });
+
+        });
+
+//减少
+
+        iSet.Minus.each(function(i){
+
+            $(this).click(function(){
+
+                O=parseInt(iSet.Input.eq(i).val());
+
+                O-1<iSet.Min ? iSet.Input.eq(i).val(iSet.Min) : iSet.Input.eq(i).val(O-1);
+
+                $CB.val=iSet.Input.eq(i).val();
+
+                $CB.index=i;
+
+//回调函数
+
+                if (typeof CallBack == 'function') {
+
+                    CallBack($CB.val,$CB.index);
+
+                }
+
+            });
+
+        });
+
+//手动
+
+        iSet.Input.bind({
+
+            'click':function(){
+
+                O=parseInt($(this).val());
+
+                $(this).select();
+
+            },
+
+            'keyup':function(e){
+
+                if($(this).val()!=''){
+
+                    C=parseInt($(this).val());
+
+//非负整数判断
+
+                    if(/^[1-9]\d*|0$/.test(C)){
+
+                        $(this).val(C);
+
+                        O=C;
+
+                    }else{
+
+                        $(this).val(O);
+
+                    }
+
+                }
+
+//键盘控制：上右--加，下左--减
+
+                if(e.keyCode==38 || e.keyCode==39){
+
+                    iSet.Add.eq(iSet.Input.index(this)).click();
+
+                }
+
+                if(e.keyCode==37 || e.keyCode==40){
+
+                    iSet.Minus.eq(iSet.Input.index(this)).click();
+
+                }
+
+//输出当前改变后的值
+
+                $CB.val=$(this).val();
+
+                $CB.index=iSet.Input.index(this);
+
+//回调函数
+
+                if (typeof CallBack == 'function') {
+
+                    CallBack($CB.val,$CB.index);
+
+                }
+
+            },
+
+            'blur':function(){
+
+                $(this).trigger('keyup');
+
+                if($(this).val()==''){
+
+                    $(this).val(O);
+
+                }
+
+//判断输入值是否超出最大最小值
+
+                if(iSet.Max){
+
+                    if(O>iSet.Max){
+
+                        $(this).val(iSet.Max);
+
+                    }
+
+                }
+
+                if(O<iSet.Min){
+
+                    $(this).val(iSet.Min);
+
+                }
+
+//输出当前改变后的值
+
+                $CB.val=$(this).val();
+
+                $CB.index=iSet.Input.index(this);
+
+//回调函数
+
+                if (typeof CallBack == 'function') {
+
+                    CallBack($CB.val,$CB.index);
+
+                }
+
+            }
+
+        });
+
+    }
+
+    $('.i_box').iVaryVal({},function(value,index){
+
+//网页显示以下内容，可以隐藏掉
+
+        $('.i_tips').html('您的存储硬盘空间大小是：'+value+'T');
+
+    });
 
 });
