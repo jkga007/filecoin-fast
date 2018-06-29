@@ -25,4 +25,5 @@ public interface SysLogService {
 	void delete(Long id);
 	
 	void deleteBatch(Long[] ids);
+	void saveLog(String className,String userName,String params,long time,String operation);
 }

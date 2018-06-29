@@ -1,9 +1,16 @@
 package com.filecoin.modules.sys.controller;
 
+import com.filecoin.common.utils.HttpContextUtils;
+import com.filecoin.common.utils.IPUtils;
+import com.filecoin.modules.sys.entity.SysLogEntity;
 import com.filecoin.modules.sys.entity.SysUserEntity;
+import com.google.gson.Gson;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * Controller公共组件
