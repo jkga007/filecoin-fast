@@ -97,15 +97,19 @@ public class SysUserController extends AbstractController {
 	 * 用户信息
 	 */
 	@RequestMapping("/info/{userId}")
-	@RequiresPermissions("sys:user:info")
+//	@RequiresPermissions("sys:user:info")
 	public JsonResult info(@PathVariable("userId") Long userId){
 		SysUserEntity user = sysUserService.queryObject(userId);
 		
 		//获取用户所属的角色列表
 		List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
 		user.setRoleIdList(roleIdList);
-		
-		return JsonResult.ok().put("user", user);
+
+		String emailUser = user.getEmail();
+		String emailEnd = emailUser.substring(emailUser.indexOf("@")+1,emailUser.length());
+		String mailUrl = "mail."+emailEnd;
+
+		return JsonResult.ok().put("user", user).put("mailUrl",mailUrl);
 	}
 	
 	/**

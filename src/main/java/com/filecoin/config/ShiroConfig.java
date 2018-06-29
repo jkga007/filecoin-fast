@@ -63,32 +63,19 @@ public class ShiroConfig {
         //登录
         filterMap.put("/sys/login", "anon");
         filterMap.put("/sys/loginBack", "anon");
+        //通过用户ID获取用户
+        filterMap.put("/sys/user/info/*", "anon");
+
+        filterMap.put("/regist/doValidate/*", "anon");
+        filterMap.put("/regist/doValidateRegist/*", "anon");
+        filterMap.put("/filecoin/wsendmessage/save/**", "anon");
+        filterMap.put("/filecoin/wsendmessage/validate/**", "anon");
         //注册
         filterMap.put("/sys/regist/*", "anon");
         //跳转登录页
         filterMap.put("/sys/gologin", "anon");
         //注册邮箱激活
         filterMap.put("/sys/activation/**", "anon");
-        //跳转首页
-        filterMap.put("/sys/goindex", "anon");
-        //跳转注册页
-        filterMap.put("/sys/goregist", "anon");
-        //跳转用户主页
-        filterMap.put("/sys/gomasterindex", "anon");
-        //跳转矿工管理
-        filterMap.put("/sys/gominer", "anon");
-        //跳转付款记录
-        filterMap.put("/sys/gopay", "anon");
-        //跳转付款设置
-        filterMap.put("/sys/gomywallet", "anon");
-        //跳转安全中心
-        filterMap.put("/sys/gosecurity", "anon");
-        //跳转个人中心
-        filterMap.put("/sys/gosettings", "anon");
-        //跳转帮助中心
-        filterMap.put("/sys/gofaq", "anon");
-        //跳转推广有礼
-        filterMap.put("/sys/gohighway", "anon");
         //重新发送邮件
         filterMap.put("/sys/resendMail", "anon");
         //返回修改邮箱用户信息
@@ -102,7 +89,6 @@ public class ShiroConfig {
         filterMap.put("/fonts/**", "anon");
         filterMap.put("/filecoin/**", "anon");
         filterMap.put("/plugins/**", "anon");
-        filterMap.put("/testsimplemail/**", "anon");
         filterMap.put("/swagger/**", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/captcha.jpg", "anon");

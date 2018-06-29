@@ -3,6 +3,7 @@ package com.filecoin.modules.job.task;
 
 
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
+import com.aliyuncs.exceptions.ClientException;
 import com.filecoin.common.utils.Constant;
 import com.filecoin.common.utils.SmsSendUtil;
 import com.filecoin.modules.filecoin.entity.WSendMessageEntity;
@@ -69,6 +70,8 @@ public class SendMessageTask {
 				wSendMessageEntityUpdate.setStatus(Constant.SendStatus.SUCCESS.getValue());
 				wSendMessageEntityUpdate.setReturnCode(sendSmsResponse.getCode());
 				wSendMessageEntityUpdate.setReturnMessage(sendSmsResponse.getMessage());
+				wSendMessageEntityUpdate.setRequestId(sendSmsResponse.getRequestId());
+				wSendMessageEntityUpdate.setBizId(sendSmsResponse.getBizId());
 			}catch(Exception e){
 				logger.error(e.getMessage());
 				wSendMessageEntityUpdate.setStatus(Constant.SendStatus.ERROR.getValue());

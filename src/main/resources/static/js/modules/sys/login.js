@@ -26,14 +26,22 @@ var LoginFunc = (function () {
                 localStorage.setItem("token",packet.token);
                 // window.location.href = ctx + "/sys/gomasterindex";
                 window.location.href = ctx + "/modules/filecoin/index-dashboard.html";
-            } else if(resultCode == "1") {
-                //登录返回信息为待注册
+            } else if (resultCode == "2") {
                 var userId = packet.userId;
-                var email = packet.email;
-                Core.alert(message, 2,false, function () {
-                    window.location.href = ctx + "/modules/filecoin/index-dashboard.html";
+                var step = packet.step;
+                Core.alert(message, 1, false, function () {
+                    $("#user_id").val(userId);
+                    //模拟点击下一步
+                    globleIndex = Number(step)-1;
+                    $('.processorBox li').eq(globleIndex).click();
+                    // base64 encrypt
+                    var rawStr = step + "#" + userId;
+                    var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
+                    var base64 = CryptoJS.enc.Base64.stringify(wordArray);
+                    var url = "/modules/filecoin/regist.html?value=" + base64;
+                    window.location.href = url;
                 });
-            }else {
+            } else {
                 Core.alert(message, 2,false, function () {
                     window.location.href = ctx + "/modules/filecoin/login.html";
                 });
@@ -80,6 +88,9 @@ var LoginFunc = (function () {
         }, true,true);
     };
 
+    loginFunc.getCaptcha = function(){
+        $("#captchaImgId").attr("src","/captcha.jpg?t=" + $.now());
+    };
 
     /***
      * 初始化信息方法
@@ -93,6 +104,45 @@ var LoginFunc = (function () {
 })();
 $(function () {
     LoginFunc.init();
+
+    $("#captcha_changeTipsHere").click(function () {
+        LoginFunc.getCaptcha();
+    });
+
+    $("#msg_validate").validate({
+        rules: {
+            username: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true
+            },
+            captcha: {
+                required: true
+            }
+        },
+        messages: {
+            username: {
+                required: "请输入邮箱地址~",
+                email: "您的邮箱格式错咯~"
+            },
+            password: {
+                required: "请输入密码~"
+            },
+            captcha: {
+                required: "请输入验证码~"
+            }
+        },
+        submitHandler: function () {
+            var jsonParam = Core.serializeJsonStr("msg_validate");
+            LoginFunc.doLogin(jsonParam);
+        }
+    });
+
+    $("#doLoginBtn").click(function(){
+        $("#msg_validate").submit();
+    });
     $("#logoutBtn").click(function(){
         LoginFunc.doLogout();
     });

@@ -1,4 +1,4 @@
-﻿<!doctype html>
+﻿﻿<!doctype html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
@@ -71,7 +71,7 @@
 				<div class="frm_control_group">
 					<label class="frm_label">内测邀请码</label>
 					<div class="frm_controls">
-						<input type="text" id="vcode" name="vcode" class="frm_input " maxlength="32" value=""/>
+						<input type="text" id="vcode" name="vcode" class="frm_input " maxlength="6" value=""/>
 						<p class="changeVerifyCode">您必须输入邀请码才能注册。如没有请加QQ群：22138062 获取。</p>
 					</div>
 				</div>
@@ -79,14 +79,14 @@
 				<div class="frm_control_group">
 					<label class="frm_label">密码</label>
 					<div class="frm_controls">
-						<input type="password" id="passwd" name="passwd" class="frm_input passwd" value=""/>
+						<input type="password" id="passwd" name="passwd" maxlength="32" class="frm_input passwd" value=""/>
 						<p class="frm_tips">字母、数字或者英文符号，最短6位，区分大小写</p>
 					</div>
 				</div>
 				<div class="frm_control_group">
 					<label class="frm_label">再次输入密码</label>
 					<div class="frm_controls">
-						<input type="password" id="passwd2" name="passwd2" class="frm_input passwd2" value=""/>
+						<input type="password" id="passwd2" name="passwd2" maxlength="32" class="frm_input passwd2" value=""/>
 					</div>
 				</div>
 				<div class="frm_control_group">
@@ -111,12 +111,12 @@
 					<strong class="f16">感谢注册，确认邮件已发送至你的注册邮箱 : <br /><span id="registEmail"></span></strong>
 					<p class="c7b">请进入邮箱查看邮件，并激活IPFS星际云矿池帐号。</p>
 					<p>
-						<a class="btn btn_primary mt20" href="#" onclick="openMailUrl();">登录邮箱</a>
+						<a class="btn btn_primary mt20" href="#" id="openMailUrlBtn">登录邮箱</a>
 					</p>
 					<p class="c7b mt20">没有收到邮件？</p>
-					<p>1. 请检查邮箱地址是否正确，你可以返回 <a href="#" onclick="RegistFunc.getEditMailUser();" class="c46">重新填写</a></p>
+					<p>1. 请检查邮箱地址是否正确，你可以返回 <a href="#" id="editMailUserBtn" class="c46">重新填写</a></p>
 					<p>2. 检查你的邮件垃圾箱</p>
-					<p>3. 若仍未收到确认，请尝试 <a href="#" onclick="RegistFunc.resendMail(this);" class="c46">重新发送</a></p>
+					<p>3. 若仍未收到确认，请尝试 <a id="resendMailBtn" href="#" class="c46">重新发送</a></p>
 				</div>
 				<div class="clear"></div>
 			</div><!-- // step2 end -->
@@ -132,22 +132,22 @@
 				<div class="frm_control_group">
 					<label class="frm_label">身份证号：</label>
 					<div class="frm_controls">
-						<input type="text" name="iccid" id="iccid" class="frm_input iccid" maxlength="32"/>
+						<input type="text" name="iccid" id="iccid" class="frm_input iccid" maxlength="20"/>
 						<p class="frm_tips">请填写真实身份证号码，作为日后帐号找回重要依据。</p>
 					</div>
 				</div>
 				<div class="frm_control_group">
 					<label class="frm_label">手机号：</label>
 					<div class="frm_controls">
-						<input type="text" name="phone" id="phone" class="frm_input phone"/>
+						<input type="text" name="phone" id="phone" class="frm_input phone" maxlength="13"/>
 						<p class="frm_tips">请填写常用手机号</p>
 					</div>
 				</div>
 				<div class="frm_control_group">
 					<label class="frm_label">手机验证码：</label>
 					<div class="frm_controls">
-						<input type="text" name="phoneYzm" id="phoneYzm"  class="frm_input phoneYzm"/>
-						<input type="button" value="获取验证码" class="btn btn_default" />
+						<input type="text" name="phoneYzm" id="phoneYzm" maxlength="6" class="frm_input phoneYzm"/>
+						<input type="button" id="phoneYzm_changeTipsHere" value="获取验证码" class="btn btn_default" />
 					</div>
 				</div>
 				<div class="toolBar">
@@ -161,22 +161,22 @@
 					<label class="frm_label">矿机所在位置</label>
 					<div class="frm_controls">
 						<input type="text" name="minerMachineAddr" id="minerMachineAddr" class="frm_input minerMachineAddr" maxlength="32"/>
-						<p class="frm_tips">选择您的所在位置</p>
+						<p class="frm_tips">输入您的所在位置</p>
 					</div>
 				</div>
 				<div class="frm_control_group">
 					<label class="frm_label">矿机存放环境</label>
 					<div class="frm_controls">
-						<input type="text" name="minerMachineEnv" id="minerMachineEnv" class="frm_input minerMachineEnv"/>
+						<input type="text" name="minerMachineEnv" id="minerMachineEnv" maxlength="32" class="frm_input minerMachineEnv"/>
 						<p class="frm_tips">矿机存放位置：例如IDC机房、矿场、家庭、单位</p>
 					</div>
 				</div>
 				<div class="frm_control_group">
 					<label class="frm_label">在线时长：</label>
 					<div class="frm_controls inputradio">
-						<input type="radio" name="onLineTime" onclick="check(this.value)" value="24H Explorer">24小时
-						<input type="radio" name="onLineTime" onclick="check(this.value)" value="notsure">不稳定<br />
-						<p class="frm_tips">如实填写，在线不稳定会影响您质押的代币或收益</p>
+						<input type="radio" name="onLineTime" value="24H">24小时
+						<input type="radio" name="onLineTime" value="notsure">不稳定<br />
+						<p class="frm_tips">如实选择，在线不稳定会影响您质押的代币或收益</p>
 					</div>
 				</div>
 
@@ -246,265 +246,13 @@
 <script src="../../plugins/jquery-validation/form-validate-demo.js"></script>
 <script src="../../plugins/jquery.params.js"></script>
 <script src="../../plugins/crtptojs/crypto-js.js"></script>
-
 <script type="text/javascript">
-
     var ctx= "";
-    var value = $.query.get("value");
-    var parsedWordArray = CryptoJS.enc.Base64.parse(value);
-    var plaintext = parsedWordArray.toString(CryptoJS.enc.Utf8);
+    var value = "";
     var step = 0;
-    var userId;
-    if(plaintext != ''){
-        step = plaintext.split("#")[0];
-        userId = plaintext.split("#")[1];
-    }
-//    alert(step+"--"+userId);
-
-
+    var userId = "";
     var globleIndex = 0;
-
-    function getCaptcha(){
-        $("#captchaImgId").attr("src",ctx+"/captcha.jpg?t=" + $.now());
-    }
-
-    //显示提示框，目前三个参数(txt：要显示的文本；time：自动关闭的时间（不设置的话默认1500毫秒）；status：默认0为错误提示，1为正确提示；)
-    function showTips(txt,time,status)
-    {
-        var htmlCon = '';
-        if(txt != ''){
-            if(status != 0 && status != undefined){
-                htmlCon = '<div class="tipsBox" style="width:220px;padding:10px;background-color:#4AAF33;border-radius:4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color:#fff;box-shadow:0 0 3px #ddd inset;-webkit-box-shadow: 0 0 3px #ddd inset;text-align:center;position:fixed;top:25%;left:50%;z-index:999999;margin-left:-120px;"><img src="'+ctx+'/filecoin/register/images/ok.png" style="vertical-align: middle;margin-right:5px;" alt="OK，"/>'+txt+'</div>';
-            }else{
-                htmlCon = '<div class="tipsBox" style="width:220px;padding:10px;background-color:#D84C31;border-radius:4px;-webkit-border-radius: 4px;-moz-border-radius: 4px;color:#fff;box-shadow:0 0 3px #ddd inset;-webkit-box-shadow: 0 0 3px #ddd inset;text-align:center;position:fixed;top:25%;left:50%;z-index:999999;margin-left:-120px;"><img src="'+ctx+'/filecoin/register/images/err.png" style="vertical-align: middle;margin-right:5px;" alt="Error，"/>'+txt+'</div>';
-            }
-            $('body').prepend(htmlCon);
-            if(time == '' || time == undefined){
-                time = 1500;
-            }
-            setTimeout(function(){ $('.tipsBox').remove(); },time);
-        }
-    }
-
-    function openMailUrl(){
-        var url = $("#mailUrl").val();
-        window.open("https://"+url,"_blank");
-    }
-
-    $(function(){
-
-    });
 </script>
-
 <script src="../../js/modules/sys/regist.js"></script>
-
-
-    <script>
-
-$.fn.iVaryVal=function(iSet,CallBack){
-
-/*
-
- * Minus:点击元素--减小
-
- * Add:点击元素--增加
-
- * Input:表单元素
-
- * Min:表单的最小值，非负整数
-
- * Max:表单的最大值，正整数
-
- */
-
-iSet=$.extend({Minus:$('.J_minus'),Add:$('.J_add'),Input:$('.J_input'),Min:0,Max:2048},iSet);
-
-var C=null,O=null;
-
-//插件返回值
-
-var $CB={};
-
-//增加
-
-iSet.Add.each(function(i){
-
-$(this).click(function(){
-
-O=parseInt(iSet.Input.eq(i).val());
-
-(O+1<=iSet.Max) || (iSet.Max==null) ? iSet.Input.eq(i).val(O+1) : iSet.Input.eq(i).val(iSet.Max);
-
-//输出当前改变后的值
-
-$CB.val=iSet.Input.eq(i).val();
-
-$CB.index=i;
-
-//回调函数
-
-if (typeof CallBack == 'function') {
-
-                CallBack($CB.val,$CB.index);
-
-            }
-
-});
-
-});
-
-//减少
-
-iSet.Minus.each(function(i){
-
-$(this).click(function(){
-
-O=parseInt(iSet.Input.eq(i).val());
-
-O-1<iSet.Min ? iSet.Input.eq(i).val(iSet.Min) : iSet.Input.eq(i).val(O-1);
-
-$CB.val=iSet.Input.eq(i).val();
-
-$CB.index=i;
-
-//回调函数
-
-if (typeof CallBack == 'function') {
-
-CallBack($CB.val,$CB.index);
-
-   }
-
-});
-
-});
-
-//手动
-
-iSet.Input.bind({
-
-'click':function(){
-
-O=parseInt($(this).val());
-
-$(this).select();
-
-},
-
-'keyup':function(e){
-
-if($(this).val()!=''){
-
-C=parseInt($(this).val());
-
-//非负整数判断
-
-if(/^[1-9]\d*|0$/.test(C)){
-
-$(this).val(C);
-
-O=C;
-
-}else{
-
-$(this).val(O);
-
-}
-
-}
-
-//键盘控制：上右--加，下左--减
-
-if(e.keyCode==38 || e.keyCode==39){
-
-iSet.Add.eq(iSet.Input.index(this)).click();
-
-}
-
-if(e.keyCode==37 || e.keyCode==40){
-
-iSet.Minus.eq(iSet.Input.index(this)).click();
-
-}
-
-//输出当前改变后的值
-
-$CB.val=$(this).val();
-
-$CB.index=iSet.Input.index(this);
-
-//回调函数
-
-if (typeof CallBack == 'function') {
-
-                CallBack($CB.val,$CB.index);
-
-            }
-
-},
-
-'blur':function(){
-
-$(this).trigger('keyup');
-
-if($(this).val()==''){
-
-$(this).val(O);
-
-}
-
-//判断输入值是否超出最大最小值
-
-if(iSet.Max){
-
-if(O>iSet.Max){
-
-$(this).val(iSet.Max);
-
-}
-
-}
-
-if(O<iSet.Min){
-
-$(this).val(iSet.Min);
-
-}
-
-//输出当前改变后的值
-
-$CB.val=$(this).val();
-
-$CB.index=iSet.Input.index(this);
-
-//回调函数
-
-if (typeof CallBack == 'function') {
-
-                CallBack($CB.val,$CB.index);
-
-            }
-
-}
-
-});
-
-}
-
-//调用
-
-$( function() {
-
-$('.i_box').iVaryVal({},function(value,index){
-
-//网页显示以下内容，可以隐藏掉
-
-$('.i_tips').html('您的存储硬盘空间大小是：'+value+'T');
-
-});
-
-});
-
-</script>
 </body>
 </html>

@@ -74,8 +74,8 @@ public class WSendMessageController extends AbstractController{
 	/**
 	 * 验证码验证
 	 */
-	@RequestMapping("/validate")
-	public JsonResult validate(@PathVariable("mobile") String mobile,@PathVariable("id") Long userId,
+	@RequestMapping("/validate/{mobile}/{userId}/{identifyingCode}")
+	public JsonResult validate(@PathVariable("mobile") String mobile,@PathVariable("userId") Long userId,
 							   @PathVariable("identifyingCode") String identifyingCode){
 		//提取验证码信息
 		Map<String,Object> parasMap = new HashMap<>();
@@ -94,12 +94,11 @@ public class WSendMessageController extends AbstractController{
 	/**
 	 * 保存
 	 */
-	@RequestMapping("/save")
-	@RequiresPermissions("filecoin:wsendmessage:save")
-	public JsonResult save(@PathVariable("mobile") String mobile,@PathVariable("id") Long userId){
+	@RequestMapping("/save/{mobile}/{userId}")
+	public JsonResult save(@PathVariable("mobile") String mobile,@PathVariable("userId") Long userId){
 		//获取当前用户状态及用户信息
 		SysUserEntity sysUser=sysUserService.queryObject(userId);
-		if(sysUser!=null){
+		if(sysUser == null){
 			return JsonResult.error("无此用户，请确认用户信息是否正确！");
 		}else if(sysUser.getStatus()!=Constant.UserStatus.NEED_BIND_MOBILE.getValue()){
 			return JsonResult.error("用户当前状态不允许进行手机验证码下发，请稍后再试！");
@@ -110,6 +109,7 @@ public class WSendMessageController extends AbstractController{
 		if(sysUserEntity!=null){
 			return JsonResult.error("该手机号码已被注册，请更换手机号码");
 		}
+
 		//手机号码15分钟内下发过短信，不让注册
 		Map<String,Object> parasMap = new HashMap<>();
 		parasMap.put("mobile",mobile);
