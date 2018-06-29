@@ -268,28 +268,31 @@ var RegistFunc = (function () {
         });
     };
 
+    var closeTipId;
     registFunc.sendSmsMessage = function(obj){
 
         var _this = $(obj);
-        var times = 1 * 60;
-        _this.val(times + '秒后可以重新发送');
-        var timer = setInterval(function(){
-            times--;
-            _this.val(times + '秒后可以重新发送');
-            if(times == 0){
-                _this.val('重新发送');
-                _this.attr('disabled','');
-                clearInterval(timer);
-            }
-        },1000);
-        _this.attr('disabled','disabled');
-
         var phone = $.trim($('#phone').val());
         var userId = $.trim($('#user_id').val());
 
         if(phone.length == 0){
-            Core.showTips($("#phone"),"请输入手机号码~");
+            closeTipId = Core.showTips($("#phone"),"请输入手机号码~");
             return false;
+        }else{
+            var times = 1 * 4;
+            _this.val(times + '秒后可以重新发送');
+            var timer = setInterval(function(){
+                times--;
+                _this.val(times + '秒后可以重新发送');
+                if(times == 0){
+                    _this.val('重新发送');
+                    _this.attr('disabled',false);
+                    clearInterval(timer);
+                }
+            },1000);
+            _this.attr('disabled','disabled');
+
+            Core.close(closeTipId);
         }
 
         if(phone.length != 0 && userId.length != 0){
@@ -301,8 +304,39 @@ var RegistFunc = (function () {
                 var message = packet.msg;
                 if (resultCode == "0") {
                     Core.alert("发送成功~ ", 1,false, function () {
-
+                        var nextBtn2 = $("#nextBtn2");
+                        nextBtn2.attr('onclick','javascript:$("#step3_frm").submit();');
+                        nextBtn2.attr('style','');
                     });
+                } else {
+                    Core.alert(message, 2,false, function () {
+                        // var nextBtn2 = $("#nextBtn2");
+                        // nextBtn2.attr('onclick','javascript:return false;');
+                        // nextBtn2.attr('style','opacity: 0.2');
+                    });
+                }
+            }, true,true);
+        }
+    };
+
+    //验证手机验证码是否正确
+    registFunc.smsMessageValide = function(){
+
+        var phone = $.trim($('#phone').val());
+        var phoneYzm = $.trim($('#phoneYzm').val());
+        var userId = $.trim($('#user_id').val());
+        if(phone.length != 0 && phoneYzm.length != 0 && userId.length != 0){
+            var path = ctx + "/filecoin/wsendmessage/validate/"+phone+"/"+userId+"/"+phoneYzm;
+            var ajax = new AJAXPacket(path, "正在验证手机验证码...请稍后");
+
+            Core.sendPacket(ajax, function (packet) {
+                var resultCode = packet.code;
+                var message = packet.msg;
+                if (resultCode == "0") {
+
+                    //提交绑定手机
+                    RegistFunc.bindPhoneMsg();
+
                 } else {
                     Core.alert(message, 2,false, function () {
 
@@ -310,6 +344,40 @@ var RegistFunc = (function () {
                 }
             }, true,true);
         }
+    };
+
+    registFunc.bindPhoneMsg = function(){
+
+        var jsonParam = Core.serializeJsonStr("mainForm,step1_frm,step3_frm,step4_frm");
+
+        var path = ctx + "/sys/regist/phoneBind";
+        var ajax = new AJAXPacket(path, "正在绑定手机...请稍后");
+
+        ajax.addJsonArray(jsonParam);
+        Core.sendPacketJson(ajax, function (packet) {
+            var resultCode = packet.code;
+            var message = packet.msg;
+
+            if (resultCode == "0") {
+                var userId = packet.userId;
+                Core.alert(message, 1,false, function () {
+                    $("#user_id").val(userId);
+                    //模拟点击第4步
+                    globleIndex = 3;
+                    $('.processorBox li').eq(globleIndex).click();
+                    // base64 encrypt
+                    var rawStr = 4+"#"+userId;
+                    var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
+                    var base64 = CryptoJS.enc.Base64.stringify(wordArray);
+                    var url = "/modules/filecoin/regist.html?value="+base64;
+                    window.location.href = url;
+                });
+            } else {
+                Core.alert(message, 2,false, function () {
+
+                });
+            }
+        }, true,true);
     };
 
 
@@ -330,6 +398,11 @@ $(function () {
     RegistFunc.init();
     // RegistFunc.onblurRemoveRules();
 
+    // $("#step3_frm").submit();
+    var nextBtn2 = $("#nextBtn2");
+    nextBtn2.attr('onclick','javascript:return false;');
+    nextBtn2.attr('style','opacity: 0.2');
+
     //重发邮件按钮点击事件
     $("#resendMailBtn").click(function(){
         var obj = $(this)[0];
@@ -347,10 +420,13 @@ $(function () {
         $("#step1_frm").submit();
     });
 
-    //验证手机号码
-    $('#nextBtn2').click(function(){
-        $("#step3_frm").submit();
-    });
+    // //验证手机号码
+    // $('#nextBtn2').click(function(){
+    //     // $("#step3_frm").submit();
+    //     var nextBtn2 = $("#nextBtn2");
+    //     nextBtn2.attr('onclick','javascript:return false;');
+    //     nextBtn2.attr('style','opacity: 0.2');
+    // });
 
     //发送手机验证码
     $("#phoneYzm_changeTipsHere").click(function(){
@@ -443,36 +519,7 @@ $(function () {
         },
         submitHandler:function(form){
 
-            var jsonParam = Core.serializeJsonStr("mainForm,step1_frm,step3_frm,step4_frm");
-
-            var path = ctx + "/sys/regist/phoneBind";
-            var ajax = new AJAXPacket(path, "正在执行...请稍后");
-
-            ajax.addJsonArray(jsonParam);
-            Core.sendPacketJson(ajax, function (packet) {
-                var resultCode = packet.code;
-                var message = packet.msg;
-
-                if (resultCode == "0") {
-                    var userId = packet.userId;
-                    Core.alert(message, 1,false, function () {
-                        $("#user_id").val(userId);
-                        //模拟点击第4步
-                        globleIndex = 3;
-                        $('.processorBox li').eq(globleIndex).click();
-                        // base64 encrypt
-                        var rawStr = 4+"#"+userId;
-                        var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
-                        var base64 = CryptoJS.enc.Base64.stringify(wordArray);
-                        var url = "/modules/filecoin/regist.html?value="+base64;
-                        window.location.href = url;
-                    });
-                } else {
-                    Core.alert(message, 2,false, function () {
-
-                    });
-                }
-            }, true,true);
+            RegistFunc.smsMessageValide();
 
             return false;
         }
