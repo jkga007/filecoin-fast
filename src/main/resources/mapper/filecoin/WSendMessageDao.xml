@@ -30,7 +30,7 @@
 				and mobile = #{mobile}
 			</if>
 			<if test="userId != null">
-				and userId = #{userId}
+				and user_id = #{userId}
 			</if>
 			<if test="identifyingCode != null">
 				and identifying_code = #{identifyingCode}

@@ -74,8 +74,8 @@ public class WSendMessageController extends AbstractController{
 	/**
 	 * 验证码验证
 	 */
-	@RequestMapping("/validate")
-	public JsonResult validate(@PathVariable("mobile") String mobile,@PathVariable("id") Long userId,
+	@RequestMapping("/validate/{mobile}/{userId}/{identifyingCode}")
+	public JsonResult validate(@PathVariable("mobile") String mobile,@PathVariable("userId") Long userId,
 							   @PathVariable("identifyingCode") String identifyingCode){
 		//提取验证码信息
 		Map<String,Object> parasMap = new HashMap<>();
