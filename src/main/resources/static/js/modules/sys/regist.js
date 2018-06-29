@@ -219,6 +219,45 @@ var RegistFunc = (function () {
 
     };
 
+    //动态验证开启
+    registFunc.dynamicValidate = function(objId){
+        alert(224);
+        switch (objId) {
+            case "email":
+                $("#"+objId).rules("add", {
+                    remote: {
+                        //验证邮件是否已注册
+                        type: "post",
+                        url: "/regist/doValidate/" + objId,
+                        data: {
+                            email: function () {
+                                return $("#"+objId).val();
+                            }
+                        }
+                    },
+                    messages: {remote: "该邮件已被注册~请更换~"}
+                });
+                break;
+            case "vcode":
+                $("#"+objId).rules("add", {
+                    remote: {
+                        //验证编码是否重复
+                        type: "post",
+                        url: "/regist/doValidate/" + objId,
+                        data: {
+                            vcode: function () {
+                                return $("#"+objId).val();
+                            }
+                        }
+                    },
+                    messages: {remote: "该邀请码不存在~请更换~"}
+                });
+                break;
+            default:
+                break;
+        }
+    };
+
 
     /***
      * 初始化信息方法
@@ -240,28 +279,9 @@ $(function () {
 
     //AJAX提交以及验证表单
     $('#nextBtn').click(function(){
-
+        RegistFunc.dynamicValidate("email");
+        RegistFunc.dynamicValidate("vcode");
         $("#step1_frm").submit();
-        // var email = $('.email').val();
-        // var passwd = $('.passwd').val();
-        // var passwd2 = $('.passwd2').val();
-        // var verifyCode = $('.verifyCode').val();
-        // var EmailReg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/; //邮件正则
-        // if(email == ''){
-        //     showTips('请填写您的邮箱~');
-        // }else if(!EmailReg.test(email)){
-        //     showTips('您的邮箱格式错咯~');
-        // }else if(passwd == ''){
-        //     showTips('请填写您的密码~');
-        // }else if(passwd2 == ''){
-        //     showTips('请再次输入您的密码~');
-        // }else if(passwd != passwd2 || passwd2 != passwd){
-        //     showTips('两次密码输入不一致呢~');
-        // }else if(verifyCode == ''){
-        //     showTips('请输入验证码~');
-        // }else{
-        //     RegistFunc.ajaxBaseEmailReg();
-        // }
     });
 
     //验证手机号码
@@ -458,6 +478,7 @@ $(function () {
         globleIndex = Number(step) - 1;
         $('.processorBox li').eq(globleIndex).click();
         $("#user_id").val(userId);
+        //第五步获取注册码
         if(step == "5"){
 
             var path = ctx + "/filecoin/dinvitationcodeinfo/getInvitaCodeByUserId";
