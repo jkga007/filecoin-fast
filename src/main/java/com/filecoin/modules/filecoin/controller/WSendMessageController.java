@@ -110,6 +110,7 @@ public class WSendMessageController extends AbstractController{
 		if(sysUserEntity!=null){
 			return JsonResult.error("该手机号码已被注册，请更换手机号码");
 		}
+
 		//手机号码15分钟内下发过短信，不让注册
 		Map<String,Object> parasMap = new HashMap<>();
 		parasMap.put("mobile",mobile);
