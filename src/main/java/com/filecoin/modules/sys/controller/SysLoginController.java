@@ -436,6 +436,12 @@ public class SysLoginController extends AbstractController {
 			if(Constant.UserStatus.NEED_ACTIVE.getValue() == status){
 				return JsonResult.error(1,"该用户已注册!处于待激活状态,请激活!").put("userId",user.getUserId()+"").put("email",user.getEmail());
 			}
+			if(Constant.UserStatus.NEED_BIND_MOBILE.getValue() == status){
+				return JsonResult.error(1,"该用户已注册!处于待激活状态,请激活!").put("userId",user.getUserId()+"").put("email",user.getEmail());
+			}
+			if(Constant.UserStatus.NEED_INPUT_MINER.getValue() == status){
+				return JsonResult.error(1,"该用户已注册!处于待激活状态,请激活!").put("userId",user.getUserId()+"").put("email",user.getEmail());
+			}
 			if(Constant.UserStatus.CLOCK.getValue() == status){
 				return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
 			}

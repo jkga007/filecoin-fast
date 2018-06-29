@@ -46,7 +46,7 @@ public class SysRegistController extends AbstractController {
 	 * @return
 	 */
 	@PostMapping(value = "/doValidate/{type}")
-	public boolean doValidate(
+	public String doValidate(
 			@PathVariable String type,
 			@RequestParam(value = "email",required = false) String email,
 			@RequestParam(value = "vcode",required = false) String vcode
@@ -56,9 +56,11 @@ public class SysRegistController extends AbstractController {
 			case "email":
 				if(StringUtils.isNotBlank(email)){
 					SysUserEntity sysUserEntity = sysUserService.queryByUserName(email);
-					Integer status = sysUserEntity.getStatus();
-					if(status == Constant.UserStatus.OK.getValue()){
-						is = false;
+					if(sysUserEntity != null){
+						Integer status = sysUserEntity.getStatus();
+						if(status == Constant.UserStatus.OK.getValue()){
+							is = false;
+						}
 					}
 				}
 				break;
@@ -73,7 +75,7 @@ public class SysRegistController extends AbstractController {
 			default:
 				break;
 		}
-		return is;
+		return is+"";
 	}
 
 

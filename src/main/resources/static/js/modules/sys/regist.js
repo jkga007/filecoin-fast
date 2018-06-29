@@ -221,7 +221,6 @@ var RegistFunc = (function () {
 
     //动态验证开启
     registFunc.dynamicValidate = function(objId){
-        alert(224);
         switch (objId) {
             case "email":
                 $("#"+objId).rules("add", {
@@ -229,6 +228,7 @@ var RegistFunc = (function () {
                         //验证邮件是否已注册
                         type: "post",
                         url: "/regist/doValidate/" + objId,
+                        cache: false,
                         data: {
                             email: function () {
                                 return $("#"+objId).val();
@@ -244,6 +244,7 @@ var RegistFunc = (function () {
                         //验证编码是否重复
                         type: "post",
                         url: "/regist/doValidate/" + objId,
+                        cache: false,
                         data: {
                             vcode: function () {
                                 return $("#"+objId).val();
@@ -258,6 +259,59 @@ var RegistFunc = (function () {
         }
     };
 
+    registFunc.onblurRemoveRules = function(){
+        $("#email").keyup(function(){
+            $("#email").rules("remove", "remote");
+        });
+        $("#vcode").keyup(function(){
+            $("#vcode").rules("remove", "remote");
+        });
+    };
+
+    registFunc.sendSmsMessage = function(obj){
+
+        var _this = $(obj);
+        var times = 1 * 60;
+        _this.val(times + '秒后可以重新发送');
+        var timer = setInterval(function(){
+            times--;
+            _this.val(times + '秒后可以重新发送');
+            if(times == 0){
+                _this.val('重新发送');
+                _this.attr('disabled','');
+                clearInterval(timer);
+            }
+        },1000);
+        _this.attr('disabled','disabled');
+
+        var phone = $.trim($('#phone').val());
+        var userId = $.trim($('#user_id').val());
+
+        if(phone.length == 0){
+            Core.showTips($("#phone"),"请输入手机号码~");
+            return false;
+        }
+
+        if(phone.length != 0 && userId.length != 0){
+            var path = ctx + "/filecoin/wsendmessage/save/"+phone+"/"+userId;
+            var ajax = new AJAXPacket(path, "正在发送短信...请稍后");
+
+            Core.sendPacket(ajax, function (packet) {
+                var resultCode = packet.code;
+                var message = packet.msg;
+                if (resultCode == "0") {
+                    Core.alert("发送成功~ ", 1,false, function () {
+
+                    });
+                } else {
+                    Core.alert(message, 2,false, function () {
+
+                    });
+                }
+            }, true,true);
+        }
+    };
+
 
     /***
      * 初始化信息方法
@@ -266,12 +320,21 @@ var RegistFunc = (function () {
         //初始化
     };
 
+
+
     return registFunc;
 
 })();
 $(function () {
 
     RegistFunc.init();
+    // RegistFunc.onblurRemoveRules();
+
+    //重发邮件按钮点击事件
+    $("#resendMailBtn").click(function(){
+        var obj = $(this)[0];
+        RegistFunc.resendMail(obj);
+    });
 
     $(".changeVerifyCode").click(function(){
         $("#captchaImgId").attr("src",ctx+"/captcha.jpg?t=" + $.now());
@@ -279,14 +342,20 @@ $(function () {
 
     //AJAX提交以及验证表单
     $('#nextBtn').click(function(){
-        RegistFunc.dynamicValidate("email");
-        RegistFunc.dynamicValidate("vcode");
+        // RegistFunc.dynamicValidate("email");
+        // RegistFunc.dynamicValidate("vcode");
         $("#step1_frm").submit();
     });
 
     //验证手机号码
     $('#nextBtn2').click(function(){
         $("#step3_frm").submit();
+    });
+
+    //发送手机验证码
+    $("#phoneYzm_changeTipsHere").click(function(){
+        var obj = $(this)[0];
+        RegistFunc.sendSmsMessage(obj);
     });
 
     //验证矿工资料
@@ -350,7 +419,8 @@ $(function () {
                 required: true
             },
             phone: {
-                required: true
+                required: true,
+                isPhone: true
             },
             phoneYzm: {
                 required: true
@@ -358,16 +428,17 @@ $(function () {
         },
         messages: {
             trueName: {
-                required: "请输入真实姓名"
+                required: "请输入真实姓名~"
             },
             iccid: {
-                required: "请输入身份证号"
+                required: "请输入身份证号~"
             },
             phone: {
-                required: "请输入手机号码"
+                required: "请输入手机号码~",
+                isPhone: "请输入正确的手机号码~"
             },
             phoneYzm: {
-                required: "请输入手机验证码"
+                required: "请输入手机验证码~"
             }
         },
         submitHandler:function(form){
