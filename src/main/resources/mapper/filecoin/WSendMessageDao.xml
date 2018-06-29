@@ -14,6 +14,8 @@
         <result property="returnCode" column="return_code"/>
         <result property="returnMessage" column="return_message"/>
 		<result property="identifyingCode" column="identifying_code"/>
+		<result property="requestId" column="request_id"/>
+		<result property="bizId" column="biz_id"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.filecoin.modules.filecoin.entity.WSendMessageEntity">
@@ -37,6 +39,9 @@
 			</if>
 			<if test="insertTimeInt != null">
 				and date_add(insert_time,interval #{insertTimeInt} minute)>now()
+			</if>
+			<if test="bizId != null">
+				and biz_id = #{bizId}
 			</if>
 		</where>
         <choose>
@@ -66,7 +71,9 @@
 			`status`, 
 			`return_code`, 
 			`return_message`,
-			`identifying_code`
+			`identifying_code`,
+			`biz_id`,
+			`request_id`
 		)
 		values
 		(
@@ -77,7 +84,9 @@
 			#{status}, 
 			#{returnCode}, 
 			#{returnMessage},
-			#{identifyingCode}
+			#{identifyingCode},
+			#{bizId},
+			#{requestId}
 		)
 	</insert>
 	 
@@ -90,7 +99,9 @@
 			<if test="sendTime != null">`send_time` = NOW(), </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="returnCode != null">`return_code` = #{returnCode}, </if>
-			<if test="returnMessage != null">`return_message` = #{returnMessage}</if>
+			<if test="returnMessage != null">`return_message` = #{returnMessage},</if>
+			<if test="requestId != null">`request_id` = #{requestId},</if>
+			<if test="bizId != null">`biz_id` = #{bizId}</if>
 		</set>
 		where id = #{id}
 	</update>

@@ -4,10 +4,8 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-import org.json.JSONArray;
 
 import java.util.Map;
 
@@ -23,10 +21,10 @@ public class SmsSendUtil {
     static final String domain = "dysmsapi.aliyuncs.com";
 
     // TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
-    static final String accessKeyId = "yourAccessKeyId";
-    static final String accessKeySecret = "yourAccessKeySecret";
+    static final String accessKeyId = "accessKeyId";
+    static final String accessKeySecret = "accessKeySecret";
 
-    public static SendSmsResponse sendSms(Map<String,Object> map) throws ClientException {
+    public static SendSmsResponse sendSms(Map<String,Object> map) throws Exception {
         //可自助调整超时时间
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
@@ -41,7 +39,7 @@ public class SmsSendUtil {
         //必填:待发送手机号
         request.setPhoneNumbers(map.get("mobile").toString());
         //必填:短信签名-可在短信控制台中找到
-        request.setSignName("云通信");
+        request.setSignName("IPFS星际云");
         //必填:短信模板-可在短信控制台中找到
         request.setTemplateCode(map.get("template_code").toString());
         //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
