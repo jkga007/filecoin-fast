@@ -1,12 +1,12 @@
 package com.filecoin.common.aspect;
 
-import com.alibaba.fastjson.JSON;
 import com.filecoin.common.annotation.SysLog;
 import com.filecoin.common.utils.HttpContextUtils;
 import com.filecoin.common.utils.IPUtils;
 import com.filecoin.modules.sys.entity.SysLogEntity;
 import com.filecoin.modules.sys.entity.SysUserEntity;
 import com.filecoin.modules.sys.service.SysLogService;
+import com.google.gson.Gson;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,7 +23,7 @@ import java.util.Date;
 
 /**
  * 系统日志，切面处理类
- * 
+ *
  * @author r25437,g20416
  * @email support@filecoinon.com
  * @date 2017年3月8日 上午11:07:35
@@ -33,10 +33,10 @@ import java.util.Date;
 public class SysLogAspect {
 	@Autowired
 	private SysLogService sysLogService;
-	
+
 	@Pointcut("@annotation(com.filecoin.common.annotation.SysLog)")
-	public void logPointCut() { 
-		
+	public void logPointCut() {
+
 	}
 
 	@Around("logPointCut()")
@@ -72,7 +72,7 @@ public class SysLogAspect {
 		//请求的参数
 		Object[] args = joinPoint.getArgs();
 		try{
-			String params = JSON.toJSONString(args[0]);
+			String params = new Gson().toJson(args[0]);
 			sysLog.setParams(params);
 		}catch (Exception e){
 

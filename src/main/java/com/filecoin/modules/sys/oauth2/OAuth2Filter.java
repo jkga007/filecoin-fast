@@ -1,6 +1,6 @@
 package com.filecoin.modules.sys.oauth2;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 import com.filecoin.common.utils.JsonResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
@@ -46,7 +46,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
         String token = getRequestToken((HttpServletRequest) request);
         if(StringUtils.isBlank(token)){
             HttpServletResponse httpResponse = (HttpServletResponse) response;
-            String json = JSON.toJSONString(JsonResult.error(HttpStatus.SC_UNAUTHORIZED, "invalid token"));
+            String json = new Gson().toJson(JsonResult.error(HttpStatus.SC_UNAUTHORIZED, "invalid token"));
             httpResponse.getWriter().print(json);
 
             return false;
@@ -64,7 +64,7 @@ public class OAuth2Filter extends AuthenticatingFilter {
             Throwable throwable = e.getCause() == null ? e : e.getCause();
             JsonResult jsonResult = JsonResult.error(HttpStatus.SC_UNAUTHORIZED, throwable.getMessage());
 
-            String json = JSON.toJSONString(jsonResult);
+            String json = new Gson().toJson(jsonResult);
             httpResponse.getWriter().print(json);
         } catch (IOException e1) {
 

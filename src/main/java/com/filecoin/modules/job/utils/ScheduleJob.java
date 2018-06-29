@@ -1,10 +1,10 @@
 package com.filecoin.modules.job.utils;
 
-import com.alibaba.fastjson.JSON;
 import com.filecoin.common.utils.SpringContextUtils;
 import com.filecoin.modules.job.entity.ScheduleJobEntity;
 import com.filecoin.modules.job.entity.ScheduleJobLogEntity;
 import com.filecoin.modules.job.service.ScheduleJobLogService;
+import com.google.gson.Gson;
 
 import org.apache.commons.lang.StringUtils;
 import org.quartz.JobExecutionContext;
@@ -21,19 +21,19 @@ import java.util.concurrent.Future;
 
 /**
  * 定时任务
- * 
+ *
  * @author r25437,g20416
  * @email support@filecoinon.com
  * @date 2016年11月30日 下午12:44:21
  */
 public class ScheduleJob extends QuartzJobBean {
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private ExecutorService service = Executors.newSingleThreadExecutor(); 
-	
+	private ExecutorService service = Executors.newSingleThreadExecutor();
+
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 		String jsonJob = context.getMergedJobDataMap().getString(ScheduleJobEntity.JOB_PARAM_KEY);
-		ScheduleJobEntity scheduleJob = JSON.parseObject(jsonJob, ScheduleJobEntity.class);
+		ScheduleJobEntity scheduleJob = new Gson().fromJson(jsonJob, ScheduleJobEntity.class);
 
 		//获取scheduleJobLogService
         ScheduleJobLogService scheduleJobLogService = (ScheduleJobLogService) SpringContextUtils.getBean("scheduleJobLogService");

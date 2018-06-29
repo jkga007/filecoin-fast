@@ -1,14 +1,14 @@
 package com.filecoin.modules.job.utils;
 
-import com.alibaba.fastjson.JSON;
 import com.filecoin.common.exception.FileCoinException;
 import com.filecoin.common.utils.Constant;
 import com.filecoin.modules.job.entity.ScheduleJobEntity;
+import com.google.gson.Gson;
 import org.quartz.*;
 
 /**
  * 定时任务工具类
- * 
+ *
  * @author r25437,g20416
  * @email support@filecoinon.com
  * @date 2016年11月30日 下午12:44:59
@@ -22,7 +22,7 @@ public class ScheduleUtils {
     private static TriggerKey getTriggerKey(Long jobId) {
         return TriggerKey.triggerKey(JOB_NAME + jobId);
     }
-    
+
     /**
      * 获取jobKey
      */
@@ -58,10 +58,10 @@ public class ScheduleUtils {
                     withSchedule(scheduleBuilder).build();
 
             //放入参数，运行时的方法可以获取
-            jobDetail.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, JSON.toJSONString(scheduleJob));
+            jobDetail.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, new Gson().toJson(scheduleJob));
 
             scheduler.scheduleJob(jobDetail, trigger);
-            
+
             //暂停任务
             if(scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
             	pauseJob(scheduler, scheduleJob.getJobId());
@@ -70,7 +70,7 @@ public class ScheduleUtils {
             throw new FileCoinException("创建定时任务失败", e);
         }
     }
-    
+
     /**
      * 更新定时任务
      */
@@ -83,20 +83,20 @@ public class ScheduleUtils {
             		.withMisfireHandlingInstructionDoNothing();
 
             CronTrigger trigger = getCronTrigger(scheduler, scheduleJob.getJobId());
-            
+
             //按新的cronExpression表达式重新构建trigger
             trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
-            
+
             //参数
-            trigger.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, JSON.toJSONString(scheduleJob));
-            
+            trigger.getJobDataMap().put(ScheduleJobEntity.JOB_PARAM_KEY, new Gson().toJson(scheduleJob));
+
             scheduler.rescheduleJob(triggerKey, trigger);
-            
+
             //暂停任务
             if(scheduleJob.getStatus() == Constant.ScheduleStatus.PAUSE.getValue()){
             	pauseJob(scheduler, scheduleJob.getJobId());
             }
-            
+
         } catch (SchedulerException e) {
             throw new FileCoinException("更新定时任务失败", e);
         }
@@ -109,7 +109,7 @@ public class ScheduleUtils {
         try {
         	//参数
         	JobDataMap dataMap = new JobDataMap();
-        	dataMap.put(ScheduleJobEntity.JOB_PARAM_KEY, JSON.toJSONString(scheduleJob));
+        	dataMap.put(ScheduleJobEntity.JOB_PARAM_KEY, new Gson().toJson(scheduleJob));
         	
             scheduler.triggerJob(getJobKey(scheduleJob.getJobId()), dataMap);
         } catch (SchedulerException e) {

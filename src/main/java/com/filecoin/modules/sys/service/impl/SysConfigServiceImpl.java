@@ -1,10 +1,10 @@
 package com.filecoin.modules.sys.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.filecoin.common.exception.FileCoinException;
 import com.filecoin.modules.sys.dao.SysConfigDao;
 import com.filecoin.modules.sys.redis.SysConfigRedis;
 import com.filecoin.modules.sys.service.SysConfigService;
+import com.google.gson.Gson;
 import com.filecoin.modules.sys.entity.SysConfigEntity;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class SysConfigServiceImpl implements SysConfigService {
 	private SysConfigDao sysConfigDao;
 	@Autowired
 	private SysConfigRedis sysConfigRedis;
-	
+
 	@Override
 	@Transactional
 	public void save(SysConfigEntity config) {
@@ -78,12 +78,12 @@ public class SysConfigServiceImpl implements SysConfigService {
 
 		return config == null ? null : config.getValue();
 	}
-	
+
 	@Override
 	public <T> T getConfigObject(String key, Class<T> clazz) {
 		String value = getValue(key);
 		if(StringUtils.isNotBlank(value)){
-			return JSON.parseObject(value, clazz);
+			return new Gson().fromJson(value, clazz);
 		}
 
 		try {
