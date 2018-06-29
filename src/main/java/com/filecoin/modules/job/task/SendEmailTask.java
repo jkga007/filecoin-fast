@@ -50,12 +50,6 @@ public class SendEmailTask {
 	//定时任务只能接受一个参数；如果有多个参数，使用json数据即可
 	public void sendEmailJob(String params){
 		logger.info("我是带参数的sendEmailJob方法，正在被执行，参数为：" + params);
-		
-		try {
-			Thread.sleep(1000L);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 
 		SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
 

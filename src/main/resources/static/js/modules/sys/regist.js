@@ -518,7 +518,6 @@ $(function () {
             }
         },
         submitHandler: function (form) {
-            alert(525);
             RegistFunc.ajaxBaseEmailReg();
             return false;
         }

@@ -65,6 +65,7 @@ var LoginFunc = (function () {
                 $("#mobilePhone").val(userObj.mobile);
                 $("#iccid").val(sysUserExtend.iccid);
                 $("#userMailInnerSmall").html("您认证的邮箱地址："+userObj.email+" 已通过认证！");
+                $("#userPhoneSmall").html("您认证的手机号码："+userObj.mobile+" 已通过认证！");
             }else{
                 window.location.href = ctx + "/modules/filecoin/login.html";
             }
