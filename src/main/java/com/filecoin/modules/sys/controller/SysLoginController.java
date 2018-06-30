@@ -306,6 +306,7 @@ public class SysLoginController extends AbstractController {
             /**
              * 记录日志
              */
+            registEntity.setPasswd(null);
             String params = new Gson().toJson(registEntity);
             String userName = null;
             if (user != null) {
@@ -535,6 +536,7 @@ public class SysLoginController extends AbstractController {
             logger.error(e.getMessage());
             throw e;
         } finally {
+            userlogin.setPassword(null);
             /**
              * 记录日志
              */
@@ -655,7 +657,7 @@ public class SysLoginController extends AbstractController {
             SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
             Map<String, Object> map = new HashMap();
             map.put("username", username);
-            map.put("password", password);
+//            map.put("password", password);
             map.put("captcha", captcha);
             String params = new Gson().toJson(map);
             logService.saveLog(getClass().getName() + ".loginBack", username, params, idWorker0.timeGen1(), "后台登录");
