@@ -231,7 +231,7 @@ public class SysLoginController extends AbstractController {
                         String emailEnd = emailUser.substring(emailUser.indexOf("@") + 1, emailUser.length());
                         String mailUrl = "mail." + emailEnd;
 
-                        //生成token，并保存到数据库
+                        //返回注册成功方式
                         jsonResult = JsonResult.ok("注册成功, 快去激活").put("registEmail", userEntity.getEmail()).put("userId", userEntity.getUserId() + "").put("mailUrl", mailUrl);
 
                     } catch (Exception e) {

@@ -448,6 +448,11 @@ $(function () {
         RegistFunc.resendMail(obj);
     });
 
+    //再换一张验证码
+    $("#needCliekP").click(function () {
+        LoginFunc.getCaptcha();
+    });
+
     //换一张验证码
     $("#captcha_changeTipsHere").click(function () {
         LoginFunc.getCaptcha();
