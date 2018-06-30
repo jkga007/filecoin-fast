@@ -68,8 +68,9 @@ public class ShiroConfig {
 
         filterMap.put("/regist/doValidate/*", "anon");
         filterMap.put("/regist/doValidateRegist/*", "anon");
-        filterMap.put("/filecoin/wsendmessage/save/**", "anon");
-        filterMap.put("/filecoin/wsendmessage/validate/**", "anon");
+        filterMap.put("/wsendmessage/save/**", "anon");
+        filterMap.put("/wsendmessage/validate/**", "anon");
+        filterMap.put("/dinvitationcodeinfo/getInvitaCodeByUserId", "anon");
         //注册
         filterMap.put("/sys/regist/*", "anon");
         //跳转登录页

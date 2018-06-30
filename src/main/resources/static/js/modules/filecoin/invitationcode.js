@@ -12,7 +12,7 @@ var InvitationCodeFunc = (function () {
      */
     invitationCode.getCountByInvitationCode = function () {
 
-        var path = ctx + "/filecoin/dinvitationcodeinfo/getCountByInvitationCode";
+        var path = ctx + "/dinvitationcodeinfo/getCountByInvitationCode";
         var ajax = new AJAXPacket(path, "正在执行...请稍后");
         Core.sendPacket(ajax, function (packet) {
             var resultCode = packet.code;
@@ -41,7 +41,7 @@ var InvitationCodeFunc = (function () {
 
                 });
             }
-        }, true,false);
+        }, false,false);
     };
 
     /***

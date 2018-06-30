@@ -26,7 +26,7 @@ import com.filecoin.common.utils.JsonResult;
  * @date 2018-06-25 11:42:54
  */
 @RestController
-@RequestMapping("/filecoin/dinvitationcodeinfo")
+@RequestMapping("/dinvitationcodeinfo")
 public class DInvitationCodeInfoController extends AbstractController {
 	@Autowired
 	private DInvitationCodeInfoService dInvitationCodeInfoService;

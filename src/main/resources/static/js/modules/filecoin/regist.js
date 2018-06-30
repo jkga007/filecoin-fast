@@ -231,7 +231,7 @@ var RegistFunc = (function () {
         }
 
         if (phone.length != 0 && userId.length != 0) {
-            var path = ctx + "/filecoin/wsendmessage/save/" + phone + "/" + userId;
+            var path = ctx + "/wsendmessage/save/" + phone + "/" + userId;
             var ajax = new AJAXPacket(path, "正在发送短信...请稍后");
 
             Core.sendPacket(ajax, function (packet) {
@@ -260,7 +260,7 @@ var RegistFunc = (function () {
         var phoneYzm = $.trim($('#phoneYzm').val());
         var userId = $.trim($('#user_id').val());
         if (phone.length != 0 && phoneYzm.length != 0 && userId.length != 0) {
-            var path = ctx + "/filecoin/wsendmessage/validate/" + phone + "/" + userId + "/" + phoneYzm;
+            var path = ctx + "/wsendmessage/validate/" + phone + "/" + userId + "/" + phoneYzm;
             var ajax = new AJAXPacket(path, "正在验证手机验证码...请稍后");
 
             Core.sendPacket(ajax, function (packet) {
@@ -364,7 +364,7 @@ var RegistFunc = (function () {
      * 通过用户id获取邀请码信息
      */
     registFunc.getInvCodeMsgByUser = function (userId) {
-        var path = ctx + "/filecoin/dinvitationcodeinfo/getInvitaCodeByUserId";
+        var path = ctx + "/dinvitationcodeinfo/getInvitaCodeByUserId";
         var ajax = new AJAXPacket(path, "正在执行...请稍后");
 
         ajax.add("userId", userId);

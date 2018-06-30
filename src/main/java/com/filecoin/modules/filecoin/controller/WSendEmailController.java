@@ -24,7 +24,7 @@ import java.util.Map;
  * @date 2018-06-27 20:16:41
  */
 @RestController
-@RequestMapping("/filecoin/wsendemail")
+@RequestMapping("/wsendemail")
 public class WSendEmailController extends AbstractController {
 	@Autowired
 	private WSendEmailService wSendEmailService;

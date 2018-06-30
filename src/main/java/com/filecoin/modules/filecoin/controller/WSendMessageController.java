@@ -34,7 +34,7 @@ import com.filecoin.common.utils.JsonResult;
  * @date 2018-06-27 16:59:15
  */
 @RestController
-@RequestMapping("/filecoin/wsendmessage")
+@RequestMapping("/wsendmessage")
 public class WSendMessageController extends AbstractController{
 	@Autowired
 	private WSendMessageService wSendMessageService;

@@ -28,7 +28,7 @@ import com.filecoin.common.utils.JsonResult;
  * @date 2018-06-27 23:22:53
  */
 @RestController
-@RequestMapping("/filecoin/sysuserextend")
+@RequestMapping("/sysuserextend")
 public class SysUserExtendController {
 	@Autowired
 	private SysUserExtendService sysUserExtendService;
