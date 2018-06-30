@@ -292,106 +292,42 @@ var Core = Core
                     process(response);
 
                 },
-                error: function (xhr, status, error) {
-                    if (xhr.status == "404") {
-                        core.alert(Core.getI18n("addressNotExist"));
-                    } else if (xhr.status == "500") {
-                        core.alert(Core.getI18n("compileWrong"));
-                    } else {
-                        core.alert(Core.getI18n("systemWrongPleaseRefresh"));
-                    }
+                error: function (data) {
+                    setTimeout(function () {
+                        if (data.status == 404) {
+                            layer.msg('请求失败，请求未找到咯~');
+                        } else if (data.status == 503) {
+                            layer.msg('请求失败，服务器内部错误咯~');
+                        } else {
+                            layer.msg('请求失败,网络连接超时咯~');
+                        }
+                    }, 500);
                 },
                 complete: function (xhr) {
                     if(loadingflag) {
                         core.close(_layerIndex);
                     }
-                    var jsondata = $.parseJSON(xhr.responseText);
-                    //token过期，则跳转到登录页面
-                    if(jsondata.code == 401){
-                        window.location.href = ctx + "/modules/filecoin/login.html";
+                    if (xhr.status == 200) {
+                        var jsondata = $.parseJSON(xhr.responseText);
+                        if (typeof jsondata != "undefined" && jsondata.length != 0) {
+                            //token过期，则跳转到登录页面
+                            if (jsondata.code == 401) {
+                                setTimeout(function () {
+                                    window.location.href = ctx + "/modules/filecoin/login.html";
+                                }, 1000);
+                            }
+                        }
                     }
                 }
             });
-        };
-
-
-        /**
-         * ajax请求并返回结果
-         * @param url
-         * @param data
-         * @param callback
-         * @returns {String}
-         */
-        core.ajaxFunc = function (packet, dataType) {
-
-            var _load;
-
-            if (!dataType) {
-                dataType = "html";
-            }
-
-            var result = "";
-            $.ajax({
-                type: "post",
-                url: packet.url,
-                data: packet.data,
-                dataType: dataType,
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                async: false,
-                cache: false,
-                success: function (response) {
-                    result = response;
-                }, error: function (xhr, status, error) {
-                    //core.close(_layerIndex);
-                    if (xhr.status == "404") {
-                        core.alert(Core.getI18n("addressNotExist"));
-                    } else if (xhr.status == "500") {
-                        core.alert(Core.getI18n("compileWrong"));
-                    } else {
-                        core.alert(Core.getI18n("systemWrongPleaseRefresh"));
-                    }
-
-                },
-                beforeSend: function () {
-                    _load = Core.loading(Core.getI18n("loading"));
-                    // setTimeout(function () { },200);
-                },
-                complete: function (xhr) {
-
-                    setTimeout(function () {
-                        Core.close(_load);
-                    }, 300);
-                    //token过期，则跳转到登录页面
-                    if(xhr.responseJSON.code == 401){
-                        parent.location.href = ctx + 'login.html';
-                    }
-
-                },
-            });
-            return result;
-        };
-        /**
-         * ajax请求url替换指定div
-         * @param divId 返回替换div
-         * @param url 请求地址
-         * @param data 参数
-         * @param callback 回调
-         */
-        core.ajaxDiv = function (divId, packet) {
-            var result = core.ajaxFunc(packet, "html");
-            $(divId).html(result);
         };
 
         // Json ajax
         core.sendPacketJson = function (packet, process, aysncflag, loadingFlag, timeouts) {
             var _layerIndex;
 
-            if (typeof(loadingFlag) == "undefined") {
-                loadingFlag = true;
-            }
-
-            if (loadingFlag) {
-                _layerIndex = core.loading(packet.statusText);
+            if (!loadingFlag) {
+                loadingFlag = false;
             }
 
             if (!process) {
@@ -427,31 +363,41 @@ var Core = Core
                 dataType: "json",
                 contentType: 'application/json;charset=utf-8',
                 cache: false,
+                beforeSend: function () {
+                    if (loadingFlag) {
+                        _layerIndex = layer.msg(packet.statusText, {
+                            icon: 16,
+                            shade: [0.5, '#f5f5f5'],
+                            scrollbar: false,
+                            time: 1000000
+                        });
+                    }
+                },
                 success: function (data, textStatus, xhr) {
-                    // var response = $.parseJSON(data);
                     process(data);
 
                 },
-                error: function (xhr, status, error) {
-                    //core.close(_layerIndex);
-                    if (xhr.status == "404") {
-                        core.alert(Core.getI18n("fileNotExist"));
-                    } else if (xhr.status == "500") {
-                        core.alert(Core.getI18n("compileWrong"));
-                    } else {
-                        core.alert(Core.getI18n("systemWrong"));
-                    }
-
+                error: function (data) {
+                    setTimeout(function () {
+                        if (data.status == 404) {
+                            layer.msg('请求失败，请求未找到咯~');
+                        } else if (data.status == 503) {
+                            layer.msg('请求失败，服务器内部错误咯~');
+                        } else {
+                            layer.msg('请求失败,网络连接超时咯~');
+                        }
+                    }, 500);
                 },
                 complete: function (xhr) {
                     if (loadingFlag) {
                         core.close(_layerIndex);
                     }
-                    console.log(xhr.responseJSON);
-                    //token过期，则跳转到登录页面
-                    // if(xhr.responseJSON.code == 401){
-                    //     parent.location.href = ctx + 'login.html';
-                    // }
+                    if (xhr.status == 200) {
+                        //token过期，则跳转到登录页面
+                        if (xhr.responseJSON.code == 401) {
+                            window.location.href = ctx + "/modules/filecoin/login.html";
+                        }
+                    }
                 }
             });
         };

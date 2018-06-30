@@ -1,7 +1,7 @@
 package com.filecoin.modules.sys.oauth2;
 
-import com.google.gson.Gson;
 import com.filecoin.common.utils.JsonResult;
+import com.google.gson.Gson;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.shiro.authc.AuthenticationException;

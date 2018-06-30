@@ -70,7 +70,7 @@ var DashboardFunc = (function () {
                 Core.alert(message, 2,false, function () {
                 });
             }
-        }, true,false);
+        }, false, false);
     };
 
     /***

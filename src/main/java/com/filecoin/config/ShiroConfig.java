@@ -64,7 +64,7 @@ public class ShiroConfig {
         filterMap.put("/sys/login", "anon");
         filterMap.put("/sys/loginBack", "anon");
         //通过用户ID获取用户
-        filterMap.put("/sys/user/info/*", "anon");
+        filterMap.put("/sys/user/getUserInfoById/*", "anon");
 
         filterMap.put("/regist/doValidate/*", "anon");
         filterMap.put("/regist/doValidateRegist/*", "anon");

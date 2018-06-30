@@ -3,7 +3,7 @@
 
 <head>
     <!--
-        * @Package: Cryptonia - Bitcoin & Cryptocurrency trading Dashboard
+        * ipfsun.com
         * @Version: 1.0.0
     -->
     <meta charset="utf-8" />
@@ -48,129 +48,134 @@
 
 <body class=" login_page">
 
-    <div class="container-fluid">
-        <div class="login-wrapper row">
-            <div id="login" class="login loginpage col-lg-offset-4 col-md-offset-3 col-sm-offset-3 col-xs-offset-0 col-xs-12 col-sm-6 col-lg-4">    
-                <div class="login-form-header">
-                     <img src="../../filecoin/data/icons/padlock.png" alt="login-icon" style="max-width:64px">
-                     <div class="login-header">
-                         <h3 class="bold color-white">登录矿池</h3>
-                         <h4><small>IPFS星际云矿池</small></h4>
-                     </div>
+<div class="container-fluid">
+    <div class="login-wrapper row">
+        <div id="login"
+             class="login loginpage col-lg-offset-4 col-md-offset-3 col-sm-offset-3 col-xs-offset-0 col-xs-12 col-sm-6 col-lg-4">
+            <div class="login-form-header">
+                <img src="../../filecoin/data/icons/padlock.png" alt="login-icon" style="max-width:64px">
+                <div class="login-header">
+                    <h3 class="bold color-white">登录矿池</h3>
+                    <h4>
+                        <small>IPFS星际云矿池</small>
+                    </h4>
                 </div>
-               
-                <div class="box login">
+            </div>
 
-                    <div class="content-body" style="padding-top:30px">
+            <div class="box login">
 
-                        <form id='msg_validate' name="msg_validate" action='#' novalidate='novalidate' class='no-mb no-mt' method='post'><input type='hidden' name='form-name' value='msg_validate' />
-                            <div class="row">
-                                <div class="col-xs-12">
+                <div class="content-body" style="padding-top:30px">
 
-                                    <div class="form-group">
-                                        <label class="form-label">邮箱地址：</label>
-                                        <div class="controls">
-                                            <input type="text" class="form-control" id="username" name="username" value="" placeholder="email">
-                                        </div>
-                                    </div>
+                    <form id='msg_validate' name="msg_validate" action='#' novalidate='novalidate' class='no-mb no-mt'
+                          method='post'><input type='hidden' name='form-name' value='msg_validate'/>
+                        <div class="row">
+                            <div class="col-xs-12">
 
-                                    <div class="form-group">
-                                        <label class="form-label">密码：</label>
-                                        <div class="controls">
-                                            <input type="password" class="form-control" id="password" name="password" value="" placeholder="password">
-                                        </div>
+                                <div class="form-group">
+                                    <label class="form-label">邮箱地址：</label>
+                                    <div class="controls">
+                                        <input type="text" class="form-control" id="username" name="username" value=""
+                                               placeholder="email">
                                     </div>
                                 </div>
 
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <label class="form-label">验证码：</label>
-                                        <div class="controls">
-                                            <input type="text" id="captcha" name="captcha" class="frm_input verifyCode" maxlength="5"/>
-                                        </div>
+                                <div class="form-group">
+                                    <label class="form-label">密码：</label>
+                                    <div class="controls">
+                                        <input type="password" class="form-control" id="password" name="password"
+                                               value="" placeholder="password">
                                     </div>
-                                </div>
-                                <div class="col-xs-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label"></label>
-                                        <div class="controls">
-                                            <img id="captchaImgId" src="/captcha.jpg" alt="" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label"></label>
-                                        <div class="controls">
-                                            <a id="captcha_changeTipsHere" class="changeVerifyCode" href="#">换一张</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12">
-
-                                    <div class="pull-left">
-                                        <a id="doLoginBtn" href="javascript:void(0);" class="btn btn-primary mt-10 btn-corner right-15">登录</a>
-                                        <a href="/modules/filecoin/regist.html" class="btn mt-10 btn-corner signup">用户注册</a>
-                                    </div>
-
                                 </div>
                             </div>
-                        </form>
-                    </div>
+
+                            <div class="col-xs-12">
+                                <div class="form-group floatleft">
+                                    <label class="form-label">验证码：</label>
+                                    <div class="controls">
+                                        <input type="text" id="captcha" name="captcha" class="verifyCode"
+                                               maxlength="5"/>
+                                    </div>
+                                </div>
+                                <div class="form-group floatleft">
+                                    <label class="form-label"></label>
+                                    <div class="controls vcode">
+                                        <img id="captchaImgId" src="/captcha.jpg" alt=""/>
+                                    </div>
+                                </div>
+                                <div class="form-group floatleft">
+                                    <label class="form-label"></label>
+                                    <div class="controls">
+                                        <a id="captcha_changeTipsHere" class="changeVerifyCode" style="color: #0a0a0a"
+                                           href="#">换一张</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+
+                                <div class="pull-left">
+                                    <a id="doLoginBtn" href="javascript:void(0);"
+                                       class="btn btn-primary mt-10 btn-corner right-15">登录</a>
+                                    <a href="/modules/filecoin/regist.html" class="btn mt-10 btn-corner signup">用户注册</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
-                <p id="nav">
-                    <a class="pull-left" href="#" title="Password Lost and Found">忘记密码</a>
-                    <a class="pull-right" href="/modules/filecoin/regist.html" title="Sign Up">用户注册</a>
-                </p>
-
             </div>
+
+            <p id="nav">
+                <a class="pull-left" href="#" title="Password Lost and Found">忘记密码</a>
+                <a class="pull-right" href="/modules/filecoin/regist.html" title="Sign Up">用户注册</a>
+            </p>
+
         </div>
     </div>
+</div>
 
-    <!-- MAIN CONTENT AREA ENDS -->
-    <!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
+<!-- MAIN CONTENT AREA ENDS -->
+<!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
 
-    <!-- CORE JS FRAMEWORK - START -->
-    <script src="../../filecoin/assets/js/jquery-1.11.2.min.js"></script>
-    <script src="../../filecoin/assets/js/jquery.easing.min.js"></script>
-    <script src="../../filecoin/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../../filecoin/assets/plugins/pace/pace.min.js"></script>
-    <script src="../../filecoin/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="../../filecoin/assets/plugins/viewport/viewportchecker.js"></script>
+<!-- CORE JS FRAMEWORK - START -->
+<script src="../../filecoin/assets/js/jquery-1.11.2.min.js"></script>
+<script src="../../filecoin/assets/js/jquery.easing.min.js"></script>
+<script src="../../filecoin/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="../../filecoin/assets/plugins/pace/pace.min.js"></script>
+<script src="../../filecoin/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="../../filecoin/assets/plugins/viewport/viewportchecker.js"></script>
 
-    <script src="../../plugins/layer/layer.js"></script>
-    <script src="../../plugins/jsMap.js"></script>
-    <script src="../../plugins/common.js"></script>
-    <script src="../../plugins/public.js"></script>
+<script src="../../plugins/layer/layer.js"></script>
+<script src="../../plugins/jsMap.js"></script>
+<script src="../../plugins/common.js"></script>
+<script src="../../plugins/public.js"></script>
 
-    <!-- jQuery Validation plugin javascript-->
-    <script src="../../plugins/jquery-validation/js/jquery.validate.js"></script>
-    <!-- 自定义validation方法 -->
-    <script src="../../plugins/jquery-validation/js/additional-methods.js"></script>
-    <!-- jquery validation 默认中文返回信息js  -->
-    <script src="../../plugins/jquery-validation/js/localization/messages_zh.min.js"></script>
-    <script src="../../plugins/jquery-validation/form-validate-demo.js"></script>
+<!-- jQuery Validation plugin javascript-->
+<script src="../../plugins/jquery-validation/js/jquery.validate.js"></script>
+<!-- 自定义validation方法 -->
+<script src="../../plugins/jquery-validation/js/additional-methods.js"></script>
+<!-- jquery validation 默认中文返回信息js  -->
+<script src="../../plugins/jquery-validation/js/localization/messages_zh.min.js"></script>
+<script src="../../plugins/jquery-validation/form-validate-demo.js"></script>
 
-    <script>
-        window.jQuery || document.write('<script src="../../filecoin/assets/js/jquery-1.11.2.min.js"><\/script>');
-    </script>
-    <!-- CORE JS FRAMEWORK - END -->
+<script>
+    window.jQuery || document.write('<script src="../../filecoin/assets/js/jquery-1.11.2.min.js"><\/script>');
+</script>
+<!-- CORE JS FRAMEWORK - END -->
 
-    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
+<!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
 
-    <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
+<!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
 
-    <!-- CORE TEMPLATE JS - START -->
-    <script src="../../filecoin/assets/js/scripts.js"></script>
-    <script src="../../plugins/jquery.params.js"></script>
-    <script src="../../plugins/crtptojs/crypto-js.js"></script>
-    <script src="../../js/modules/sys/login.js"></script>
-    <!-- END CORE TEMPLATE JS - END -->
+<!-- CORE TEMPLATE JS - START -->
+<script src="../../filecoin/assets/js/scripts.js"></script>
+<script src="../../plugins/jquery.params.js"></script>
+<script src="../../plugins/crtptojs/crypto-js.js"></script>
+<script src="../../js/modules/sys/login.js"></script>
+<!-- END CORE TEMPLATE JS - END -->
 
-    <script type="text/javascript">
-        var ctx = "";
-    </script>
+<script type="text/javascript">
+    var ctx = "";
+</script>
 </body>
 
 </html>

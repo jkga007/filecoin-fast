@@ -1,7 +1,7 @@
 package com.filecoin.modules.sys.controller;
 
-import com.filecoin.common.utils.Constant;
 import com.filecoin.common.annotation.SysLog;
+import com.filecoin.common.utils.Constant;
 import com.filecoin.common.utils.JsonResult;
 import com.filecoin.common.utils.PageUtils;
 import com.filecoin.common.utils.Query;
@@ -97,7 +97,7 @@ public class SysUserController extends AbstractController {
 	 * 用户信息
 	 */
 	@RequestMapping("/info/{userId}")
-//	@RequiresPermissions("sys:user:info")
+	@RequiresPermissions("sys:user:info")
 	public JsonResult info(@PathVariable("userId") Long userId){
 		SysUserEntity user = sysUserService.queryObject(userId);
 		
@@ -105,11 +105,21 @@ public class SysUserController extends AbstractController {
 		List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
 		user.setRoleIdList(roleIdList);
 
-		String emailUser = user.getEmail();
-		String emailEnd = emailUser.substring(emailUser.indexOf("@")+1,emailUser.length());
-		String mailUrl = "mail."+emailEnd;
+		return JsonResult.ok().put("user", user);
+	}
 
-		return JsonResult.ok().put("user", user).put("mailUrl",mailUrl);
+	/**
+	 * 用户信息
+	 */
+	@RequestMapping("/getUserInfoById/{userId}")
+	public JsonResult getUserInfoById(@PathVariable("userId") Long userId) {
+		SysUserEntity user = sysUserService.queryObject(userId);
+
+		String emailUser = user.getEmail();
+		String emailEnd = emailUser.substring(emailUser.indexOf("@") + 1, emailUser.length());
+		String mailUrl = "mail." + emailEnd;
+
+		return JsonResult.ok().put("user", user).put("mailUrl", mailUrl);
 	}
 	
 	/**

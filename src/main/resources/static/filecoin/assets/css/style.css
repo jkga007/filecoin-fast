@@ -1,100 +1,29 @@
 /**
-* @Package: Cryptonia - Bitcoin & Cryptocurrency trading Dashboard
+* @ipfsun.com
 * @Version: 1.0.0
 */
-/*-----------------------------------------
 
-Table of Contents:
 
-General Layout Style
-Page Title and Breadcrumb    
-Typography
-Page Loading Progress Bar (PACE)
-Page Top Bar
-Sidebar Main Menu 
-Sidebar User Profile
-Sidebar Fixed Bottom Graphs
-Section or Content Box
-Sortable / Drag n Drop panels(section boxes)
-FORM ELEMENTS
-BUTTONS
-ICHECK (Checkboxes and Radios)
-jQery UI Settings
-Modals
-Alert Notifications
-Dropdown menu
-Progress Bars
-General Animation Settings
-Tooltips
-Popovers
-Nestable list
-Accordions
-Tabs
-UI Grid
-UI Calendar
-Timeline Centered Style
-Timeline Left Aligned Style
-Image Cropper
-Pricing Tables 
-Tocify
-FAQ
-Portfolio gallery
-jVector Maps
-Tables
-Data Tables
-Form Editors
-DropZone File Uploader (Drag n Drop)
-UI Icons
-Team Members
-Login and Registration Page - Transparent Background Style
-Display Code Wrappers
-List Group
-Breadcrumbs
-Pagination
-Labels
-Badges
-Flot Charts
-Easy PIE Charts
-Sparkline Charts
-Page Layout - Sidebar, Chat API toggle interactions
-COLLAPSED MENU
-CHAT API
-CHAT API Windows
-Mailbox
-Rickshaw Graph Charts
-Dashboard
-Notification Widget (Dashboard)
-Error pages 404, 505
-UI Sliders
-Typeahead Suggestions
-UI Lockscreen
-Form Validations
-Form Wizard
-Carousel
-Visibility Animation in Elements (Viewport)
-Widget - Tile Counter
-Widget - Tile Progress widget 
-Navigation Bars
-Search page
-Blogs
-Invoice
-Logo
-Profile Page
-Widget - Sparkline Graphs
-Widget - Vector Map
-Widget - Weather
-Widget - User Profile Tile
-Form Spinners
-UI Dropdowns
-Mobile Menu Settings - Since 3.1
-------------------------------------------
-
-/*----------------------------------------
-  General Layout Style
-------------------------------------------*/
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,400,300,500,600,700);
-@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700);
-
+div.controls.vcode{
+	width:137px;
+	margin:10px 15px 0 15px;
+}
+input#captcha.verifyCode{
+	line-height:34px;
+	width:100px;
+	height:34px;
+	font-family:Verdana, Geneva, sans-serif;
+	font-weight:bold;
+	font-size:14px;
+	color:#09C;
+}
+a#captchaImgId_cg.changeVerifyCode{
+	line-height:40px;
+	color:#000;
+}
+.floatleft{
+	float: left;
+}
 html {
     font-size: 100%;
     height: 100%;
@@ -1372,7 +1301,7 @@ input[type=checkbox], input[type=color], input[type=date], input[type=datetime-l
     box-shadow: none;
 }
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 }
 .form-group .controls {
     margin: 5px 0;
@@ -5266,10 +5195,8 @@ a.cke_button_off:hover, .cke_hc a.cke_button_off:focus, .cke_hc a.cke_button_off
 }
 .loginpage form .input, .loginpage input[type=text], .loginpage input[type=password] {
     font-size: 19px;
-    width: 100%;
     padding: 9px;
     line-height: 25px;
-    margin: 5px 0 15px 0;
     border: 1px solid #2195c9;
 }
 .loginpage form .input, .loginpage form input[type=checkbox], .loginpage input[type=text], .loginpage input[type=password] {

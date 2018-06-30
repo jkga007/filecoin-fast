@@ -69,12 +69,12 @@ var LoginFunc = (function () {
             }else{
                 window.location.href = ctx + "/modules/filecoin/login.html";
             }
-        }, true,false);
+        }, false, false);
     };
 
     loginFunc.doLogout = function () {
         var token = localStorage.getItem("token");
-        if (token.length != 0) {
+        if (token != 'null') {
             //同步退出
             var path = ctx + "/sys/logout";
             var ajax = new AJAXPacket(path, "正在退出...请稍后");

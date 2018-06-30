@@ -53,13 +53,13 @@ var RegistFunc = (function () {
                     globleIndex = 1;
                     $('.processorBox li').eq(globleIndex).click();
                 });
-            }else if (resultCode == "2") {
+            } else if (resultCode == "2") {
                 var userId = packet.userId;
                 var step = packet.step;
                 Core.alert(message, 1, false, function () {
                     $("#user_id").val(userId);
                     //模拟点击第4步
-                    globleIndex = Number(step)-1;
+                    globleIndex = Number(step) - 1;
                     $('.processorBox li').eq(globleIndex).click();
                     // base64 encrypt
                     var rawStr = step + "#" + userId;
@@ -133,7 +133,7 @@ var RegistFunc = (function () {
         var userId = $.trim($("#user_id").val());
         if (userMail.length != 0 && userId.length != 0) {
 
-            Core.setTimerFunc(obj,30,"href",'RegistFunc.resendMail(this)');
+            Core.setTimerFunc(obj, 30, "href", 'RegistFunc.resendMail(this)');
 
             var path = ctx + "/sys/resendMail";
             var ajax = new AJAXPacket(path, "正在重新发送邮件...请稍后");
@@ -226,7 +226,7 @@ var RegistFunc = (function () {
             closeTipId = Core.showTips($("#phone"), "请输入手机号码~");
             return false;
         } else {
-            Core.setTimerFunc(obj,900,"button");
+            Core.setTimerFunc(obj, 900, "button");
             Core.close(closeTipId);
         }
 
@@ -388,7 +388,7 @@ var RegistFunc = (function () {
      * @param userId
      */
     registFunc.getUserById = function (userId) {
-        var path = ctx + "/sys/user/info/"+userId;
+        var path = ctx + "/sys/user/getUserInfoById/" + userId;
         var ajax = new AJAXPacket(path, "正在执行...请稍后");
 
         ajax.add("userId", userId);
@@ -433,7 +433,7 @@ $(function () {
     value = $.query.get("value");
     var parsedWordArray = CryptoJS.enc.Base64.parse(value);
     var plaintext = parsedWordArray.toString(CryptoJS.enc.Utf8);
-    if(plaintext != ''){
+    if (plaintext != '') {
         step = plaintext.split("#")[0];
         userId = plaintext.split("#")[1];
     }
@@ -588,17 +588,13 @@ $(function () {
             }
         },
         messages: {
-            minerMachineAddr: {
-            },
-            minerMachineEnv: {
-            },
-            onLineTime: {
-            },
+            minerMachineAddr: {},
+            minerMachineEnv: {},
+            onLineTime: {},
             storageLen: {
                 digits: "请输入整数咯~"
             },
-            bandWidth: {
-            }
+            bandWidth: {}
         },
         submitHandler: function (form) {
             RegistFunc.bindMinerMsg();
@@ -639,16 +635,16 @@ $(function () {
     }
 
 
-    $("#openMailUrlBtn").click(function(){
+    $("#openMailUrlBtn").click(function () {
         var url = $("#mailUrl").val();
-        window.open("https://"+url,"_blank");
+        window.open("https://" + url, "_blank");
     });
 
     /**
      * 原页面自带
      */
 
-    $.fn.iVaryVal=function(iSet,CallBack){
+    $.fn.iVaryVal = function (iSet, CallBack) {
 
         /*
 
@@ -664,35 +660,35 @@ $(function () {
 
          */
 
-        iSet=$.extend({Minus:$('.J_minus'),Add:$('.J_add'),Input:$('.J_input'),Min:0,Max:2048},iSet);
+        iSet = $.extend({Minus: $('.J_minus'), Add: $('.J_add'), Input: $('.J_input'), Min: 0, Max: 2048}, iSet);
 
-        var C=null,O=null;
+        var C = null, O = null;
 
 //插件返回值
 
-        var $CB={};
+        var $CB = {};
 
 //增加
 
-        iSet.Add.each(function(i){
+        iSet.Add.each(function (i) {
 
-            $(this).click(function(){
+            $(this).click(function () {
 
-                O=parseInt(iSet.Input.eq(i).val());
+                O = parseInt(iSet.Input.eq(i).val());
 
-                (O+1<=iSet.Max) || (iSet.Max==null) ? iSet.Input.eq(i).val(O+1) : iSet.Input.eq(i).val(iSet.Max);
+                (O + 1 <= iSet.Max) || (iSet.Max == null) ? iSet.Input.eq(i).val(O + 1) : iSet.Input.eq(i).val(iSet.Max);
 
 //输出当前改变后的值
 
-                $CB.val=iSet.Input.eq(i).val();
+                $CB.val = iSet.Input.eq(i).val();
 
-                $CB.index=i;
+                $CB.index = i;
 
 //回调函数
 
                 if (typeof CallBack == 'function') {
 
-                    CallBack($CB.val,$CB.index);
+                    CallBack($CB.val, $CB.index);
 
                 }
 
@@ -702,23 +698,23 @@ $(function () {
 
 //减少
 
-        iSet.Minus.each(function(i){
+        iSet.Minus.each(function (i) {
 
-            $(this).click(function(){
+            $(this).click(function () {
 
-                O=parseInt(iSet.Input.eq(i).val());
+                O = parseInt(iSet.Input.eq(i).val());
 
-                O-1<iSet.Min ? iSet.Input.eq(i).val(iSet.Min) : iSet.Input.eq(i).val(O-1);
+                O - 1 < iSet.Min ? iSet.Input.eq(i).val(iSet.Min) : iSet.Input.eq(i).val(O - 1);
 
-                $CB.val=iSet.Input.eq(i).val();
+                $CB.val = iSet.Input.eq(i).val();
 
-                $CB.index=i;
+                $CB.index = i;
 
 //回调函数
 
                 if (typeof CallBack == 'function') {
 
-                    CallBack($CB.val,$CB.index);
+                    CallBack($CB.val, $CB.index);
 
                 }
 
@@ -730,29 +726,29 @@ $(function () {
 
         iSet.Input.bind({
 
-            'click':function(){
+            'click': function () {
 
-                O=parseInt($(this).val());
+                O = parseInt($(this).val());
 
                 $(this).select();
 
             },
 
-            'keyup':function(e){
+            'keyup': function (e) {
 
-                if($(this).val()!=''){
+                if ($(this).val() != '') {
 
-                    C=parseInt($(this).val());
+                    C = parseInt($(this).val());
 
 //非负整数判断
 
-                    if(/^[1-9]\d*|0$/.test(C)){
+                    if (/^[1-9]\d*|0$/.test(C)) {
 
                         $(this).val(C);
 
-                        O=C;
+                        O = C;
 
-                    }else{
+                    } else {
 
                         $(this).val(O);
 
@@ -762,13 +758,13 @@ $(function () {
 
 //键盘控制：上右--加，下左--减
 
-                if(e.keyCode==38 || e.keyCode==39){
+                if (e.keyCode == 38 || e.keyCode == 39) {
 
                     iSet.Add.eq(iSet.Input.index(this)).click();
 
                 }
 
-                if(e.keyCode==37 || e.keyCode==40){
+                if (e.keyCode == 37 || e.keyCode == 40) {
 
                     iSet.Minus.eq(iSet.Input.index(this)).click();
 
@@ -776,25 +772,25 @@ $(function () {
 
 //输出当前改变后的值
 
-                $CB.val=$(this).val();
+                $CB.val = $(this).val();
 
-                $CB.index=iSet.Input.index(this);
+                $CB.index = iSet.Input.index(this);
 
 //回调函数
 
                 if (typeof CallBack == 'function') {
 
-                    CallBack($CB.val,$CB.index);
+                    CallBack($CB.val, $CB.index);
 
                 }
 
             },
 
-            'blur':function(){
+            'blur': function () {
 
                 $(this).trigger('keyup');
 
-                if($(this).val()==''){
+                if ($(this).val() == '') {
 
                     $(this).val(O);
 
@@ -802,9 +798,9 @@ $(function () {
 
 //判断输入值是否超出最大最小值
 
-                if(iSet.Max){
+                if (iSet.Max) {
 
-                    if(O>iSet.Max){
+                    if (O > iSet.Max) {
 
                         $(this).val(iSet.Max);
 
@@ -812,7 +808,7 @@ $(function () {
 
                 }
 
-                if(O<iSet.Min){
+                if (O < iSet.Min) {
 
                     $(this).val(iSet.Min);
 
@@ -820,15 +816,15 @@ $(function () {
 
 //输出当前改变后的值
 
-                $CB.val=$(this).val();
+                $CB.val = $(this).val();
 
-                $CB.index=iSet.Input.index(this);
+                $CB.index = iSet.Input.index(this);
 
 //回调函数
 
                 if (typeof CallBack == 'function') {
 
-                    CallBack($CB.val,$CB.index);
+                    CallBack($CB.val, $CB.index);
 
                 }
 
@@ -838,11 +834,11 @@ $(function () {
 
     }
 
-    $('.i_box').iVaryVal({},function(value,index){
+    $('.i_box').iVaryVal({}, function (value, index) {
 
 //网页显示以下内容，可以隐藏掉
 
-        $('.i_tips').html('您的存储硬盘空间大小是：'+value+'T');
+        $('.i_tips').html('您的存储硬盘空间大小是：' + value + 'T');
 
     });
 
