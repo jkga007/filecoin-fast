@@ -73,7 +73,7 @@ var RegistFunc = (function () {
                     LoginFunc.getCaptcha();
                 });
             }
-        }, true, true);
+        }, false, true);
 
     };
 
@@ -114,7 +114,7 @@ var RegistFunc = (function () {
                     Core.alert(message, 2, false, function () {
                     });
                 }
-            }, true, true);
+            }, false, true);
         } else {
             Core.alert("您的操作有误,请重新注册!", 2, false, function () {
 
@@ -151,7 +151,7 @@ var RegistFunc = (function () {
                     Core.alert(message, 2, false, function () {
                     });
                 }
-            }, true, true);
+            }, false, true);
         } else {
             Core.alert("您的操作有误,请重新注册!", 2, false, function () {
 
@@ -247,7 +247,7 @@ var RegistFunc = (function () {
                     Core.alert(message, 2, false, function () {
                     });
                 }
-            }, true, true);
+            }, false, true);
         }
     };
 
@@ -276,7 +276,7 @@ var RegistFunc = (function () {
 
                     });
                 }
-            }, true, true);
+            }, false, true);
         }
     };
 
@@ -314,7 +314,7 @@ var RegistFunc = (function () {
 
                 });
             }
-        }, true, true);
+        }, false, true);
     };
 
     /**
@@ -357,7 +357,7 @@ var RegistFunc = (function () {
 
                 });
             }
-        }, true, true);
+        }, false, true);
     };
 
     /**
@@ -380,7 +380,7 @@ var RegistFunc = (function () {
 
                 });
             }
-        }, true, false);
+        }, false, false);
     };
 
     /**
@@ -412,7 +412,7 @@ var RegistFunc = (function () {
 
                 });
             }
-        }, true, false);
+        }, false, false);
     };
 
     /***
