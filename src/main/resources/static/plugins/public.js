@@ -312,9 +312,7 @@ var Core = Core
                         if (typeof jsondata != "undefined" && jsondata.length != 0) {
                             //token过期，则跳转到登录页面
                             if (jsondata.code == 401) {
-                                setTimeout(function () {
-                                    window.location.href = ctx + "/modules/filecoin/login.html";
-                                }, 1000);
+                                window.location.href = ctx + "/modules/filecoin/login.html";
                             }
                         }
                     }
@@ -393,9 +391,12 @@ var Core = Core
                         core.close(_layerIndex);
                     }
                     if (xhr.status == 200) {
-                        //token过期，则跳转到登录页面
-                        if (xhr.responseJSON.code == 401) {
-                            window.location.href = ctx + "/modules/filecoin/login.html";
+                        var jsondata = $.parseJSON(xhr.responseText);
+                        if (typeof jsondata != "undefined" && jsondata.length != 0) {
+                            //token过期，则跳转到登录页面
+                            if (jsondata.code == 401) {
+                                window.location.href = ctx + "/modules/filecoin/login.html";
+                            }
                         }
                     }
                 }
