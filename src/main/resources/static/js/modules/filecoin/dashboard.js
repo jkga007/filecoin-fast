@@ -26,14 +26,6 @@ var DashboardFunc = (function () {
                     $("#coinTickersTbody").empty();
                     var tickers = jsondata.data.tickers;
                     for (var i = 0; i < tickers.length ; i++) {
-                        /**
-                         * 循环增加实时信息
-                         * <th>交易所</th>
-                         <th data-priority="1">币种</th>
-                         <th data-priority="2">价格</th>
-                         <th data-priority="3">涨幅</th>
-                         * @type {string}
-                         */
                         //涨幅
                         var change1d = tickers[i].change1d;
                         var change1dHtml = "";
@@ -49,7 +41,7 @@ var DashboardFunc = (function () {
                         //价格
                         var price = (tickers[i].price+"").substring(0,6);
                         //更新时间
-                        var timestamps = tickers[i].timestamps;
+                        // var timestamps = tickers[i].timestamps;
                         // var timenow = new Date(timestamps).Format("yyyy-MM-dd hh:mm:ss");
                         var innerHtml = "<tr>";
                         innerHtml += "<th><i class=\"fa fa-dot-circle-o complete\"></i>"+exchange_display_name+"</th>";
@@ -89,23 +81,3 @@ $(function () {
     LoginFunc.getLoginUser();
     DashboardFunc.getTickers();
 });
-
-Date.prototype.Format = function (fmt) { //
-    var o = {
-        "M+": this.getMonth() + 1, //Month
-        "d+": this.getDate(), //Day
-        "h+": this.getHours(), //Hour
-        "m+": this.getMinutes(), //Minute
-        "s+": this.getSeconds(), //Second
-        "q+": Math.floor((this.getMonth() + 3) / 3), //Season
-        "S": this.getMilliseconds() //millesecond
-    };
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() +
-
-        "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1,
-
-            (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    return fmt;
-};
