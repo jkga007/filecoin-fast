@@ -18,4 +18,5 @@ var SettingsFunc = (function () {
 })();
 $(function () {
     SettingsFunc.init();
+    LoginFunc.getLoginUser();
 });

@@ -19,4 +19,5 @@ var FaqFunc = (function () {
 })();
 $(function () {
     FaqFunc.init();
+    LoginFunc.getLoginUser();
 });

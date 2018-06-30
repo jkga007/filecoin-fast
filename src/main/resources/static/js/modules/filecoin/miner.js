@@ -19,4 +19,5 @@ var MinerFunc = (function () {
 })();
 $(function () {
     MinerFunc.init();
+    LoginFunc.getLoginUser();
 });

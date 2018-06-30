@@ -18,4 +18,5 @@ var PayFunc = (function () {
 })();
 $(function () {
     PayFunc.init();
+    LoginFunc.getLoginUser();
 });

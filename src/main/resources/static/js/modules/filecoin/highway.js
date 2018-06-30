@@ -19,4 +19,6 @@ var HighWayFunc = (function () {
 })();
 $(function () {
     HighWayFunc.init();
+    LoginFunc.getLoginUser();
+    InvitationCodeFunc.getCountByInvitationCode();
 });

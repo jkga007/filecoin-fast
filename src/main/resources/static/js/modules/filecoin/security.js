@@ -18,4 +18,5 @@ var SecurityFunc = (function () {
 })();
 $(function () {
     SecurityFunc.init();
+    LoginFunc.getLoginUser();
 });

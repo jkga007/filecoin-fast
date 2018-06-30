@@ -18,4 +18,5 @@ var MyWalletFunc = (function () {
 })();
 $(function () {
     MyWalletFunc.init();
+    LoginFunc.getLoginUser();
 });

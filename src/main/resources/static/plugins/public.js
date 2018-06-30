@@ -266,7 +266,8 @@ var Core = Core
                 loadingflag = false;
             }
             if (!timeouts) {
-                timeouts = 1000 * 15 * 60;//15分钟
+                //2分钟
+                timeouts = 120000;
             }
 
             $.ajax({
@@ -334,7 +335,8 @@ var Core = Core
                 aysncflag = false;
             }
             if (!timeouts) {
-                timeouts = 1000 * 15 * 60;//15分钟
+                //2分钟
+                timeouts = 120000;
             }
 
             var dataString = '';

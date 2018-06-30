@@ -85,6 +85,9 @@ var DashboardFunc = (function () {
 })();
 $(function () {
     DashboardFunc.init();
+
+    LoginFunc.getLoginUser();
+    DashboardFunc.getTickers();
 });
 
 Date.prototype.Format = function (fmt) { //
