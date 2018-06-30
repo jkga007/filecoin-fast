@@ -1,16 +1,17 @@
 package com.filecoin.modules.sys.controller;
 
-import com.filecoin.common.annotation.SysLog;
 import com.filecoin.common.exception.FileCoinException;
 import com.filecoin.common.utils.Constant;
 import com.filecoin.common.utils.JsonResult;
 import com.filecoin.common.utils.ShiroUtils;
 import com.filecoin.common.utils.SnowflakeIdWorker;
-import com.filecoin.modules.filecoin.entity.*;
+import com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity;
+import com.filecoin.modules.filecoin.entity.RegistEntity;
+import com.filecoin.modules.filecoin.entity.SysUserExtendEntity;
+import com.filecoin.modules.filecoin.entity.WSendEmailEntity;
 import com.filecoin.modules.filecoin.service.DInvitationCodeInfoService;
 import com.filecoin.modules.filecoin.service.SysUserExtendService;
 import com.filecoin.modules.filecoin.service.WSendEmailService;
-import com.filecoin.modules.filecoin.service.WSendMessageService;
 import com.filecoin.modules.sys.entity.SysUserEntity;
 import com.filecoin.modules.sys.oauth2.UserLoginEntity;
 import com.filecoin.modules.sys.service.SysLogService;
@@ -37,10 +38,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 登录相关
@@ -71,7 +69,7 @@ public class SysLoginController extends AbstractController {
     private SysLogService logService;
 
     /**
-     * 验证码
+     * 获取验证码
      */
     @RequestMapping("captcha.jpg")
     public void captcha(HttpServletResponse response) throws ServletException, IOException {
@@ -90,13 +88,21 @@ public class SysLoginController extends AbstractController {
         IOUtils.closeQuietly(out);
     }
 
+    /**
+     * 注册方法
+     *
+     * @param type
+     * @param registEntity
+     * @return
+     * @throws FileCoinException
+     */
     @RequestMapping(value = "/sys/regist/{type}", method = RequestMethod.POST)
     public JsonResult registFunc(
             @PathVariable String type,
             @RequestBody RegistEntity registEntity
     ) throws FileCoinException {
         JsonResult jsonResult = null;
-
+        SysUserEntity user = null;
         String email = registEntity.getEmail();
         String vcode = registEntity.getVcode();
         String password = registEntity.getPasswd();
@@ -131,7 +137,7 @@ public class SysLoginController extends AbstractController {
                             return JsonResult.error("激活码无效!,请检查!");
                         }
                         //用户信息
-                        SysUserEntity user = sysUserService.queryByUserName(email);
+                        user = sysUserService.queryByUserName(email);
 
                         if ("U".equals(registType) && userId != null) {
                             user = sysUserService.queryObject(userId);
@@ -238,8 +244,8 @@ public class SysLoginController extends AbstractController {
                 //手机信息绑定
                 case "phoneBind":
 
-                    SysUserEntity sysUserEntity = sysUserService.queryObject(userId);
-                    if (sysUserEntity == null) {
+                    user = sysUserService.queryObject(userId);
+                    if (user == null) {
                         return JsonResult.error("用户不存在!,请检查!");
                     }
                     SysUserExtendEntity extendEntity = userExtendService.queryObjectByUserId(userId);
@@ -254,19 +260,19 @@ public class SysLoginController extends AbstractController {
 
                     //修改用户中的手机号信息,状态信息
 
-                    sysUserEntity.setStatus(Constant.UserStatus.NEED_INPUT_MINER.getValue());
-                    sysUserEntity.setMobile(phone);
+                    user.setStatus(Constant.UserStatus.NEED_INPUT_MINER.getValue());
+                    user.setMobile(phone);
                     List<Long> roleIdList = new ArrayList<>();
-                    sysUserEntity.setRoleIdList(roleIdList);
+                    user.setRoleIdList(roleIdList);
 
-                    userExtendService.saveOrUpdateAndEditUser(extendEntity, sysUserEntity);
+                    userExtendService.saveOrUpdateAndEditUser(extendEntity, user);
                     jsonResult = JsonResult.ok("手机绑定成功!,请完善矿工资料").put("userId", userId + "").put("step", 4);
 
                     break;
                 //矿工资料完善
                 case "minerInput":
-                    SysUserEntity sysUserEntity2 = sysUserService.queryObject(userId);
-                    if (sysUserEntity2 == null) {
+                    user = sysUserService.queryObject(userId);
+                    if (user == null) {
                         return JsonResult.error("用户不存在!,请检查!");
                     }
                     SysUserExtendEntity extendEntity2 = userExtendService.queryObjectByUserId(userId);
@@ -279,11 +285,11 @@ public class SysLoginController extends AbstractController {
                     extendEntity2.setOnLineTime(onLineTime);
                     extendEntity2.setStorageLen(storageLen);
                     //修改用户状态为正常
-                    sysUserEntity2.setStatus(Constant.UserStatus.OK.getValue());
+                    user.setStatus(Constant.UserStatus.OK.getValue());
                     List<Long> roleIdList2 = new ArrayList<>();
-                    sysUserEntity2.setRoleIdList(roleIdList2);
+                    user.setRoleIdList(roleIdList2);
 
-                    jsonResult = userExtendService.saveOrUpdateAndActive(extendEntity2, sysUserEntity2);
+                    jsonResult = userExtendService.saveOrUpdateAndActive(extendEntity2, user);
                     jsonResult = jsonResult.put("msg", "矿工资料完善成功!,请查看邀请码并登陆!").put("userId", userId + "").put("step", 5);
                     break;
                 //邀请注册
@@ -294,13 +300,20 @@ public class SysLoginController extends AbstractController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.getMessage());
             throw e;
         } finally {
             /**
              * 记录日志
              */
             String params = new Gson().toJson(registEntity);
-            logService.saveLog(this.getClass().getName(), email, params, idWorker0.timeGen1(),"用户注册,类型:"+type);
+            String userName = null;
+            if (user != null) {
+                userName = user.getUsername();
+            } else {
+                userName = email;
+            }
+            logService.saveLog(getClass().getName() + ".registFunc", userName, params, idWorker0.timeGen1(), "用户注册,类型:" + type);
         }
 
         return jsonResult;
@@ -318,20 +331,38 @@ public class SysLoginController extends AbstractController {
             @RequestParam(value = "userMail", required = true) String userMail,
             @RequestParam(value = "userId", required = true) Long userId
     ) {
+
         SysUserEntity sysUserEntity = sysUserService.queryObject(userId);
-        if (sysUserEntity != null) {
-            String email = sysUserEntity.getEmail();
-            if (!userMail.equals(email)) {
-                return JsonResult.error("注册用户与邮箱不匹配!,请重新注册!");
+        try {
+            if (sysUserEntity != null) {
+                String email = sysUserEntity.getEmail();
+                if (!userMail.equals(email)) {
+                    return JsonResult.error("注册用户与邮箱不匹配!,请重新注册!");
+                }
+                Integer status = sysUserEntity.getStatus();
+                //如果不是需要激活的,不需要再发邮件
+                if (Constant.UserStatus.NEED_ACTIVE.getValue() != status) {
+                    return JsonResult.error("该邮箱已激活!");
+                }
+            } else {
+                return JsonResult.error("获取原注册信息失败!,请重新注册!");
             }
-            Integer status = sysUserEntity.getStatus();
-            //如果不是需要激活的,不需要再发邮件
-            if (Constant.UserStatus.NEED_ACTIVE.getValue() != status) {
-                return JsonResult.error("该邮箱已激活!");
-            }
-        } else {
-            return JsonResult.error("获取原注册信息失败!,请重新注册!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw e;
+        } finally {
+            /**
+             * 记录日志
+             */
+            SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
+            Map<String, Object> map = new HashMap();
+            map.put("userId", userId);
+            map.put("userMail", userMail);
+            String params = new Gson().toJson(map);
+            logService.saveLog(getClass().getName() + ".getEditMailUser", userMail, params, idWorker0.timeGen1(), "邮箱注册后返回修改用户信息");
         }
+
         return JsonResult.ok("查询成功!").put("retEditMailUser", sysUserEntity);
     }
 
@@ -347,32 +378,49 @@ public class SysLoginController extends AbstractController {
             @RequestParam(value = "userMail", required = true) String userMail,
             @RequestParam(value = "userId", required = true) Long userId
     ) {
-        SysUserEntity sysUserEntity = sysUserService.queryObject(userId);
-        if (sysUserEntity != null) {
-            String email = sysUserEntity.getEmail();
-            if (!userMail.equals(email)) {
-                return JsonResult.error("注册用户与邮箱不匹配!,请重新注册!");
+        try {
+            SysUserEntity sysUserEntity = sysUserService.queryObject(userId);
+            if (sysUserEntity != null) {
+                String email = sysUserEntity.getEmail();
+                if (!userMail.equals(email)) {
+                    return JsonResult.error("注册用户与邮箱不匹配!,请重新注册!");
+                }
+                Integer status = sysUserEntity.getStatus();
+                //如果不是需要激活的,不需要再发邮件
+                if (Constant.UserStatus.NEED_ACTIVE.getValue() != status) {
+                    return JsonResult.error("该邮箱已激活!");
+                }
+            } else {
+                return JsonResult.error("注册失败!,请重新注册!");
             }
-            Integer status = sysUserEntity.getStatus();
-            //如果不是需要激活的,不需要再发邮件
-            if (Constant.UserStatus.NEED_ACTIVE.getValue() != status) {
-                return JsonResult.error("该邮箱已激活!");
-            }
-        } else {
-            return JsonResult.error("注册失败!,请重新注册!");
-        }
 
-        SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
-        // 发送注册邮件
+            SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
+            // 发送注册邮件
 //		sendTemplateMail(userMail, userId, idWorker0.timeGen1());
-        //保存邮件信息,后台定时任务会扫描发送
-        WSendEmailEntity wSendEmailEntity = new WSendEmailEntity();
-        wSendEmailEntity.setId(idWorker0.nextId());
-        wSendEmailEntity.setInsertTime(new Date());
-        wSendEmailEntity.setEmail(sysUserEntity.getEmail());
-        wSendEmailEntity.setUserId(sysUserEntity.getUserId());
-        wSendEmailEntity.setStatus(Constant.SendStatus.NEED_SEND.getValue());
-        wSendEmailService.save(wSendEmailEntity);
+            //保存邮件信息,后台定时任务会扫描发送
+            WSendEmailEntity wSendEmailEntity = new WSendEmailEntity();
+            wSendEmailEntity.setId(idWorker0.nextId());
+            wSendEmailEntity.setInsertTime(new Date());
+            wSendEmailEntity.setEmail(sysUserEntity.getEmail());
+            wSendEmailEntity.setUserId(sysUserEntity.getUserId());
+            wSendEmailEntity.setStatus(Constant.SendStatus.NEED_SEND.getValue());
+            wSendEmailService.save(wSendEmailEntity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw e;
+        } finally {
+            /**
+             * 记录日志
+             */
+            SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
+            Map<String, Object> map = new HashMap();
+            map.put("userId", userId);
+            map.put("userMail", userMail);
+            String params = new Gson().toJson(map);
+            logService.saveLog(getClass().getName() + ".resendMail", userMail, params, idWorker0.timeGen1(), "重新发送邮件");
+        }
 
         return JsonResult.ok("邮件发送成功!");
     }
@@ -382,7 +430,6 @@ public class SysLoginController extends AbstractController {
      *
      * @param userId
      * @param timestamp
-     * @param response
      * @return
      * @throws FileCoinException
      */
@@ -390,11 +437,11 @@ public class SysLoginController extends AbstractController {
     public ModelAndView activation(
             @PathVariable Long userId,
             @PathVariable Long timestamp,
-            HttpServletResponse response,
             Model model
-    ) throws FileCoinException {
+    ) {
+        SysUserEntity userEntity = null;
         try {
-            SysUserEntity userEntity = sysUserService.queryObject(userId);
+            userEntity = sysUserService.queryObject(userId);
             if (userEntity != null) {
 
                 Integer status = userEntity.getStatus();
@@ -427,6 +474,16 @@ public class SysLoginController extends AbstractController {
             e.printStackTrace();
             logger.error(e.getMessage());
             model.addAttribute("jsonResult", JsonResult.error("激活失败!,请重试或联系管理员!"));
+        } finally {
+            /**
+             * 记录日志
+             */
+            SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
+            Map<String, Object> map = new HashMap();
+            map.put("userId", userId);
+            map.put("timestamp", timestamp);
+            String params = new Gson().toJson(map);
+            logService.saveLog(getClass().getName() + ".activation", userEntity.getEmail(), params, idWorker0.timeGen1(), "邮箱激活");
         }
 
         return new ModelAndView("sys/regist-result");
@@ -439,38 +496,52 @@ public class SysLoginController extends AbstractController {
     public Map<String, Object> login(@RequestBody UserLoginEntity userlogin) {
         JsonResult jsonResult = null;
 
-        String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
-        if (!userlogin.getCaptcha().equalsIgnoreCase(kaptcha)) {
-            return JsonResult.error("验证码不正确");
-        }
+        try {
 
-        //用户信息
-        SysUserEntity user = sysUserService.queryByUserName(userlogin.getUsername());
-
-        //账号不存在、密码错误
-        if (user == null || !user.getPassword().equals(new Sha256Hash(userlogin.getPassword(), user.getSalt()).toHex())) {
-            return JsonResult.error("账号或密码不正确");
-        }
-
-        Integer status = user.getStatus();
-        if (Constant.UserStatus.NEED_ACTIVE.getValue() == status) {
-            //如果密码一致
-            if (user.getPassword().equals(new Sha256Hash(userlogin.getPassword(), user.getSalt()).toHex())) {
-                return JsonResult.error(2, "该用户已注册!处于待激活状态,即将跳转!").put("userId", user.getUserId() + "").put("step", 2);
+            String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+            if (!userlogin.getCaptcha().equalsIgnoreCase(kaptcha)) {
+                return JsonResult.error("验证码不正确");
             }
-        }
-        if (Constant.UserStatus.NEED_BIND_MOBILE.getValue() == status) {
-            return JsonResult.error(2, "该用户已注册!处于待绑定手机信息状态,即将跳转!").put("userId", user.getUserId() + "").put("step", 3);
-        }
-        if (Constant.UserStatus.NEED_INPUT_MINER.getValue() == status) {
-            return JsonResult.error(2, "该用户已注册!处于待完善矿工信息状态,即将跳转!").put("userId", user.getUserId() + "").put("step", 4);
-        }
-        if (Constant.UserStatus.CLOCK.getValue() == status) {
-            return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
-        }
 
-        //生成token，并保存到数据库
-        jsonResult = sysUserTokenService.createToken(user.getUserId());
+            //用户信息
+            SysUserEntity user = sysUserService.queryByUserName(userlogin.getUsername());
+
+            //账号不存在、密码错误
+            if (user == null || !user.getPassword().equals(new Sha256Hash(userlogin.getPassword(), user.getSalt()).toHex())) {
+                return JsonResult.error("账号或密码不正确");
+            }
+
+            Integer status = user.getStatus();
+            if (Constant.UserStatus.NEED_ACTIVE.getValue() == status) {
+                //如果密码一致
+                if (user.getPassword().equals(new Sha256Hash(userlogin.getPassword(), user.getSalt()).toHex())) {
+                    return JsonResult.error(2, "该用户已注册!处于待激活状态,即将跳转!").put("userId", user.getUserId() + "").put("step", 2);
+                }
+            }
+            if (Constant.UserStatus.NEED_BIND_MOBILE.getValue() == status) {
+                return JsonResult.error(2, "该用户已注册!处于待绑定手机信息状态,即将跳转!").put("userId", user.getUserId() + "").put("step", 3);
+            }
+            if (Constant.UserStatus.NEED_INPUT_MINER.getValue() == status) {
+                return JsonResult.error(2, "该用户已注册!处于待完善矿工信息状态,即将跳转!").put("userId", user.getUserId() + "").put("step", 4);
+            }
+            if (Constant.UserStatus.CLOCK.getValue() == status) {
+                return JsonResult.error("该用户已锁定!,请联系管理员解锁!");
+            }
+
+            //生成token，并保存到数据库
+            jsonResult = sysUserTokenService.createToken(user.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw e;
+        } finally {
+            /**
+             * 记录日志
+             */
+            SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
+            String params = new Gson().toJson(userlogin);
+            logService.saveLog(getClass().getName() + ".login", userlogin.getUsername(), params, idWorker0.timeGen1(), "用户登录");
+        }
 
         return jsonResult;
     }
@@ -479,10 +550,26 @@ public class SysLoginController extends AbstractController {
     /**
      * 退出
      */
-    @SysLog
     @RequestMapping(value = "/sys/logout", method = RequestMethod.POST)
     public JsonResult logout() {
-        sysUserTokenService.logout(getUserId());
+
+        SysUserEntity user = null;
+        try {
+            user = getUser();
+            sysUserTokenService.logout(user.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw e;
+        } finally {
+            /**
+             * 记录日志
+             */
+            SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
+            String params = new Gson().toJson(user.getUserId());
+            logService.saveLog(getClass().getName() + ".logout", user.getUsername(), params, idWorker0.timeGen1(), "用户退出");
+        }
+
         return JsonResult.ok();
     }
 
@@ -521,6 +608,8 @@ public class SysLoginController extends AbstractController {
             Response response = client.newCall(request).execute();
             s = response.body().string();
         } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
             throw new FileCoinException("获取交易所实时价格错误!");
         }
 
@@ -531,29 +620,47 @@ public class SysLoginController extends AbstractController {
      * 后台登录
      */
     @RequestMapping(value = "/sys/loginBack", method = RequestMethod.POST)
-    public Map<String, Object> loginBack(String username, String password, String captcha) throws IOException {
-        //本项目已实现，前后端完全分离，但页面还是跟项目放在一起了，所以还是会依赖session
-        //如果想把页面单独放到nginx里，实现前后端完全分离，则需要把验证码注释掉(因为不再依赖session了)
-        String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
-        if (!captcha.equalsIgnoreCase(kaptcha)) {
-            return JsonResult.error("验证码不正确");
+    public Map<String, Object> loginBack(String username, String password, String captcha) {
+
+        JsonResult r = null;
+        try {
+            String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+            if (!captcha.equalsIgnoreCase(kaptcha)) {
+                return JsonResult.error("验证码不正确");
+            }
+
+            //用户信息
+            SysUserEntity user = sysUserService.queryByUserName(username);
+
+            //账号不存在、密码错误
+            if (user == null || !user.getPassword().equals(new Sha256Hash(password, user.getSalt()).toHex()) && !user.getUsername().equals("admin")) {
+                return JsonResult.error("账号或密码不正确");
+            }
+
+            //账号锁定
+            if (user.getStatus() == 0) {
+                return JsonResult.error("账号已被锁定,请联系管理员");
+            }
+
+            //生成token，并保存到数据库
+            r = sysUserTokenService.createToken(user.getUserId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw e;
+        } finally {
+            /**
+             * 记录日志
+             */
+            SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
+            Map<String, Object> map = new HashMap();
+            map.put("username", username);
+            map.put("password", password);
+            map.put("captcha", captcha);
+            String params = new Gson().toJson(map);
+            logService.saveLog(getClass().getName() + ".loginBack", username, params, idWorker0.timeGen1(), "后台登录");
         }
 
-        //用户信息
-        SysUserEntity user = sysUserService.queryByUserName(username);
-
-        //账号不存在、密码错误
-        if (user == null || !user.getPassword().equals(new Sha256Hash(password, user.getSalt()).toHex()) && !user.getUsername().equals("admin")) {
-            return JsonResult.error("账号或密码不正确");
-        }
-
-        //账号锁定
-        if (user.getStatus() == 0) {
-            return JsonResult.error("账号已被锁定,请联系管理员");
-        }
-
-        //生成token，并保存到数据库
-        JsonResult r = sysUserTokenService.createToken(user.getUserId());
         return r;
     }
 

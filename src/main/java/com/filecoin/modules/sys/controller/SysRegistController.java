@@ -5,12 +5,8 @@ import com.filecoin.common.utils.JsonResult;
 import com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity;
 import com.filecoin.modules.filecoin.service.DInvitationCodeInfoService;
 import com.filecoin.modules.filecoin.service.SysUserExtendService;
-import com.filecoin.modules.filecoin.service.WSendEmailService;
-import com.filecoin.modules.filecoin.service.WSendMessageService;
 import com.filecoin.modules.sys.entity.SysUserEntity;
 import com.filecoin.modules.sys.service.SysUserService;
-import com.filecoin.modules.sys.service.SysUserTokenService;
-import com.google.code.kaptcha.Producer;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 注册相关
+ * 注册相关,目前未使用任何方法20180630
  * 
  * @author r25437,g20416
  * @email support@filecoinon.com

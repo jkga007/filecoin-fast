@@ -43,7 +43,7 @@ var LoginFunc = (function () {
                 });
             } else {
                 Core.alert(message, 2,false, function () {
-                    window.location.href = ctx + "/modules/filecoin/login.html";
+                    // window.location.href = ctx + "/modules/filecoin/login.html";
                 });
             }
         }, true,true);
@@ -73,20 +73,26 @@ var LoginFunc = (function () {
     };
 
     loginFunc.doLogout = function () {
+        var token = localStorage.getItem("token");
+        if (token.length != 0) {
+            //同步退出
+            var path = ctx + "/sys/logout";
+            var ajax = new AJAXPacket(path, "正在退出...请稍后");
 
-        var path = ctx + "/sys/logout";
-        var ajax = new AJAXPacket(path, "正在退出...请稍后");
+            Core.sendPacket(ajax, function (packet) {
+                var resultCode = packet.code;
+                var message = packet.msg;
+                if (resultCode == "0") {
+                    localStorage.removeItem("token");
+                    window.location.href = ctx + "/modules/filecoin/login.html";
+                } else {
 
-        Core.sendPacket(ajax, function (packet) {
-            var resultCode = packet.code;
-            var message = packet.msg;
-            if (resultCode == "0") {
-                localStorage.removeItem("token");
-                window.location.href = ctx + "/modules/filecoin/login.html";
-            } else {
-
-            }
-        }, true,true);
+                }
+            }, false, true);
+        } else {
+            localStorage.removeItem("token");
+            window.location.href = ctx + "/modules/filecoin/login.html";
+        }
     };
 
     loginFunc.getCaptcha = function(){

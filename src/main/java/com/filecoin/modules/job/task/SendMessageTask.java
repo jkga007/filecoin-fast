@@ -1,16 +1,11 @@
 package com.filecoin.modules.job.task;
 
 
-
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
-import com.aliyuncs.exceptions.ClientException;
 import com.filecoin.common.utils.Constant;
 import com.filecoin.common.utils.SmsSendUtil;
 import com.filecoin.modules.filecoin.entity.WSendMessageEntity;
 import com.filecoin.modules.filecoin.service.WSendMessageService;
-import com.filecoin.modules.sys.entity.SysUserEntity;
-import com.filecoin.modules.sys.service.SysUserService;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +17,9 @@ import java.util.Map;
 
 /**
  * 短信发送定时任务
- * 
+ *
  * sendMessageTask为spring bean的名称
- * 
+ *
  * @author r25437,g20416
  * @email support@filecoinon.com
  * @date 2016年11月30日 下午1:34:24
@@ -45,7 +40,7 @@ public class SendMessageTask {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
+    }
 
 	//定时任务，无需参数的
 	public void batchSendMessage(){
