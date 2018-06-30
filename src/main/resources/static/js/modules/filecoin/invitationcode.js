@@ -19,23 +19,61 @@ var InvitationCodeFunc = (function () {
             var message = packet.msg;
 
             if (resultCode == "0") {
+                //邀请人数
                 var count = packet.count;
+                //邀请码
                 var invitationCode = packet.invitationCode;
+                //抽奖码
                 var lotteryCode = packet.lotteryCode;
+                //执行费率
                 var rate = packet.rate;
+                //还剩余多少人
                 var countlit = Number(10)-Number(count);
 
-                $("#invitationCode_h3").html("邀请码："+invitationCode+" ");
-                $("#invitationCount_h3").html("邀请人数："+count+" / 10");
-                $("#invitationCountLit_h3").html(""+countlit);
-                $("#invitationCode_h3_lit").html(""+countlit);
-                $("#invitationCode_h3_lit_2").html(""+countlit);
-                $("#invitationCode_h3_lit_3").html(""+countlit);
-                $("#invitationRate_h3").html("执行费率："+rate);
-                $("#invitationLotteryCode_h3").html("抽奖码："+lotteryCode);
-                $("#invitationLotteryCode_h3_2").html("您的抽奖码为："+lotteryCode);
+                //邀请码DIV
+                var invCodeDiv = $("#invCodeDiv");
+                //邀请人数DIV
+                var invCountDiv = $("#invCountDiv");
+                //折扣券DIV
+                var invZkjDiv = $("#invZkjDiv");
+                //执行费率DIV
+                var invZxflDiv = $("#invZxflDiv");
+                //抽奖码DIV
+                var invCjmDiv = $("#invCjmDiv");
+                //矿机抽奖DIV
+                var invKJCJDiv = $("#invKJCJDiv");
+                //如果邀请人数完成
+                if(Number(countlit) == 0){
+                    invCountDiv.removeClass("has-gray-to-right-bottom");
+                    invCountDiv.addClass("has-register-to-right-bottom");
+                    invZkjDiv.removeClass("has-gray-to-right-bottom");
+                    invZkjDiv.addClass("has-register-to-right-bottom");
+                    invZxflDiv.removeClass("has-gray-to-right-bottom");
+                    invZxflDiv.addClass("has-REGISTER-to-right-bottom");
+                    invCjmDiv.removeClass("has-gray-to-right-bottom");
+                    invCjmDiv.addClass("has-register-to-right-bottom");
+                }
 
-                // alert(count+"-"+invitationCode+"-"+lotteryCode+"-"+rate);
+                //赋值邀请码
+                invCodeDiv.find("div").eq(1).find("h3").eq(0).html("邀请码："+invitationCode+" ");
+                //赋值邀请码剩余次数
+                invCodeDiv.find("div").eq(1).find("span").eq(0).find("span").eq(0).html(countlit);
+                //赋值邀请人数
+                invCountDiv.find("div").eq(1).find("h3").eq(0).html("邀请人数："+count+" / 10");
+                //赋值邀请码剩余次数
+                invCountDiv.find("div").eq(1).find("span").eq(0).find("span").eq(0).html(countlit);
+                //赋值折扣卷剩余次数
+                invZkjDiv.find("div").eq(1).find("span").eq(0).find("span").eq(0).html(countlit);
+                //赋值执行费率
+                invZxflDiv.find("div").eq(1).find("h3").eq(0).html("执行费率："+rate);
+
+                //赋值抽奖码
+                invCjmDiv.find("div").eq(1).find("h3").eq(0).html("抽奖码："+invitationCode+" ");
+                //赋值抽奖码剩余次数
+                invCjmDiv.find("div").eq(1).find("span").eq(0).find("span").eq(0).html(countlit);
+                //赋值矿机抽奖抽奖码
+                invKJCJDiv.find("h4").eq(0).html("您的抽奖码为："+invitationCode);
+
             }else{
                 Core.alert("获取邀请码信息错误！", 2,false, function () {
 

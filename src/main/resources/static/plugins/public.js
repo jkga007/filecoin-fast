@@ -11,9 +11,7 @@ var Core = Core
         core.serializeJsonStr = function (jqObj) {
             var o = {};
             var objArr = new Array();
-            // if(jqObj.indexOf(",") != -1){
             objArr = jqObj.split(",");
-            // }
             for(var i=0;i<objArr.length;i++){
                 var a = $("#"+objArr[i]).serializeArray();
                 $.each(a, function () {
