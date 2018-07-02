@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.filecoin.modules.filecoin.dao.WPassPhoneModifyDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.filecoin.modules.filecoin.entity.WPassPhoneModifyEntity" id="wPassPhoneModifyMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="insertTime" column="insert_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status"/>
+        <result property="oldValue" column="old_value"/>
+        <result property="newValue" column="new_value"/>
+        <result property="type" column="type"/>
+        <result property="timestamp" column="timestamp"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.filecoin.modules.filecoin.entity.WPassPhoneModifyEntity">
+		select * from w_pass_phone_modify where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.filecoin.modules.filecoin.entity.WPassPhoneModifyEntity">
+		select * from w_pass_phone_modify
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from w_pass_phone_modify 
+	</select>
+	 
+	<insert id="save" parameterType="com.filecoin.modules.filecoin.entity.WPassPhoneModifyEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into w_pass_phone_modify
+		(
+			`user_id`, 
+			`insert_time`, 
+			`update_time`, 
+			`status`, 
+			`old_value`, 
+			`new_value`, 
+			`type`, 
+			`timestamp`
+		)
+		values
+		(
+			#{userId}, 
+			#{insertTime}, 
+			#{updateTime}, 
+			#{status}, 
+			#{oldValue}, 
+			#{newValue}, 
+			#{type}, 
+			#{timestamp}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.filecoin.modules.filecoin.entity.WPassPhoneModifyEntity">
+		update w_pass_phone_modify 
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="insertTime != null">`insert_time` = #{insertTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="oldValue != null">`old_value` = #{oldValue}, </if>
+			<if test="newValue != null">`new_value` = #{newValue}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="timestamp != null">`timestamp` = #{timestamp}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from w_pass_phone_modify where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from w_pass_phone_modify where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

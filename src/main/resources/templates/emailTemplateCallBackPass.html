@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>IPFS星际云矿池密码找回邮件</title>
+    </head>
+    <body>
+        您好,这是密码找回邮件,请点击下面的链接跳转密码找回,
+        <a href="#" th:href="@{ http://{url}/sys/activation/{id}/{timestamp}?{other}(url=${url},id=${id},timestamp=${timestamp},other=${other}) }">找回密码</a>。
+    </body>
+</html>

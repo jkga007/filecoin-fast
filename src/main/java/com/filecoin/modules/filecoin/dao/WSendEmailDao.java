@@ -13,5 +13,21 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface WSendEmailDao extends BaseDao<WSendEmailEntity> {
+    /**
+     * 查询一条注册待发送邮件
+     * @return
+     */
     WSendEmailEntity queryOneNearBy();
+
+    /**
+     * 查询一条修改密码待发送邮件
+     * @return
+     */
+    WSendEmailEntity queryOneEditPassNearBy();
+
+    /**
+     * 查询一条找回密码待发送邮件
+     * @return
+     */
+    WSendEmailEntity queryOneCallBackPassNearBy();
 }

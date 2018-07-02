@@ -30,6 +30,7 @@ public class WSendEmailEntity implements Serializable {
 	private String returnCode;
 	//
 	private String returnMessage;
+	private int type;
 
 	/**
 	 * 设置：序列id
@@ -126,5 +127,13 @@ public class WSendEmailEntity implements Serializable {
 	 */
 	public String getReturnMessage() {
 		return returnMessage;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 }

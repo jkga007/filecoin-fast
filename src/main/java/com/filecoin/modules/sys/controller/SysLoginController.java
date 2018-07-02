@@ -223,6 +223,7 @@ public class SysLoginController extends AbstractController {
                         wSendEmailEntity.setEmail(userEntity.getEmail());
                         wSendEmailEntity.setUserId(userEntity.getUserId());
                         wSendEmailEntity.setStatus(Constant.SendStatus.NEED_SEND.getValue());
+                        wSendEmailEntity.setType(Constant.EmailTypes.REGIST.getValue());
                         wSendEmailService.save(wSendEmailEntity);
 
                         // 发送注册邮件
@@ -405,6 +406,7 @@ public class SysLoginController extends AbstractController {
             wSendEmailEntity.setEmail(sysUserEntity.getEmail());
             wSendEmailEntity.setUserId(sysUserEntity.getUserId());
             wSendEmailEntity.setStatus(Constant.SendStatus.NEED_SEND.getValue());
+            wSendEmailEntity.setType(Constant.EmailTypes.REGIST.getValue());
             wSendEmailService.save(wSendEmailEntity);
 
         } catch (Exception e) {

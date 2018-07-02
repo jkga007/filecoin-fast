@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>IPFS星际云矿池密码修改确认邮件</title>
+    </head>
+    <body>
+        您好,这是密码修改确认邮件,请点击下面的链接完成确认,
+        <a href="#" th:href="@{ http://{url}/sys/activation/{id}/{timestamp}?{other}(url=${url},id=${id},timestamp=${timestamp},other=${other}) }">进行密码修改确认</a>。
+    </body>
+</html>

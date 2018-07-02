@@ -168,4 +168,89 @@ public class Constant {
         }
     }
 
+    /**
+     * 发送的邮件类型
+     */
+    public enum EmailTypes {
+        /**
+         * 注册邮件
+         */
+        REGIST(0),
+        /**
+         * 修改密码邮件
+         */
+        EMAIL_EDIT_PASS(1),
+        /**
+         * 找回密码邮件
+         */
+        EMAIL_CALLBACK_PASS(2),
+
+        /**
+         * 修改手机号邮件
+         */
+        EMAIL_EDIT_PHONE(3);
+
+        private int value;
+
+        EmailTypes(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    /**
+     * 密码修改/找回/手机号修改类型
+     */
+    public enum PassPhoneModifyTypes {
+        /**
+         * 邮箱修改密码
+         */
+        EMAIL_EDIT_PASS(0),
+        /**
+         * 邮箱找回密码
+         */
+        EMAIL_CALLBACK_PASS(1),
+        /**
+         * 邮箱修改手机号
+         */
+        EMAIL_EDIT_PHONE(2);
+
+        private int value;
+
+        PassPhoneModifyTypes(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    /**
+     * 密码修改/找回/手机号修改状态
+     */
+    public enum PassPhoneModifyStatus {
+        /**
+         * 待确认
+         */
+        NEED_CONFIRM(0),
+        /**
+         * 已确认
+         */
+        CONFIRMED(1),;
+
+        private int value;
+
+        PassPhoneModifyStatus(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
 }
