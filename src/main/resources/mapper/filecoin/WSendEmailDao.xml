@@ -85,7 +85,7 @@
 			<if test="sendTime != null">`send_time` = #{sendTime}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="returnCode != null">`return_code` = #{returnCode}, </if>
-			<if test="returnMessage != null">`return_message` = #{returnMessage}</if>
+			<if test="returnMessage != null">`return_message` = #{returnMessage},</if>
 			<if test="type != null">`type` = #{type}</if>
 		</set>
 		where id = #{id}
