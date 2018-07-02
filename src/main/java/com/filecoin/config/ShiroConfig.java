@@ -59,31 +59,22 @@ public class ShiroConfig {
         filterMap.put("/webjars/**", "anon");
         filterMap.put("/druid/**", "anon");
         filterMap.put("/app/**", "anon");
-
         //登录
         filterMap.put("/sys/login", "anon");
         filterMap.put("/sys/loginBack", "anon");
         //通过用户ID获取用户
         filterMap.put("/sys/user/getUserInfoById/*", "anon");
-
         filterMap.put("/regist/doValidate/*", "anon");
         filterMap.put("/regist/doValidateRegist/*", "anon");
         filterMap.put("/wsendmessage/save/**", "anon");
         filterMap.put("/wsendmessage/validate/**", "anon");
         filterMap.put("/dinvitationcodeinfo/getInvitaCodeByUserId", "anon");
-        //注册
         filterMap.put("/sys/regist/*", "anon");
-        //跳转登录页
         filterMap.put("/sys/gologin", "anon");
-        //注册邮箱激活
         filterMap.put("/sys/activation/**", "anon");
-        //重新发送邮件
         filterMap.put("/sys/resendMail", "anon");
-        //返回修改邮箱用户信息
         filterMap.put("/sys/getEditMailUser", "anon");
-        //获取交易所实时价格
         filterMap.put("/sys/getCoinTickers", "anon");
-
         filterMap.put("/**/*.css", "anon");
         filterMap.put("/**/*.js", "anon");
         filterMap.put("/**/*.html", "anon");
