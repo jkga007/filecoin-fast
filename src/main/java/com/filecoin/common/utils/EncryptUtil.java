@@ -15,7 +15,7 @@ import java.security.MessageDigest;
  */
 public class EncryptUtil {
     // 密钥是16位长度的byte[]进行Base64转换后得到的字符串
-    public static String key = "hytera.com.smp.encrypt";
+    public static String key = "ipfsun.com.filecoin.encrypt";
 
     /**
      * <li>
