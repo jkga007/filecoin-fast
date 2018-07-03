@@ -5,7 +5,6 @@ import com.filecoin.modules.job.entity.ScheduleJobEntity;
 import com.filecoin.modules.job.entity.ScheduleJobLogEntity;
 import com.filecoin.modules.job.service.ScheduleJobLogService;
 import com.google.gson.Gson;
-
 import org.apache.commons.lang.StringUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -15,7 +14,6 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 
@@ -28,7 +26,7 @@ import java.util.concurrent.Future;
  */
 public class ScheduleJob extends QuartzJobBean {
 	private Logger logger = LoggerFactory.getLogger(getClass());
-	private ExecutorService service = Executors.newSingleThreadExecutor();
+//	private ExecutorService service = Executors.newSingleThreadExecutor();
 
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
@@ -37,6 +35,8 @@ public class ScheduleJob extends QuartzJobBean {
 
 		//获取scheduleJobLogService
         ScheduleJobLogService scheduleJobLogService = (ScheduleJobLogService) SpringContextUtils.getBean("scheduleJobLogService");
+		ExecutorService service = (ExecutorService) SpringContextUtils.getBean("fileCoinSingleThread");
+
         
         //数据库保存执行记录
         ScheduleJobLogEntity log = new ScheduleJobLogEntity();

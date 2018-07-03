@@ -21,19 +21,20 @@ public class ScheduleRunnable implements Runnable {
 	private String params;
 	
 	public ScheduleRunnable(String beanName, String methodName, String params) throws NoSuchMethodException, SecurityException {
-		this.target = SpringContextUtils.getBean(beanName);
+		target = SpringContextUtils.getBean(beanName);
 		this.params = params;
 		
 		if(StringUtils.isNotBlank(params)){
-			this.method = target.getClass().getDeclaredMethod(methodName, String.class);
+			method = target.getClass().getDeclaredMethod(methodName, String.class);
 		}else{
-			this.method = target.getClass().getDeclaredMethod(methodName);
+			method = target.getClass().getDeclaredMethod(methodName);
 		}
 	}
 
 	@Override
 	public void run() {
 		try {
+			System.out.println("查看当前线程名称-------------" + Thread.currentThread().getName() + "--ID==" + Thread.currentThread().getId());
 			ReflectionUtils.makeAccessible(method);
 			if(StringUtils.isNotBlank(params)){
 				method.invoke(target, params);

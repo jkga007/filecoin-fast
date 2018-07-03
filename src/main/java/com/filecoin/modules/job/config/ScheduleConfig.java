@@ -6,17 +6,24 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import javax.sql.DataSource;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 定时任务配置
  *
- * @author r25437,g20416
+ * @author r25437, g20416
  * @email support@filecoinon.com
  * @date 2017-04-20 23:38
  */
 @Configuration
 public class ScheduleConfig {
 
+    @Bean("fileCoinSingleThread")
+    public ExecutorService setThreadPool() {
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        return service;
+    }
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource) {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
