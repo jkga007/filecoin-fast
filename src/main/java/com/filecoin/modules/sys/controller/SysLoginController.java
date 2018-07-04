@@ -381,6 +381,7 @@ public class SysLoginController extends AbstractController {
             @RequestParam(value = "userId", required = true) Long userId
     ) {
         try {
+
             SysUserEntity sysUserEntity = sysUserService.queryObject(userId);
             if (sysUserEntity != null) {
                 String email = sysUserEntity.getEmail();

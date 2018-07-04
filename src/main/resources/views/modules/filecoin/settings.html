@@ -345,16 +345,16 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!--<div class="pull-left">-->
-                                            <!--<h4><i class="fa fa-info-circle color-primary complete f-s-14"></i><small>修改密码需邮箱确认后生效！</small></h4>-->
-                                            <!--</div>-->
+                                            <div class="pull-left">
+                                            <h4><i class="fa fa-info-circle color-primary complete f-s-14"></i><small>修改密码需邮箱确认后生效！</small></h4>
+                                            </div>
                                             <!--<div class="pull-right">-->
                                             <!--<a href="#myModalpassword" data-toggle="modal" class="btn btn-primary btn-corner right15"><i class="fa fa-check"></i> 修改登录密码</a>-->
                                             <!--<a href="#myModalphone" data-toggle="modal" class="btn btn-primary btn-corner right15"><i class="fa fa-check"></i> 修改手机号码</a>-->
-                                            <!---->
-                                            <!---->
-                                            <!---->
-                                            <!---->
+
+
+
+
                                             <!--</div>-->
 
                                         </div>
@@ -406,21 +406,26 @@
                             <h4 class="modal-title">修改密码</h4>
                         </div>
                         <div class="modal-body text-left">
-                            <form method='post'><input type='hidden' name='form-name' value='form 2'/>
+                            <form id="pass_validate" name="pass_validate" method='post'><input type='hidden' name='form-name' value='form 2'/>
 
                                 <div class="form-group">
-                                    <label for="modalname1" class="form-label">输入密码</label>
-                                    <input type="text" class="form-control" id="modalname1"
-                                           placeholder="Enter password">
+                                    <label for="oldPassWord" class="form-label">请输入原密码</label>
+                                    <input type="password" class="form-control" id="oldPassWord" name="oldPassWord" maxlength="32"
+                                           placeholder="Enter old password">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">请确认密码</label>
-                                    <input type="text" class="form-control" id="modalwallet1"
-                                           placeholder="Enter password again">
+                                    <label for="newPassWord" class="form-label">请输入新密码</label>
+                                    <input type="password" class="form-control" id="newPassWord" name="newPassWord" maxlength="32"
+                                           placeholder="Enter new password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="newPassWordConfirm" class="form-label">请确认密码</label>
+                                    <input type="password" class="form-control" id="newPassWordConfirm" name="newPassWordConfirm" maxlength="32"
+                                           placeholder="Enter new password again">
                                 </div>
 
 
-                                <button type="submit" class="btn btn-primary">邮箱确认验证</button>
+                                <button type="button" class="btn btn-primary">邮箱确认验证</button>
                             </form>
                         </div>
                     </div>

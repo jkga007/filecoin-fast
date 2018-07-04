@@ -205,6 +205,14 @@
 			<version>20171018</version>
 		</dependency>
 
+		<!-- 加入limbok 可以使用lombok插件,@slf4j -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.0</version>
+			<scope>provided</scope>
+		</dependency>
+
 
 	</dependencies>
 
