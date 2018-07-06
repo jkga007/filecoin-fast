@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 20180620
  * @author g20416
  */
@@ -42,4 +42,7 @@ var IndexFunc = (function () {
 $(function () {
     IndexFunc.init();
     IndexFunc.getCounts();
+    $(".custom-btn").click(function(){
+        window.location.href = "/modules/filecoin/regist.html";
+    });
 });
