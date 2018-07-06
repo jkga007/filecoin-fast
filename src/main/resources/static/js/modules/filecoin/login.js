@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 登录相关方法
  * 20180620
  * @author g20416
@@ -144,6 +144,12 @@ $(function () {
         submitHandler: function () {
             var jsonParam = Core.serializeJsonStr("msg_validate");
             LoginFunc.doLogin(jsonParam);
+        }
+    });
+
+    $("#captcha").keyup(function(event){
+        if(event.keyCode ==13){
+            $("#msg_validate").submit();
         }
     });
 
