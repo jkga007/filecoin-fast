@@ -144,8 +144,9 @@ var RegistFunc = (function () {
                 var message = packet.msg;
                 if (resultCode == "0") {
                     Core.alert("重新发送邮件成功!,请注意查收!", 1, false, function () {
+                        Core.setTimerFunc(obj, 30, "href", 'RegistFunc.resendMail(this)');
                     });
-                    Core.setTimerFunc(obj, 30, "href", 'RegistFunc.resendMail(this)');
+
                 } else {
                     Core.alert(message, 2, false, function () {
                     });
@@ -240,9 +241,10 @@ var RegistFunc = (function () {
                         var nextBtn2 = $("#nextBtn2");
                         nextBtn2.attr('onclick', 'javascript:$("#step3_frm").submit();');
                         nextBtn2.attr('style', '');
+                        //发送成功之后,才开始计时
+                        Core.setTimerFunc(obj, 120, "button");
                     });
-                    //发送成功之后,才开始计时
-                    Core.setTimerFunc(obj, 120, "button");
+
                 } else {
                     Core.alert(message, 2, false, function () {
                         // var _this = $(obj);
@@ -420,13 +422,12 @@ var RegistFunc = (function () {
     };
 
     registFunc.bandWidthImgonLoad = function () {
-        var fs = 1.46 * 1024;  //图片文件大小(KB)
+        var fs = 1495.04;  //图片文件大小(KB)
         var l = 2;    //小数点的位数
         var et = new Date();
         var alltime = fs * 1000 / (et - bindTime);
         var Lnum = Math.pow(10, l);
         var calcspeed = Math.round(alltime * Lnum) / Lnum;
-        alert("您的下载速度为：" + calcspeed + " (KB/秒) 约" + Math.round(calcspeed / 128 * Lnum) / Lnum + "(MB/秒)");
         //向上取整
         var bandWidthRound = Math.round(calcspeed / 128 * Lnum) / Lnum;
         var bandWidth = Math.ceil(bandWidthRound);
@@ -640,8 +641,6 @@ $(function () {
     //在线测速方法
     $("#bandWidthBtn").click(function () {
         loadingIndex = Core.loading("正在测速...请稍后", 20000);
-        var Rand = Math.random();
-        var RandNum = 1 + Math.round(Rand * 99);
         bindTime = new Date();
         var szsrc = "http://hongkong2.bandwidthplace.com/static/4096.jpg?id=" + $.now();
         $("#bandWidthImg").attr("onload", "RegistFunc.bandWidthImgonLoad();");
