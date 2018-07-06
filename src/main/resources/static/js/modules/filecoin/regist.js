@@ -342,21 +342,25 @@ var RegistFunc = (function () {
                 var userId = packet.userId;
                 var token = packet.token;
                 var expire = packet.expire;
+                var step = packet.step;
 
                 Core.alert(message, 1, false, function () {
-                    $("#user_id").val(userId);
-                    //模拟点击第5步
-                    globleIndex = 4;
-                    $('.processorBox li').eq(globleIndex).click();
                     //登录
                     localStorage.removeItem("token");
                     localStorage.setItem("token", token);
-                    // base64 encrypt
-                    var rawStr = 5 + "#" + userId;
-                    var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
-                    var base64 = CryptoJS.enc.Base64.stringify(wordArray);
-                    var url = "/modules/filecoin/regist.html?value=" + base64;
+                    // $("#user_id").val(userId);
+                    // //模拟点击第5步
+                    // globleIndex = 4;
+                    // $('.processorBox li').eq(globleIndex).click();
+                    // // base64 encrypt
+                    // var rawStr = 5 + "#" + userId;
+                    // var wordArray = CryptoJS.enc.Utf8.parse(rawStr);
+                    // var base64 = CryptoJS.enc.Base64.stringify(wordArray);
+                    // var url = "/modules/filecoin/regist.html?value=" + base64;
+                    // window.location.href = url;
+                    var url = "/modules/filecoin/highway.html";
                     window.location.href = url;
+
                 });
             } else {
                 Core.alert(message, 2, false, function () {
@@ -419,21 +423,6 @@ var RegistFunc = (function () {
                 });
             }
         }, false, false);
-    };
-
-    registFunc.bandWidthImgonLoad = function () {
-        var fs = 1495.04;  //图片文件大小(KB)
-        var l = 2;    //小数点的位数
-        var et = new Date();
-        var alltime = fs * 1000 / (et - bindTime);
-        var Lnum = Math.pow(10, l);
-        var calcspeed = Math.round(alltime * Lnum) / Lnum;
-        //向上取整
-        var bandWidthRound = Math.round(calcspeed / 128 * Lnum) / Lnum;
-        var bandWidth = Math.ceil(bandWidthRound);
-        $("#bandWidth").val(bandWidth);
-        Core.close(loadingIndex);
-        $("#bandWidthBtn").attr("src", " ");
     };
 
     /***
@@ -607,10 +596,11 @@ $(function () {
             },
             storageLen: {
                 required: false,
-                digits: true
+                integerA: true
             },
             bandWidth: {
-                required: false
+                required: true,
+                integerA:true
             }
         },
         messages: {
@@ -618,9 +608,12 @@ $(function () {
             minerMachineEnv: {},
             onLineTime: {},
             storageLen: {
-                digits: "请输入整数咯~"
+                integerA: "请选择存储大小~"
             },
-            bandWidth: {}
+            bandWidth: {
+                required: "请进行在线测速,测试带宽~",
+                integerA: "请进行带宽测速~"
+            }
         },
         submitHandler: function (form) {
             RegistFunc.bindMinerMsg();
@@ -639,11 +632,11 @@ $(function () {
     });
 
     //在线测速方法
-    $("#bandWidthBtn").click(function () {
+    $("#bandWidth_changeTipsHere").click(function () {
         loadingIndex = Core.loading("正在测速...请稍后", 20000);
         bindTime = new Date();
         var szsrc = "http://hongkong2.bandwidthplace.com/static/4096.jpg?id=" + $.now();
-        $("#bandWidthImg").attr("onload", "RegistFunc.bandWidthImgonLoad();");
+        $("#bandWidthImg").attr("onload", "Core.bandWidthImgonLoad();");
         $("#bandWidthImg").attr("src", szsrc);
     });
 

@@ -291,7 +291,7 @@ public class SysLoginController extends AbstractController {
                     user.setRoleIdList(roleIdList2);
 
                     jsonResult = userExtendService.saveOrUpdateAndActive(extendEntity2, user);
-                    jsonResult = jsonResult.put("msg", "矿工资料完善成功!,请查看邀请码并登陆!").put("userId", userId + "").put("step", 5);
+                    jsonResult = jsonResult.put("msg", "矿工资料完善成功!, 恭喜您注册成功!").put("userId", userId + "").put("step", 5);
                     break;
                 //邀请注册
                 case "YQZC":

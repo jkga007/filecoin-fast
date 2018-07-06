@@ -251,6 +251,22 @@ var Core = Core
             });
         };
 
+        core.bandWidthImgonLoad = function () {
+            var fs = 1495.04;  //图片文件大小(KB)
+            var l = 2;    //小数点的位数
+            var et = new Date();
+            var alltime = fs * 1000 / (et - bindTime);
+            var Lnum = Math.pow(10, l);
+            var calcspeed = Math.round(alltime * Lnum) / Lnum;
+            // alert("-----------"+calcspeed);
+            //向上取整
+            var bandWidthRound = Math.round(calcspeed / 128 * Lnum) / Lnum;
+            var bandWidth = Math.ceil(bandWidthRound);
+            $("#bandWidth").val(bandWidth);
+            Core.close(loadingIndex);
+            $("#bandWidthBtn").attr("src", " ");
+        };
+
         /*ajax 方法*/
         core.sendPacket = function (packet, process, aysncflag,loadingflag, timeouts) {
             var _layerIndex;

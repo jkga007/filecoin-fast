@@ -1066,4 +1066,10 @@ $.validator.addMethod("ziprange", function(value, element) {
     jQuery.validator.addMethod("noZh", function(value, element) {
         return this.optional(element) || /[^\u4e00-\u9fa5]/i.test(value);;
     }, "密码不能输入中文");
+    //非负整数判断
+    jQuery.validator.addMethod("integerA", function (value, element) {
+
+        var aint = parseInt(value);
+        return this.optional(element) || (aint>0 && (aint+"")==value);
+    }, "请输入整数");
 }));

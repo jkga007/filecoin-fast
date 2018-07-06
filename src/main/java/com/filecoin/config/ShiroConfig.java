@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * Shiro配置
  *
- * @author r25437,g20416
+ * @author r25437, g20416
  * @email support@filecoinon.com
  * @date 2017-04-20 18:33
  */
@@ -29,7 +29,7 @@ import java.util.Map;
 public class ShiroConfig {
 
     @Bean("sessionManager")
-    public SessionManager sessionManager(){
+    public SessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionValidationSchedulerEnabled(true);
         sessionManager.setSessionIdCookieEnabled(true);
@@ -75,6 +75,7 @@ public class ShiroConfig {
         filterMap.put("/sys/resendMail", "anon");
         filterMap.put("/sys/getEditMailUser", "anon");
         filterMap.put("/sys/getCoinTickers", "anon");
+        filterMap.put("/sysUserExtend/getSomeCount", "anon");
         filterMap.put("/**/*.css", "anon");
         filterMap.put("/**/*.js", "anon");
         filterMap.put("/**/*.html", "anon");
