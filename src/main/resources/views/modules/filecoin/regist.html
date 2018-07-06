@@ -7,6 +7,14 @@
     -->
 	<meta charset="UTF-8" />
 	<title>IPFS星际云矿池会员注册</title>
+	<!-- =====  SEO MATE  ===== -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="keywords" content="IPFS,ipfs矿池,IPFS星际云矿池,ipfs挖矿教程,ipfs挖矿,ipfs官网,ipfs filecoin官网,ipfs和storj,ipfsun,filecoin,星际网络传输协议,区块链,ipfs协议">
+	<meta name="description" content="IPFS星际文件云矿池，星际文件系统IPFS（InterPlanetary File System）是一个面向全球的、点对点的分布式版本文件系统，目标是为了补充（甚至是取代）目前统治互联网的超文本传输协议（HTTP），将所有具有相同文件系统的计算设备连接在…最好的ipfs爱好者聚集地Just for IPFS">
+	<!-- =====  MOBILE SPECIFICATION  ===== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="viewport" content="width=device-width">
+
 	<link rel="stylesheet" href="../../filecoin/register/css/base.css" />
 	<link rel="stylesheet" href="../../filecoin/register/css/layout.css"/>
 </head>
@@ -208,8 +216,10 @@
 				<div class="frm_control_group">
 					<label class="frm_label">带宽大小</label>
 					<div class="frm_controls">
-						<input type="text" name="bandWidth" id="bandWidth" class="frm_input bandWidth"/>
-						<input type="button" value="在线测速" class="btn btn_default" />
+						<input type="text" name="bandWidth" id="bandWidth" readonly class="frm_input bandWidth"/>
+						<img id="bandWidthImg" height='300' style="display:none;" src=''  width='400'/>
+						<input type="button" value="在线测速" id="bandWidthBtn" class="btn btn_default" />
+						<p class="t_sas">单位：M</p>
 					</div>
 				</div>
 				<div class="toolBar">
@@ -261,6 +271,8 @@
     var step = 0;
     var userId = "";
     var globleIndex = 0;
+    var bindTime;
+    var loadingIndex;
 </script>
 <script src="../../js/modules/filecoin/regist.js"></script>
 </body>

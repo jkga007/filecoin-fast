@@ -53,6 +53,15 @@ var DashboardFunc = (function () {
 
                         $("#coinTickersTbody").append(innerHtml);
                     }
+                    //添加最后更新时间
+                    var nowTime = $.now();
+                    var timenow = new Date(nowTime).format("yyyy-MM-dd hh:mm:ss");
+                    var lastUpdateTime = "<tr>";
+                    lastUpdateTime += "<th colspan='4' align='right'>";
+                    lastUpdateTime += "上次更新时间：" + timenow;
+                    lastUpdateTime += "</th>";
+                    lastUpdateTime += "</tr>";
+                    $("#coinTickersTbody").append(lastUpdateTime);
                 }else{
                     Core.alert(message, 2,false, function () {
                     });
@@ -65,6 +74,32 @@ var DashboardFunc = (function () {
         }, false, false);
     };
 
+    /**
+     * 获取公告信息
+     */
+    dashboardFunc.getNotices = function () {
+        var path = ctx + "/dnoticeinfo/getAllNotice";
+        var ajax = new AJAXPacket(path, "正在查询公告信息...请稍后");
+        Core.sendPacket(ajax, function (packet) {
+            var resultCode = packet.code;
+            var message = packet.msg;
+            if (resultCode == "0") {
+                var noticeDivObj = $("#noticeDiv");
+                noticeDivObj.empty();
+                var notices = packet.notices;
+                for (var i = 0; i < notices.length; i++) {
+                    var innerDiv = "<div class='input-group mb-10'>";
+                    innerDiv += "<span class='input-group-addon'>" + notices[i].sort + "</span>";
+                    innerDiv += "<span class='form-control'>" + notices[i].noticeContent + "</span>";
+                    innerDiv += "</div>";
+                    noticeDivObj.append(innerDiv);
+                }
+            } else {
+                Core.alert(message, 2, false, function () {
+                });
+            }
+        }, false, false);
+    };
     /***
      * 初始化信息方法
      */
@@ -80,4 +115,5 @@ $(function () {
 
     LoginFunc.getLoginUser();
     DashboardFunc.getTickers();
+    DashboardFunc.getNotices();
 });

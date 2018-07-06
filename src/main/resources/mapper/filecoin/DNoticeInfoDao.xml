@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.filecoin.modules.filecoin.dao.DNoticeInfoDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.filecoin.modules.filecoin.entity.DNoticeInfoEntity" id="dNoticeInfoMap">
+        <result property="id" column="id"/>
+        <result property="noticeContent" column="notice_content"/>
+        <result property="url" column="url"/>
+        <result property="sort" column="sort"/>
+        <result property="insertTime" column="insert_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.filecoin.modules.filecoin.entity.DNoticeInfoEntity">
+		select * from d_notice_info where id = #{value}
+	</select>
+
+	<select id="queryList" resultType="com.filecoin.modules.filecoin.entity.DNoticeInfoEntity">
+		select * from d_notice_info
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from d_notice_info 
+	</select>
+	 
+	<insert id="save" parameterType="com.filecoin.modules.filecoin.entity.DNoticeInfoEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into d_notice_info
+		(
+			`notice_content`, 
+			`url`, 
+			`sort`, 
+			`insert_time`, 
+			`update_time`
+		)
+		values
+		(
+			#{noticeContent}, 
+			#{url}, 
+			#{sort}, 
+			#{insertTime}, 
+			#{updateTime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.filecoin.modules.filecoin.entity.DNoticeInfoEntity">
+		update d_notice_info 
+		<set>
+			<if test="noticeContent != null">`notice_content` = #{noticeContent}, </if>
+			<if test="url != null">`url` = #{url}, </if>
+			<if test="sort != null">`sort` = #{sort}, </if>
+			<if test="insertTime != null">`insert_time` = #{insertTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from d_notice_info where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from d_notice_info where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<!-- 查询所有信息 -->
+	<select id="queryAll" resultType="com.filecoin.modules.filecoin.entity.DNoticeInfoEntity">
+		select * from d_notice_info order by sort
+	</select>
+
+</mapper>

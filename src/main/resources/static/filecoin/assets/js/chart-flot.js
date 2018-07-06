@@ -682,13 +682,13 @@ jQuery(function($) {
             ];
 
             $.plot($("#demoarea-chart #demoarea-container"), [{
-                data: data7_1,
+                data: "",
                 label: "This month",
                 lines: {
                     fill: true
                 }
             }, {
-                data: data7_2,
+                data: "",
                 label: "Total balance",
 
                 points: {

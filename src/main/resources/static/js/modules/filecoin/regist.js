@@ -133,8 +133,6 @@ var RegistFunc = (function () {
         var userId = $.trim($("#user_id").val());
         if (userMail.length != 0 && userId.length != 0) {
 
-            Core.setTimerFunc(obj, 30, "href", 'RegistFunc.resendMail(this)');
-
             var path = ctx + "/sys/resendMail";
             var ajax = new AJAXPacket(path, "正在重新发送邮件...请稍后");
 
@@ -147,6 +145,7 @@ var RegistFunc = (function () {
                 if (resultCode == "0") {
                     Core.alert("重新发送邮件成功!,请注意查收!", 1, false, function () {
                     });
+                    Core.setTimerFunc(obj, 30, "href", 'RegistFunc.resendMail(this)');
                 } else {
                     Core.alert(message, 2, false, function () {
                     });
@@ -226,7 +225,6 @@ var RegistFunc = (function () {
             closeTipId = Core.showTips($("#phone"), "请输入手机号码~");
             return false;
         } else {
-            Core.setTimerFunc(obj, 900, "button");
             Core.close(closeTipId);
         }
 
@@ -243,8 +241,14 @@ var RegistFunc = (function () {
                         nextBtn2.attr('onclick', 'javascript:$("#step3_frm").submit();');
                         nextBtn2.attr('style', '');
                     });
+                    //发送成功之后,才开始计时
+                    Core.setTimerFunc(obj, 120, "button");
                 } else {
                     Core.alert(message, 2, false, function () {
+                        // var _this = $(obj);
+                        // _this.val('重新发送');
+                        // _this.attr("disabled",false);
+                        return false;
                     });
                 }
             }, false, true);
@@ -413,6 +417,22 @@ var RegistFunc = (function () {
                 });
             }
         }, false, false);
+    };
+
+    registFunc.bandWidthImgonLoad = function () {
+        var fs = 1.46 * 1024;  //图片文件大小(KB)
+        var l = 2;    //小数点的位数
+        var et = new Date();
+        var alltime = fs * 1000 / (et - bindTime);
+        var Lnum = Math.pow(10, l);
+        var calcspeed = Math.round(alltime * Lnum) / Lnum;
+        alert("您的下载速度为：" + calcspeed + " (KB/秒) 约" + Math.round(calcspeed / 128 * Lnum) / Lnum + "(MB/秒)");
+        //向上取整
+        var bandWidthRound = Math.round(calcspeed / 128 * Lnum) / Lnum;
+        var bandWidth = Math.ceil(bandWidthRound);
+        $("#bandWidth").val(bandWidth);
+        Core.close(loadingIndex);
+        $("#bandWidthBtn").attr("src", " ");
     };
 
     /***
@@ -615,6 +635,17 @@ $(function () {
             $('.processorBox li').removeClass('current').eq(i).addClass('current');
             $('.step').fadeOut(300).eq(i).fadeIn(500);
         }
+    });
+
+    //在线测速方法
+    $("#bandWidthBtn").click(function () {
+        loadingIndex = Core.loading("正在测速...请稍后", 20000);
+        var Rand = Math.random();
+        var RandNum = 1 + Math.round(Rand * 99);
+        bindTime = new Date();
+        var szsrc = "http://hongkong2.bandwidthplace.com/static/4096.jpg?id=" + $.now();
+        $("#bandWidthImg").attr("onload", "RegistFunc.bandWidthImgonLoad();");
+        $("#bandWidthImg").attr("src", szsrc);
     });
 
     if (step != '' && userId != '') {
