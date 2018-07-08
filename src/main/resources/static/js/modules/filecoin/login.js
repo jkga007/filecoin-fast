@@ -147,12 +147,6 @@ $(function () {
         }
     });
 
-    $("#captcha").keyup(function(event){
-        if(event.keyCode ==13){
-            $("#msg_validate").submit();
-        }
-    });
-
     $("#doLoginBtn").click(function(){
         $("#msg_validate").submit();
     });
