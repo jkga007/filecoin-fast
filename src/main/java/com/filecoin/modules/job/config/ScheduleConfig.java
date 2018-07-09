@@ -1,7 +1,6 @@
 package com.filecoin.modules.job.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import javax.sql.DataSource;
@@ -16,7 +15,7 @@ import java.util.concurrent.Executors;
  * @email support@filecoinon.com
  * @date 2017-04-20 23:38
  */
-@Configuration
+//@Configuration
 public class ScheduleConfig {
 
     @Bean("fileCoinSingleThread")
@@ -24,6 +23,7 @@ public class ScheduleConfig {
         ExecutorService service = Executors.newSingleThreadExecutor();
         return service;
     }
+
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource) {
         SchedulerFactoryBean factory = new SchedulerFactoryBean();
