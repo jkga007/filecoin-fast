@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -42,9 +43,9 @@ public class SendEmailTask {
     @Value("${spring.mail.username}")
     private String sender;
 
-    //@Scheduled(cron = "*/20 * * * * ?")
+    @Scheduled(cron = "*/20 * * * * ?")
     public void sendEmailJob() {
-
+        System.out.println("我是不带参数的sendEmailJob方法，正在被执行");
         SnowflakeIdWorker idWorker0 = new SnowflakeIdWorker(0, 0);
 
         WSendEmailEntity wSendEmailEntity = wSendEmailService.queryOneNearBy();
