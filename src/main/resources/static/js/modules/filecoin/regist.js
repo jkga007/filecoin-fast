@@ -581,6 +581,36 @@ $(function () {
     });
 
     /**
+     * 认购矿机类型下拉列表变更方法
+     */
+    $("#minerMachineEnv").change(function(){
+        var _this = $(this);
+        var step4Div = $("#step4");
+        var storageLenDiv = step4Div.find("div").eq(6);
+        var bandWidthDiv = step4Div.find("div").eq(11);
+        var selText = _this.find('option:selected').text();
+        //如果选中的是云节点
+        if(selText == "云节点"){
+            //隐藏存储大小、带宽大小和在线测速按钮
+            storageLenDiv.hide();
+            bandWidthDiv.hide();
+            //赋值默认值
+            $("#storageLen").val("4");
+            $("#bandWidth").val("50");
+            //认购矿机类型选择框的下一个p节点显示
+            _this.next("p").show();
+        }else{
+            storageLenDiv.show();
+            bandWidthDiv.show();
+            $("#storageLen").val("0");
+            $("#bandWidth").val("");
+            _this.next("p").hide();
+        }
+        //关闭所有tips
+        Core.closeTips();
+    });
+
+    /**
      * 完善矿工信息
      */
     $("#step4_frm").validate({
@@ -592,7 +622,7 @@ $(function () {
                 required: false
             },
             onLineTime: {
-                required: false
+                required: true
             },
             storageLen: {
                 required: false,
@@ -605,8 +635,11 @@ $(function () {
         },
         messages: {
             minerMachineAddr: {},
-            minerMachineEnv: {},
-            onLineTime: {},
+            minerMachineEnv: {
+                required: "请选择认购矿机类型~"
+            },
+            onLineTime: {
+            },
             storageLen: {
                 integerA: "请选择存储大小~"
             },
@@ -616,7 +649,7 @@ $(function () {
             }
         },
         submitHandler: function (form) {
-            // RegistFunc.bindMinerMsg();
+            RegistFunc.bindMinerMsg();
             return false;
         }
     });

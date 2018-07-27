@@ -173,24 +173,32 @@
 				<div class="frm_control_group">
 					<label class="frm_label">矿机所在位置</label>
 					<div class="frm_controls">
-						<select name="minerMachineAddr_Sel">
+						<select name="minerMachineAddr" id="minerMachineAddr" class="frm_input minerMachineAddr">
 							<option value="中国大陆">中国大陆</option>
 						</select>
-						<input type="text" name="minerMachineAddr" id="minerMachineAddr" class="frm_input minerMachineAddr" maxlength="32"/>
-						<p class="frm_tips">输入您的所在位置</p>
+						<!--<input type="text" name="minerMachineAddr" id="minerMachineAddr" class="frm_input minerMachineAddr" maxlength="32"/>-->
+						<p class="frm_tips">选择您的所在位置</p>
 					</div>
 				</div>
 				<div class="frm_control_group">
 					<label class="frm_label">认购矿机类型</label>
 					<div class="frm_controls">
-						<input type="text" name="minerMachineEnv" id="minerMachineEnv" maxlength="32" class="frm_input minerMachineEnv"/>
-						<p class="frm_tips">矿机存放位置：例如IDC机房、矿场、家庭、单位</p>
+						<select name="minerMachineEnv" id="minerMachineEnv" class="frm_input minerMachineEnv">
+							<option value="">选择矿机类型</option>
+							<option value="云节点">云节点</option>
+							<option value="存储服务器">存储服务器</option>
+							<option value="家庭版IPFS矿机">家庭版IPFS矿机</option>
+							<option value="电脑主机">电脑主机</option>
+						</select>
+						<p style="display: none">云节点计划配置:骨干机房云主机 2核4G 存储空间:4T 带宽:50M独享</p>
+						<!--<input type="text" name="minerMachineEnv" id="minerMachineEnv" maxlength="32" class="frm_input minerMachineEnv"/>-->
+						<p class="frm_tips">认购矿机类型包括：云节点、存储服务器、家庭版IPFS矿机、电脑主机</p>
 					</div>
 				</div>
 				<div class="frm_control_group">
 					<label class="frm_label">在线时长：</label>
 					<div class="frm_controls inputradio">
-						<input type="radio" name="onLineTime" value="24H">24小时
+						<input type="radio" name="onLineTime" checked value="24H">24小时
 						<input type="radio" name="onLineTime" value="notsure">不稳定<br />
 						<p class="frm_tips">如实选择，在线不稳定会影响您质押的代币或收益</p>
 					</div>
