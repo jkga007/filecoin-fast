@@ -600,7 +600,7 @@ $(function () {
             },
             bandWidth: {
                 required: true,
-                integerA:true
+                integerA: true
             }
         },
         messages: {
@@ -616,7 +616,7 @@ $(function () {
             }
         },
         submitHandler: function (form) {
-            RegistFunc.bindMinerMsg();
+            // RegistFunc.bindMinerMsg();
             return false;
         }
     });
