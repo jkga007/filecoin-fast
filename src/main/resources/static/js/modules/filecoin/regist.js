@@ -668,7 +668,7 @@ $(function () {
     $("#bandWidth_changeTipsHere").click(function () {
         loadingIndex = Core.loading("正在测速...请稍后", 20000);
         bindTime = new Date();
-        var szsrc = "http://hongkong2.bandwidthplace.com/static/4096.jpg?id=" + $.now();
+        var szsrc = "/filecoin/assets/images/speed.jpg?id=" + $.now();
         $("#bandWidthImg").attr("onload", "Core.bandWidthImgonLoad();");
         $("#bandWidthImg").attr("src", szsrc);
     });

@@ -252,7 +252,7 @@ var Core = Core
         };
 
         core.bandWidthImgonLoad = function () {
-            var fs = 1495.04;  //图片文件大小(KB)
+            var fs = 115;  //图片文件大小(KB)
             var l = 2;    //小数点的位数
             var et = new Date();
             var alltime = fs * 1000 / (et - bindTime);
