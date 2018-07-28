@@ -17,6 +17,9 @@
 
 	<link rel="stylesheet" href="../../filecoin/register/css/base.css" />
 	<link rel="stylesheet" href="../../filecoin/register/css/layout.css"/>
+	<style>
+		.yun{border:1px solid #cacaca;background:#f2f2f2;color:#908484;float:right;margin-left:10px;padding:2px 5px;}
+	</style>
 </head>
 <body>
 <div id="wrapper">
@@ -173,8 +176,18 @@
 				<div class="frm_control_group">
 					<label class="frm_label">矿机所在位置</label>
 					<div class="frm_controls">
-						<select name="minerMachineAddr" id="minerMachineAddr" class="frm_input minerMachineAddr">
+						<select name="minerMachineAddr1" id="minerMachineAddr1" class="frm_input minerMachineAddr" style="width: 110px;height: 24px">
 							<option value="中国大陆">中国大陆</option>
+						</select>
+						<select name="minerMachineAddr" id="minerMachineAddr" class="frm_input minerMachineAddr" style="width: 110px;height: 24px">
+							<option value="上海">上海</option>
+							<option value="北京">北京</option>
+							<option value="杭州">杭州</option>
+							<option value="广州">广州</option>
+							<option value="海南">海南</option>
+							<option value="香港">香港</option>
+							<option value="台湾">台湾</option>
+							<option value="温州" selected>温州</option>
 						</select>
 						<!--<input type="text" name="minerMachineAddr" id="minerMachineAddr" class="frm_input minerMachineAddr" maxlength="32"/>-->
 						<p class="frm_tips">选择您的所在位置</p>
@@ -183,14 +196,14 @@
 				<div class="frm_control_group">
 					<label class="frm_label">认购矿机类型</label>
 					<div class="frm_controls">
-						<select name="minerMachineEnv" id="minerMachineEnv" class="frm_input minerMachineEnv">
+						<select name="minerMachineEnv" id="minerMachineEnv" class="frm_input minerMachineEnv" style="width: 140px;height: 24px">
 							<option value="">选择矿机类型</option>
 							<option value="云节点">云节点</option>
 							<option value="存储服务器">存储服务器</option>
 							<option value="家庭版IPFS矿机">家庭版IPFS矿机</option>
 							<option value="电脑主机">电脑主机</option>
 						</select>
-						<p style="display: none">云节点计划配置:骨干机房云主机 2核4G 存储空间:4T 带宽:50M独享</p>
+						<p class="yun" style="display: none">云节点计划配置:骨干机房云主机 2核4G 存储空间:4T 带宽:50M独享</p>
 						<!--<input type="text" name="minerMachineEnv" id="minerMachineEnv" maxlength="32" class="frm_input minerMachineEnv"/>-->
 						<p class="frm_tips">认购矿机类型包括：云节点、存储服务器、家庭版IPFS矿机、电脑主机</p>
 					</div>
