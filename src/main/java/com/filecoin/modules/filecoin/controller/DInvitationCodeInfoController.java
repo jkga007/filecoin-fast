@@ -1,19 +1,19 @@
 package com.filecoin.modules.filecoin.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.filecoin.common.utils.Constant;
+import com.filecoin.common.utils.JsonResult;
+import com.filecoin.common.utils.PageUtils;
+import com.filecoin.common.utils.Query;
+import com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity;
+import com.filecoin.modules.filecoin.service.DInvitationCodeInfoService;
 import com.filecoin.modules.sys.controller.AbstractController;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.filecoin.modules.filecoin.entity.DInvitationCodeInfoEntity;
-import com.filecoin.modules.filecoin.service.DInvitationCodeInfoService;
-import com.filecoin.common.utils.PageUtils;
-import com.filecoin.common.utils.Query;
-import com.filecoin.common.utils.JsonResult;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -102,7 +102,7 @@ public class DInvitationCodeInfoController extends AbstractController {
 		return JsonResult.ok().put("invitationCode",dInvitationCodeInfoEntity.getInvitationCode());
 	}
 
-	/*
+	/**
 	 *根据邀请码及当前登录用户获取邀请码已经邀请人数量
 	 */
 	@PostMapping("getCountByInvitationCode")
@@ -111,7 +111,7 @@ public class DInvitationCodeInfoController extends AbstractController {
 		Map<String,Object> paramMap = new HashMap<>();
 		paramMap.put("userId",userId);
 		int count = dInvitationCodeInfoService.selectCountbyInvitationCode(paramMap);
-		count = count>10?10:count;
+		count = count > Constant.INVITATION_MAX_NUM ? Constant.INVITATION_MAX_NUM : count;
 		DInvitationCodeInfoEntity dInvitationCodeInfoEntity = dInvitationCodeInfoService.queryObjectByMap(paramMap);
 		return JsonResult.ok().put("count",count).put("invitationCode",dInvitationCodeInfoEntity.getInvitationCode())
 				.put("lotteryCode",dInvitationCodeInfoEntity.getInvitationCode()).put("rate",(10-count)*0.5+"%");

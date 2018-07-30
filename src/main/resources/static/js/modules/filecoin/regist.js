@@ -193,7 +193,7 @@ var RegistFunc = (function () {
                             }
                         }
                     },
-                    messages: {remote: "该邀请码不存在~请更换~"}
+                    messages: {remote: "该邀请码无效~请更换~"}
                 });
                 break;
             default:

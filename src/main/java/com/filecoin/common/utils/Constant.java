@@ -14,6 +14,11 @@ public class Constant {
 	/** 验证码短信模版 **/
 	public static final String IDENTIFYING_CODE_SMS_TEMPLATE_CODE = "SMS_138061565";
 
+    /**
+     * 单个邀请码可邀请的最大人数
+     */
+    public static final int INVITATION_MAX_NUM = 10;
+
 	/**
 	 * 菜单类型
 	 * 

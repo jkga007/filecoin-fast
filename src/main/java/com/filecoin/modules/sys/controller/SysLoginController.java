@@ -135,6 +135,15 @@ public class SysLoginController extends AbstractController {
                         DInvitationCodeInfoEntity dInvitationCodeInfoEntity = dInvitationCodeInfoService.queryObject(vcode);
                         if (dInvitationCodeInfoEntity == null) {
                             return JsonResult.error("激活码无效!,请检查!");
+                        } else {
+                            //查询邀请码邀请人数
+                            String invitationCode = dInvitationCodeInfoEntity.getInvitationCode();
+                            Map<String, Object> paramMap = new HashMap<>();
+                            paramMap.put("invitationCode", invitationCode);
+                            int count = dInvitationCodeInfoService.selectCountbyInvitationCode(paramMap);
+                            if (count > Constant.INVITATION_MAX_NUM) {
+                                return JsonResult.error("激活码无效!,请检查!");
+                            }
                         }
                         //用户信息
                         user = sysUserService.queryByUserName(email);

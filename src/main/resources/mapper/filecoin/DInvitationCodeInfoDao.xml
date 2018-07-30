@@ -89,11 +89,18 @@
 		</foreach>
 	</delete>
 
-	<!--获得邀请码已经邀请人数量 -->
+	<!--获得邀请码已经邀请人数量(通过用户id) -->
 	<select id="selectCountbyInvitationCode" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(*)
         from d_invitation_code_info a,sys_user b
-        where a.user_id = #{userId} and b.invitation_code=a.invitation_code
+		where 1=1
+		<if test="userid != null">
+			and a.user_id = #{userid}
+		</if>
+		<if test="invitationCode != null and invitationCode != ''">
+			and a.invitation_code = #{invitationCode}
+		</if>
+		and b.invitation_code=a.invitation_code
     </select>
 
 </mapper>
