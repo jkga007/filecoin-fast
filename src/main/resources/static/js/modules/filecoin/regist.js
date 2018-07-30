@@ -448,9 +448,12 @@ $(function () {
         userId = plaintext.split("#")[1];
     }
 
+    // var nextBtn2 = $("#nextBtn2");
+    // nextBtn2.attr('onclick', 'javascript:return false;');
+    // nextBtn2.attr('style', 'opacity: 0.2');
     var nextBtn2 = $("#nextBtn2");
-    nextBtn2.attr('onclick', 'javascript:return false;');
-    nextBtn2.attr('style', 'opacity: 0.2');
+    nextBtn2.attr('onclick', 'javascript:$("#step3_frm").submit();');
+    nextBtn2.attr('style', '');
 
     //返回修改邮件信息
     $("#resendMailBtn").click(function () {
