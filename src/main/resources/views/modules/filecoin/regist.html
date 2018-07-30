@@ -178,15 +178,11 @@
 							<select name="minerMachineAddr1" id="minerMachineAddr1" class="sb" style="width: 110px;height: 24px">
 								<option value="中国大陆">中国大陆</option>
 							</select>
+							<select name="minerMachinePro" id="minerMachinePro" class="sb" style="width: 110px;height: 24px">
+
+							</select>
 							<select name="minerMachineAddr" id="minerMachineAddr" class="sb" style="width: 110px;height: 24px">
-								<option value="上海">上海</option>
-								<option value="北京">北京</option>
-								<option value="杭州">杭州</option>
-								<option value="广州">广州</option>
-								<option value="海南">海南</option>
-								<option value="香港">香港</option>
-								<option value="台湾">台湾</option>
-								<option value="温州" selected>温州</option>
+
 							</select>
 						</div>
 						<p class="frm_tips">选择您的所在位置</p>
@@ -298,6 +294,8 @@
     var globleIndex = 0;
     var bindTime;
     var loadingIndex;
+    var provinceArr = new Array();
+    var provinceMap = new Map();
 </script>
 <script src="../../js/modules/filecoin/regist.js"></script>
 </body>

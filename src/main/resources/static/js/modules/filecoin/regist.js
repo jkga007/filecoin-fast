@@ -610,6 +610,46 @@ $(function () {
         Core.closeTips();
     });
 
+    //加载省市json文件
+    $.getJSON("/js/modules/filecoin/city.json", "", function (data) {
+        //each循环 使用$.each方法遍历返回的数据date
+        $("#minerMachinePro").empty();
+        // $("#minerMachinePro").append("<option value='' selected>" + "-选择省-" + "</option>");
+        $.each(data.provinces, function (i, item) {
+            //获取省份名称
+            var provinceName = item.provinceName;
+            provinceArr.push(provinceName);
+            //组装页面省下拉列表
+            $("#minerMachinePro").append("<option value='" + provinceName + "'>" + provinceName + "</option>");
+            var citys = item.citys;
+            var arrayCity = new Array();
+            $.each(citys, function (j, city) {
+                //获取城市名称
+                var cityName = city.citysName;
+                arrayCity.push(cityName);
+            });
+            //放入map数据
+            provinceMap.put(provinceName, arrayCity);
+        });
+        //组装页面市初始化下拉列表
+        $("#minerMachineAddr").empty();
+        var initProvince = provinceArr[0];
+        var initCitys = provinceMap.get(initProvince);
+        $.each(initCitys, function (i, city) {
+            $("#minerMachineAddr").append("<option value='" + city + "'>" + city + "</option>");
+        });
+    });
+    //省份变更级联市变更
+    $("#minerMachinePro").change(function () {
+        //组装页面市初始化下拉列表
+        $("#minerMachineAddr").empty();
+        var initProvince = $(this).find('option:selected').text();
+        var initCitys = provinceMap.get(initProvince);
+        $.each(initCitys, function (i, city) {
+            $("#minerMachineAddr").append("<option value='" + city + "'>" + city + "</option>");
+        });
+    });
+
     /**
      * 完善矿工信息
      */
