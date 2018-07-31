@@ -93,7 +93,7 @@ var vm = new Vue({
                     //删除本地token
                     localStorage.removeItem("token");
                     //跳转到登录页面
-                    location.href = baseURL + 'login.html';
+                    location.href = baseURL + 'backRlogin.html';
                 }
             });
         },

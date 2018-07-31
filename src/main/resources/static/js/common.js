@@ -23,7 +23,7 @@ var baseURL = "/";
 //登录token
 var token = localStorage.getItem("token");
 if(token == 'null'){
-    parent.location.href = baseURL + 'login.html';
+    parent.location.href = baseURL + 'backRlogin.html';
 }
 
 //jquery全局配置
@@ -39,7 +39,7 @@ $.ajaxSetup({
     complete: function(xhr) {
         //token过期，则跳转到登录页面
         if(xhr.responseJSON.code == 401){
-            parent.location.href = baseURL + 'login.html';
+            parent.location.href = baseURL + 'backRlogin.html';
         }
     }
 });

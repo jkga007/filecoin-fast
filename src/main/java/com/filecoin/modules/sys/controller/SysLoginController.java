@@ -28,24 +28,16 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -613,22 +605,22 @@ public class SysLoginController extends AbstractController {
 //		javaMailSender.send(message);
 //	}
 
-    @RequestMapping("/ipfsPdfDownLoad")
-    public ResponseEntity<byte[]> download(HttpServletRequest request) throws IOException {
-        String fileName = "ipfsminer.pdf";
-        File file = ResourceUtils.getFile("classpath:" + fileName);
-        byte[] body = null;
-        InputStream is = new FileInputStream(file);
-        body = new byte[is.available()];
-        is.read(body);
-        HttpHeaders headers = new HttpHeaders();
-        //防止中文乱码
-        fileName = new String(fileName.getBytes("UTF-8"), "iso8859-1");
-        headers.add("Content-Disposition", "attchement;filename=" + fileName);
-        HttpStatus statusCode = HttpStatus.OK;
-        ResponseEntity<byte[]> entity = new ResponseEntity<byte[]>(body, headers, statusCode);
-        return entity;
-    }
+//    @RequestMapping("/ipfsPdfDownLoad")
+//    public ResponseEntity<byte[]> download(HttpServletRequest request) throws IOException {
+//        String fileName = "ipfsminer.pdf";
+//        File file = ResourceUtils.getFile("classpath:" + fileName);
+//        byte[] body = null;
+//        InputStream is = new FileInputStream(file);
+//        body = new byte[is.available()];
+//        is.read(body);
+//        HttpHeaders headers = new HttpHeaders();
+//        //防止中文乱码
+//        fileName = new String(fileName.getBytes("UTF-8"), "iso8859-1");
+//        headers.add("Content-Disposition", "attchement;filename=" + fileName);
+//        HttpStatus statusCode = HttpStatus.OK;
+//        ResponseEntity<byte[]> entity = new ResponseEntity<byte[]>(body, headers, statusCode);
+//        return entity;
+//    }
 
     /**
      * 获取交易所实时价格
