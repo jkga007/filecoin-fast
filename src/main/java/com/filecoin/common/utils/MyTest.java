@@ -1,15 +1,9 @@
 package com.filecoin.common.utils;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class MyTest {
-//    public static void main(String[] args) {
+    //    public static void main(String[] args) {
 //        String a = new Sha256Hash("123456", "qGDlfFKdwaOywPnj1zAd").toHex();
 //        System.out.println(a);
 //    }
@@ -30,7 +24,7 @@ public class MyTest {
 //
 //        Response response = client.newCall(request).execute();
 //        System.out.println(response.body().string());
-        String a = new Sha256Hash("abcd1234", "kAtjQ0OywvPvMIbVxdO2").toHex();
+        String a = new Sha256Hash("Hytera19932017", "YzcmCZNvbXocrsz9dm8e").toHex();
         System.out.println(a);
     }
 }

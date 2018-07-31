@@ -86,6 +86,8 @@ public class ShiroConfig {
         filterMap.put("/swagger/**", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/captcha.jpg", "anon");
+        //下载pdf文件
+        filterMap.put("/ipfsPdfDownLoad", "anon");
         filterMap.put("/", "anon");
         filterMap.put("/**", "oauth2");
         shiroFilter.setFilterChainDefinitionMap(filterMap);
