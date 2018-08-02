@@ -4,7 +4,7 @@ server:
         uri-encoding: UTF-8
         max-threads: 1000
         min-spare-threads: 30
-    port: 8080
+    port: 80
     connection-timeout: 5000
 #    context-path: /
 
@@ -41,7 +41,7 @@ mybatis:
     mapperLocations: classpath:mapper/**/*.xml
     configLocation: classpath:mybatis.xml
 
-renren:
+filecoin:
     # APP模块，是通过jwt认证的，如果要使用APP模块，则需要修改【加密秘钥】
     jwt:
         # 加密秘钥
